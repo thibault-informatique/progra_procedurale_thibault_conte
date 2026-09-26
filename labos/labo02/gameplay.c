@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "gameplay.h"
+#include <assert.h>
 #include <string.h> // fct strchr
+
+#include "gameplay.h"
+#include "display.h"
 
 void initBoard(bool board[][COLUMN_NB])
 {
@@ -79,13 +82,15 @@ void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
     unsigned short int row = 0;
     unsigned short int column = 0;
 
-    printf("Joueur 1, choisis le nombre de bombe que Joueur 2 va placer :");
+    printf("Joueur 1, choisis le nombre de bombe que Joueur 2 va placer [1-%d]:", MAX_BOMBS);
     nbOfBombs = getUserChoice(1, MAX_BOMBS);
 
     // placement des bombes par joueur 2
-    for (unsigned short int i; i <= nbOfBombs; i++)
+    for (unsigned short int i = 0; i < nbOfBombs; i++)
     {
        printDataBoard(dataBoard);
+       printf("\n%hu bombe(s) restante(s)\n ", nbOfBombs - i);
+
        printf("Choix de ligne: ");
        row = getUserChoice(1,ROW_NB);
        printf("Choix de colonne: ");
@@ -95,7 +100,10 @@ void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
        --row, --column;
        // si bombe pas présente sur la case choisie aléatoirement, on la place
        if (!dataBoard[row][column])
+       {
             dataBoard[row][column] = true;
+            puts("Bombe amorcée");
+       }
         // si on n'a pas pu placer de bombe car déjà présente sur la case, on décrémente de 1
         // pour "recommencer un tour de boucle" et on informe Joueur 2
         else
@@ -105,6 +113,8 @@ void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
             i--; 
         }  
     }
+
+    printf("%hu bombes ont été  enterrées avec succès !\n\n", nbOfBombs);
 }
 
 bool wasCellAlreadyVisible(const bool gameBoard[][COLUMN_NB], unsigned short int row, unsigned short int column)
