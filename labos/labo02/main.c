@@ -41,7 +41,7 @@ int main (void)
     unsigned short int userChoice = 1;
 
     // initialisation graine pour nbre aléatoire
-    srand(time(NULL));
+    srand((unsigned)time(NULL));
 
     // code
     do{

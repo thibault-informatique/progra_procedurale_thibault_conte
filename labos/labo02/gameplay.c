@@ -68,8 +68,8 @@ void setRandomBombInDataBoard(bool dataBoard[][COLUMN_NB])
 
     for(unsigned short int i = 0; i < nbOfBombs; i++)
     {    
-       row = rand() % ROW_NB;
-       column = rand() % COLUMN_NB;
+       row = (unsigned short int) rand() % ROW_NB;
+       column = (unsigned short int) rand() % COLUMN_NB;
        // si bombe pas présente sur la case choisie aléatoirement, on la place
        if (!dataBoard[row][column])
             dataBoard[row][column] = true;
@@ -125,15 +125,15 @@ void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
 }
 
 // fct qui vérifie si la case était déjà visible par le joueur
-bool wasCellAlreadyVisible(const bool gameBoard[][COLUMN_NB], unsigned short int row, unsigned short int column)
+static bool wasCellAlreadyVisible(const bool gameBoard[][COLUMN_NB], unsigned short int row, unsigned short int column)
 {
     assert(gameBoard != NULL);
     return gameBoard[row][column];
 }
 
-bool hasPlayerWon(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
+static bool hasPlayerWon(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
 {  
-    assert (gameBoard != NULL || dataBoard != NULL);
+    assert (gameBoard != NULL && dataBoard != NULL);
 
     for(unsigned short int row = 0; row < ROW_NB; row++)
         for (unsigned short int col = 0; col < COLUMN_NB; col++)
@@ -148,13 +148,13 @@ bool hasPlayerWon(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLU
 }
 
 // les préparatifs finis, le joueur peut enfin jouer
-void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
+static void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
 {
-    assert (gameBoard != NULL || dataBoard != NULL);
+    assert (gameBoard != NULL && dataBoard != NULL);
 
     bool isGameActive;
-    unsigned short int choosenRow = 0;
-    unsigned short int choosenColumn = 0;
+    unsigned short int chosenRow = 0;
+    unsigned short int chosenColumn = 0;
 
     printGameBoard(gameBoard, dataBoard);
 
@@ -167,24 +167,24 @@ void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
             puts("Veuillez choisir les coordonnées d'une case qui n'a pas encore été retournée '?'");
             // choix ligne puis colonne par le joueur
             printf("Choisir une ligne : ");
-            choosenRow = getUserChoice(1,ROW_NB);
+            chosenRow = getUserChoice(1,ROW_NB);
             printf("Choisir une colonne : ");
-            choosenColumn = getUserChoice(1,COLUMN_NB);
+            chosenColumn = getUserChoice(1,COLUMN_NB);
 
             // on décrémente pour correspondre aux index du tableau 2D
-            --choosenRow;
-            --choosenColumn;
-       } while (wasCellAlreadyVisible(gameBoard, choosenRow, choosenColumn));
+            --chosenRow;
+            --chosenColumn;
+       } while (wasCellAlreadyVisible(gameBoard, chosenRow, chosenColumn));
        // si la ligne était déjà connue, le joueur doit faire une nouvelle sélection de coordonnées
        
         // on rend la case du jeu visible
-        gameBoard[choosenRow][choosenColumn] = true;
+        gameBoard[chosenRow][chosenColumn] = true;
 
         putc('\n', stdout);
         printGameBoard(gameBoard, dataBoard);
 
         // si bombe révélée => perdu
-        if (dataBoard[choosenRow][choosenColumn])
+        if (dataBoard[chosenRow][chosenColumn])
         {
             puts("    !!! BOUM !!!");
             puts("   Vous avez perdu.\n");
@@ -207,7 +207,7 @@ void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
 // 2) jeu en lui-même
 void gameAgainstComputer(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB])
 {
-    assert (gameBoard != NULL || dataBoard != NULL);
+    assert (gameBoard != NULL && dataBoard != NULL);
 
     setRandomBombInDataBoard(dataBoard);
 
@@ -224,8 +224,8 @@ void gameAgainstComputer(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB
 // 2) jeu en lui-même pour l'autre joueur
 void gameAgainstHuman(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB])
 {
-    assert (gameBoard != NULL || dataBoard != NULL);
-    
+    assert (gameBoard != NULL && dataBoard != NULL);
+
     setManualBombInDataBoard(dataBoard);
     
 #ifdef DEBUG
