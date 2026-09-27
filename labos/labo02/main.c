@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <assert.h> // fct d'assertion
 #include <time.h> // generer nbre aléatoire
 
 
@@ -9,7 +8,6 @@
     #include <windows.h>
 #endif
 
-#include "compat.h"
 #include "display.h"
 #include "gameplay.h"
 #include "constants.h"

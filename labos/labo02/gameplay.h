@@ -11,12 +11,6 @@ void setRandomBombInDataBoard(bool dataBoard[][COLUMN_NB]);
 
 void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB]);
 
-bool wasCellAlreadyVisible(const bool gameBoard[][COLUMN_NB], unsigned short int row, unsigned short int column);
-
-bool hasPlayerWon(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB]);
-
-void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB]);
-
 void gameAgainstComputer(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB]);
 
 void gameAgainstHuman(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB]);

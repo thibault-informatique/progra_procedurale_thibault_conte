@@ -121,7 +121,7 @@ void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
         }  
     }
 
-    printf("%hu bombes ont été  enterrées avec succès !\n\n", nbOfBombs);
+    printf("%hu bombes ont été enterrées avec succès !\n\n", nbOfBombs);
 }
 
 // fct qui vérifie si la case était déjà visible par le joueur
@@ -211,7 +211,7 @@ void gameAgainstComputer(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB
 
     setRandomBombInDataBoard(dataBoard);
 
-#ifdef DEBUG
+#if DEBUG
     printDataBoard(dataBoard);
 #endif
 
@@ -228,7 +228,7 @@ void gameAgainstHuman(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB])
 
     setManualBombInDataBoard(dataBoard);
     
-#ifdef DEBUG
+#if DEBUG
     printDataBoard(dataBoard);
 #endif
     letsPlay(gameBoard, dataBoard);

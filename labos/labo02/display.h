@@ -5,7 +5,7 @@
 
 #include "constants.h"
 
-void printMenu();
+void printMenu(void);
 
 void printGameBoard(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB]);
 
