@@ -5,14 +5,16 @@
 
 #include "gameplay.h"
 #include "display.h"
+#include "compat.h"
 
 void initBoard(bool board[][COLUMN_NB])
 {
-     for(unsigned short int row = 0; row < ROW_NB; row++)
+    assert(board != NULL);
+
+    for(unsigned short int row = 0; row < ROW_NB; row++)
         for (unsigned short int col = 0; col < COLUMN_NB; col++)
             board[row][col] = false;
 }
-// affichage menu principal
 
 // fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
 unsigned short int getUserChoice(unsigned short int minValue, unsigned short int maxValue)
@@ -49,9 +51,11 @@ unsigned short int getUserChoice(unsigned short int minValue, unsigned short int
     return userChoice;
 }
 
-
+// placement aléatoire de bombes mode contre l'ordinateur ; nombre choisi par le joueur
 void setRandomBombInDataBoard(bool dataBoard[][COLUMN_NB])
 {  
+    assert(dataBoard != NULL);
+
     printf("Combien de mines voulez-vous placer dans le jeu [1-%d]?\n", MAX_BOMBS);
     unsigned short int nbOfBombs = getUserChoice(1,MAX_BOMBS);
 
@@ -76,8 +80,11 @@ void setRandomBombInDataBoard(bool dataBoard[][COLUMN_NB])
     }
 }
 
+// placement de bombes via le joueur 2 pour le joueur 1 (mode contre humain)
 void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
 {
+    assert (dataBoard != NULL);
+
     unsigned short int nbOfBombs = 0;
     unsigned short int row = 0;
     unsigned short int column = 0;
@@ -117,13 +124,17 @@ void setManualBombInDataBoard(bool dataBoard[][COLUMN_NB])
     printf("%hu bombes ont été  enterrées avec succès !\n\n", nbOfBombs);
 }
 
+// fct qui vérifie si la case était déjà visible par le joueur
 bool wasCellAlreadyVisible(const bool gameBoard[][COLUMN_NB], unsigned short int row, unsigned short int column)
 {
-   return gameBoard[row][column];
+    assert(gameBoard != NULL);
+    return gameBoard[row][column];
 }
 
 bool hasPlayerWon(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
 {  
+    assert (gameBoard != NULL || dataBoard != NULL);
+
     for(unsigned short int row = 0; row < ROW_NB; row++)
         for (unsigned short int col = 0; col < COLUMN_NB; col++)
         {
@@ -136,8 +147,11 @@ bool hasPlayerWon(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLU
     return true;
 }
 
+// les préparatifs finis, le joueur peut enfin jouer
 void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
 {
+    assert (gameBoard != NULL || dataBoard != NULL);
+
     bool isGameActive;
     unsigned short int choosenRow = 0;
     unsigned short int choosenColumn = 0;
@@ -187,8 +201,14 @@ void letsPlay(bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
     }
 }
 
+// ***cas joueur contre ordinateur ***
+
+// 1) placement bombes aléatoirement
+// 2) jeu en lui-même
 void gameAgainstComputer(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB])
 {
+    assert (gameBoard != NULL || dataBoard != NULL);
+
     setRandomBombInDataBoard(dataBoard);
 
 #ifdef DEBUG
@@ -198,8 +218,14 @@ void gameAgainstComputer(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB
     letsPlay(gameBoard, dataBoard);  
 }
 
+// ***cas joueur contre joueur***
+
+// 1) placement bombes par un des joueurs
+// 2) jeu en lui-même pour l'autre joueur
 void gameAgainstHuman(bool gameBoard[][COLUMN_NB], bool dataBoard[][COLUMN_NB])
 {
+    assert (gameBoard != NULL || dataBoard != NULL);
+    
     setManualBombInDataBoard(dataBoard);
     
 #ifdef DEBUG

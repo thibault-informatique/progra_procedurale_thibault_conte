@@ -10,7 +10,7 @@ void printMenu()
     puts("2. Jouer contre un humain\n");    
     puts("0. Quitter le programme");
 }
-// gestion de l'affichage, de ce qui sera montré au joueur
+// gestion de l'affichage de la grille de jeu, ce qui sera montré au joueur
 void printGameBoard(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][COLUMN_NB])
 {
     assert(gameBoard != NULL);
@@ -46,10 +46,10 @@ void printGameBoard(const bool gameBoard[][COLUMN_NB], const bool dataBoard[][CO
     puts("     - - - - - -");
 }
 
-// pr test dev
+// affichage grille des bombes placées pr test dev
 void printDataBoard(const bool dataBoard[][COLUMN_NB])
 {
-      assert(dataBoard != NULL);
+    assert(dataBoard != NULL);
     // en-tête colonnes
     puts("     1 2 3 4 5 6");
     puts("     - - - - - - ");
