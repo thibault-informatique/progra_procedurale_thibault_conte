@@ -24,9 +24,8 @@ void displayMainPage(void)
     printf_s(CYAN "----------------------------------------------------\n" RESET);
     printf_s(DIM "  Progra Procédurale | Décembre 26 | Thibault Conte\n\n" RESET); 
     printf_s(BOLD "  [ Menu ]\n" RESET);
-    printf_s("   1) Interfaces        2) Scan LAN\n");
-    printf_s("   3) Ping              4) Connexions\n");
-    printf_s("   5) Pare-feu          6) Stats\n");
+    printf_s("   1) Gestion des équipements      2) Recherche d'un élément\n");
+    printf_s("   3) Calculs réseau               4) Stats \n");
     printf_s("\n   0) Quitter\n");
 
       /* Banniere Network (figlet standard) - conservee pour usage futur
@@ -34,7 +33,7 @@ void displayMainPage(void)
         "  _   _            _                                   _\n"
         " | \\ | |    ___   | |_   __      __    ___     _ __   | | __\n"
         " |  \\| |   / _ \\  | __|  \\ \\ /\\ / /   / _ \\   | '__|  | |/ /\n"
-        " | |\\  |  |  __/  | |_    \\ V  V /   | (_) |  | |     |   <\n"
+        " | |\\  |  |  __/  | |_    \\ V  V /   | (_) |  | |     |   <
         " |_| \\_|   \\___|   \\__|    \\_/\\_/     \\___/   |_|     |_|\\_\\\n" RESET);
     */
 }
