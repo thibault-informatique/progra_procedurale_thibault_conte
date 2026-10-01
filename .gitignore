@@ -41,5 +41,11 @@ Thumbs.db
 *.gdb
 *.valgrind
 core
+
+#fichiers excécutables
 prog
 *.o
+
+#fichiers compressés
+.zip
+.tar
