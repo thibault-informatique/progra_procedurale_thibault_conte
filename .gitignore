@@ -43,8 +43,12 @@ Thumbs.db
 core
 
 #fichiers excécutables
+prog.exe
 prog
+
+#fichiers objets
 *.o
+*.obj
 
 #fichiers compressés
 *.zip
