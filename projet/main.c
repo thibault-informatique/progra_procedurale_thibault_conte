@@ -6,6 +6,7 @@
 #endif
 
 #include "display.h"
+#include "device.h"
 
 int main (void)
 {
@@ -16,5 +17,6 @@ int main (void)
 
     displayMainPage();
     
+    Device parc[3]
     return EXIT_SUCCESS;
 }
