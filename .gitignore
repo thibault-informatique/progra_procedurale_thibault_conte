@@ -47,5 +47,5 @@ prog
 *.o
 
 #fichiers compressés
-.zip
-.tar
+*.zip
+*.tar
