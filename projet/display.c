@@ -79,7 +79,7 @@ static void printDeviceType(Device_type type)
             break;
 
         default:
-            puts("Erreur switch case printDeviceType");
+            fprintf(stderr,"Erreur switch case printDeviceType");
             break;
         
     }
@@ -116,16 +116,31 @@ static void printDeviceStatus(Device_status status)
     }
 }
 
-static void printIpv4(Ipv4_t ip);
+// conversion ipv4 32 bits en 
+// TODO à comprendre et relire
+// >> fait descendre les bits de gauche ; & 0xFF ne garde que les 8 derniers
+// & masque qui garde les 8 bits de droite, les autres sont mis à 0
+static void printIpv4(Ipv4_t ip)
+{
+    uint32_t a = ip.address;
+    printf("%u.%u.%u.%u",
+           (a >> 24) & 0xFFu,   // 1er octet
+           (a >> 16) & 0xFFu,   // 2e
+           (a >>  8) & 0xFFu,   // 3e
+           a & 0xFFu);          // 4e
+    putc('\n', stdout);
+}
 
 void displayDevice(Device device)
 {    
-    printf("Nom: %s\n", device.name);
-    printf("Type: ");
+    printf("\nNom:     %s\n", device.name);
+    printf("Type:    ");
     printDeviceType(device.type);
-    printf("Adresse IPv4 : %u\n", device.ip.address);
-    printf("Masque sous réseau: %u\n", device.subnet_mask.address);
-    printf("Statut: ");
+    printf("Adresse: ");
+    printIpv4(device.ip);
+    printf("Masque:  ");
+    printIpv4(device.subnet_mask);
+    printf("Statut:  ");
     printDeviceStatus(device.status);
     putc('\n', stdout);
 }

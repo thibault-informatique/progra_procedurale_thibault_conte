@@ -5,7 +5,9 @@
 
 #include "device.h"
 
-bool isValidIp(ipv4_t ip);
-bool isValidMask(ipv4_t subnet_mask);
+bool isValidIp(Ipv4_t ip);
+bool isValidMask(Ipv4_t subnet_mask);
+
+bool isPrivateIp(Ipv4_t ip);
 
 #endif

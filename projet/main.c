@@ -18,15 +18,12 @@ int main (void)
     #endif
 
     displayMainPage();
-    
-    Device park[NB_OF_DEVICES];
-    if (initPark(park, NB_OF_DEVICES) == false) 
-    {
-        fprintf(stderr, "Erreur initialisation parc\n");
-        return EXIT_FAILURE;
-    }
 
-    
+    // TODO fct pour convertir de IP 4 Bytes vers binaires et vice versa
+    Device test = {{"Routeur maison"}, ROUTER, {.address = 3232235777u}, {.address = 4294967040u}, STATUS_ONLINE};
+
+    displayDevice(test);
+
     
     return EXIT_SUCCESS;
 }

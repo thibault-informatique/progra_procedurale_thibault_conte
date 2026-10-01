@@ -58,5 +58,13 @@ Device* readDevice(Device park[], int count, const char name[])
     return NULL;
 }
 
-bool updateDevice(Device* device);
-bool deleteDevice(Device* device);
+bool updateDevice(Device* device)
+{
+    // TODO fct updateDevice
+    return true;
+}
+bool deleteDevice(Device* device)
+{
+    // TODO fct deleteDevice
+    return true;
+}
