@@ -13,16 +13,16 @@
 
     // utilité d'avoir un champ adresse valide dans la struct ipv4_t?  si récup adresses "sales" d'un inventaire 
     // ou si machine découverte sur le réseau dont l'adresse n'a pu être vérifiée
-    typedef struct ipv4_t 
+    typedef struct 
     {
         uint32_t address; // IPv4 (32bits) unsigned int qui fait exactement 32 bits       
-    } ipv4_t;
+    } Ipv4_t;
 
     // couple (ip, masque) à envisager? 
-    typedef struct ipv6_t 
+    typedef struct 
     {
         uint8_t bytes[16]; // IPv6 (128bits) soit 16 * 8 bits
-    } ipv6_t;
+    } Ipv6_t;
 
 
 
@@ -32,7 +32,7 @@
 
     /*** ENUM ET STRUCT ***/
 
-    typedef enum device_type 
+    typedef enum 
     {
         ROUTER,
         SWITCH,
@@ -41,40 +41,47 @@
         WORKSTATION,
         PRINTER,
         ACCESS_POINT,
-        OTHER
-    } device_type;
-
-    typedef enum device_status 
-    {
-        ONLINE,
-        OFFLINE,
-        MAINTENANCE,
-        FAILED,
+        OTHER,
         UNKNOWN
-        
-    } device_status;
+    } Device_type;
 
-    typedef struct Device 
+    typedef enum 
+    {
+        STATUS_ONLINE,
+        STATUS_OFFLINE,
+        STATUS_MAINTENANCE,
+        STATUS_FAILED,
+        STATUS_UNKNOWN
+        
+    } Device_status;
+
+    typedef struct 
     {
         char name[50];
-        enum device_type type;
-        ipv4_t ip;
-        ipv4_t subnet_mask;
-        enum device_status status;
+        Device_type type;
+        Ipv4_t ip;
+        Ipv4_t subnet_mask;
+        Device_status status;
 
     } Device;
 
+    bool initPark(Device Park[], int tabLength);
+ 
     /*** CRUD ***/
 
-    enum return_crud 
+    typedef enum 
     {
         SUCCES,
-        ERR_STR_LENGTH
-    };
+        ERR_STR_LENGTH,
+        ERR_INVALID_IP,
+        ERR_INVALID_MASK
+    } Return_crud;
+
     // conseil de créer le device puis l'ajouter afin de diminuer le nbre de para de la fct
     // TODO après cours double **
-    enum return_crud addDevice(Device *device, char name[], device_type type, ipv4_t ip, ipv4_t subnet_mask, device_status status);
-    Device* readDevice(Device* device);
+    Return_crud addDevice(Device *device, const char name[], Device_type type, Ipv4_t ip, Ipv4_t subnet_mask, Device_status status);
+    
+    Device* readDevice(Device park[], int count, const char name[]);
     bool updateDevice(Device* device);
     bool deleteDevice(Device* device);
 

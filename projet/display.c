@@ -38,3 +38,103 @@ void displayMainPage(void)
     */
 }
 
+static void printDeviceType(Device_type type)
+{
+    switch(type)
+    {
+        case ROUTER:
+            puts("ROUTEUR");
+            break;
+
+        case SWITCH:
+            puts("SWITCH");
+            break;
+        
+        case FIREWALL:
+            puts("FIREWALL");
+            break;
+
+        case SERVER :
+            puts("SERVEUR");
+            break;
+
+        case WORKSTATION:
+            puts("PC");
+            break;
+
+        case PRINTER :
+            puts("IMPRIMANTE");
+            break;
+
+        case ACCESS_POINT :
+            puts("POINT D'ACCES");
+            break;
+
+        case OTHER :
+            puts("AUTRE");
+            break;
+
+        case UNKNOWN :
+            puts("INCONNU");
+            break;
+
+        default:
+            puts("Erreur switch case printDeviceType");
+            break;
+        
+    }
+}
+
+static void printDeviceStatus(Device_status status)
+{
+    switch(status)
+    {
+        case STATUS_ONLINE :
+            puts("en ligne");
+            break;
+
+        case STATUS_OFFLINE :
+            puts("hors ligne");
+            break;
+
+        case STATUS_MAINTENANCE :
+            puts("en maintenance");
+            break;
+
+        case STATUS_FAILED :
+            puts("erreur");
+            break;
+
+        case STATUS_UNKNOWN :
+            puts("inconnu");
+            break;
+
+        default:
+            fprintf(stderr, "Erreur switch case printDeviceStatus");
+            break;
+
+    }
+}
+
+static void printIpv4(Ipv4_t ip);
+
+void displayDevice(Device device)
+{    
+    printf("Nom: %s\n", device.name);
+    printf("Type: ");
+    printDeviceType(device.type);
+    printf("Adresse IPv4 : %u\n", device.ip.address);
+    printf("Masque sous réseau: %u\n", device.subnet_mask.address);
+    printf("Statut: ");
+    printDeviceStatus(device.status);
+    putc('\n', stdout);
+}
+
+void displayPark(Device park[], int tabLength)
+{
+    for (int i = 0; i< tabLength; i++)
+    {
+        printf(BOLD "Equipement n°%d\n" RESET, i + 1);
+        displayDevice(park[i]);
+    }
+}

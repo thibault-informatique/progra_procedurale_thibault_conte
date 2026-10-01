@@ -6,8 +6,20 @@
 #include "device.h"
 #include "network.h"
 
+bool initPark(Device park[], int tabLength)
+{
+    assert (park != NULL && tabLength <= 0);
+ 
+    for (int i = 0 ; i < tabLength; i++)
+    {
+        park[i] = (Device){0};  
+    }
 
-enum return_crud  addDevice(Device *device, const char name[], device_type type, ipv4_t ip, ipv4_t subnet_mask, device_status status)
+    return true;
+}
+
+
+Return_crud addDevice(Device *device, const char name[], Device_type type, Ipv4_t ip, Ipv4_t subnet_mask, Device_status status)
 {
     // gestion erreurs dev
     assert (device != NULL && name != NULL);
@@ -33,6 +45,18 @@ enum return_crud  addDevice(Device *device, const char name[], device_type type,
     return SUCCES;
 }
 
-Device* readDevice(Device* device);
+// si device trouvé => retourne un pointeur sur le device
+// NULL sinon
+Device* readDevice(Device park[], int count, const char name[])
+{
+    for (int i = 0; i < count; i++)
+    {
+        if (strcmp(park[i].name, name) == 0)
+            return &park[i];
+    }
+
+    return NULL;
+}
+
 bool updateDevice(Device* device);
 bool deleteDevice(Device* device);
