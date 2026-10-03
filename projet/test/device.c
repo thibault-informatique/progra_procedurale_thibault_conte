@@ -8,7 +8,7 @@
 
 bool initPark(Device park[], int tabLength)
 {
-    assert (park != NULL && tabLength <= 0);
+    assert (park != NULL && tabLength > 0);
  
     for (int i = 0 ; i < tabLength; i++)
     {
@@ -49,6 +49,8 @@ Return_crud createDevice(Device *device, const char name[], Device_type type, Ip
 // NULL sinon
 Device* readDevice(Device park[], int count, const char name[])
 {
+    assert (park != NULL && name != NULL);
+
     for (int i = 0; i < count; i++)
     {
         if (strcmp(park[i].name, name) == 0)
@@ -68,3 +70,5 @@ bool deleteDevice(Device* device)
     // TODO fct deleteDevice
     return true;
 }
+
+ bool addDeviceToPark(Device park[], Device *device);

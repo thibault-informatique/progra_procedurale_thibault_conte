@@ -17,6 +17,7 @@ bin/
 obj/
 Debug/
 Release/
+test/
 
 # Fichiers de configuration d'IDE
 .vscode/

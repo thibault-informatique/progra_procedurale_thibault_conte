@@ -65,8 +65,27 @@
 
     } Device;
 
+    Return_crud createDevice(Device *device, const char name[], Device_type type, Ipv4_t ip, Ipv4_t subnet_mask, Device_status status);
+
+
+
+
+
+  
+
+    /****************************
+    ******   PARC RESEAU   ******
+    *****************************/
+
+    typedef struct
+    {
+        Device *park;
+       unsigned int nbOfDevice;        
+
+    } NewtorkPark;
+    
     bool initPark(Device Park[], int tabLength);
- 
+    
     /*** CRUD ***/
 
     typedef enum 
@@ -77,16 +96,15 @@
         ERR_INVALID_MASK
     } Return_crud;
 
-    // createDevice crée le device
-    Return_crud createDevice(Device *device, const char name[], Device_type type, Ipv4_t ip, Ipv4_t subnet_mask, Device_status status);
-    //addDevice l'ajoute dans le parc
-
+    
+    bool addDeviceToPark(Device park[], Device *device);   
     // read cherche un device dans le parc / le fichier display gère l'affichage de ce device
     // NULL si pas trouvé, pointeur sur le device si trouvé
     Device* readDevice(Device *device, int count, const char name[]);
-    
+
     bool updateDevice(Device* device);
     bool deleteDevice(Device* device);
 
+  
 
 #endif

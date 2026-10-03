@@ -116,19 +116,16 @@ static void printDeviceStatus(Device_status status)
     }
 }
 
-// conversion ipv4 32 bits en 
-// TODO à comprendre et relire
-// >> fait descendre les bits de gauche ; & 0xFF ne garde que les 8 derniers
-// & masque qui garde les 8 bits de droite, les autres sont mis à 0
-static void printIpv4(Ipv4_t ip)
+// conversion ipv4 32 bits ou Hexxa en base 10, human readable
+// A revoir les conditions binaires
+// >> fait descendre les bits de gauche vers la D; & 0xFF (mask) ne garde que les 8 derniers bits
+void printIpv4(Ipv4_t ip)
 {
-    uint32_t a = ip.address;
-    printf("%u.%u.%u.%u",
-           (a >> 24) & 0xFFu,   // 1er octet
-           (a >> 16) & 0xFFu,   // 2e
-           (a >>  8) & 0xFFu,   // 3e
-           a & 0xFFu);          // 4e
-    putc('\n', stdout);
+    printf("%u.%u.%u.%u\n", 
+          (ip.address >> 24),
+          (ip.address >> 16) & 0xFFu,
+          (ip.address >> 8)  & 0xFFu,
+           ip.address        & 0xFFu);
 }
 
 void displayDevice(Device device)
