@@ -9,7 +9,11 @@ static void printDeviceType(Device_type type);
 
 static void printDeviceStatus(Device_status status);
 
-void printIpv4(Ipv4_t ip);
+void askConfirmation();
+
+void printDecimalIPv4(uint32_t address);
+
+void printHexaIPv4(uint32_t address);
 
 void displayDevice(Device device);
 

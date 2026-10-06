@@ -116,16 +116,31 @@ static void printDeviceStatus(Device_status status)
     }
 }
 
+void askConfirmation()
+{
+    printf("Voulez-vous valider ? [o]/[n]: ");
+}
+
 // conversion ipv4 32 bits ou Hexxa en base 10, human readable
 // A revoir les conditions binaires
 // >> fait descendre les bits de gauche vers la D; & 0xFF (mask) ne garde que les 8 derniers bits
-void printIpv4(Ipv4_t ip)
+void printDecimalIpv4(uint32_t address)
 {
     printf("%u.%u.%u.%u\n", 
-          (ip.address >> 24),
-          (ip.address >> 16) & 0xFFu,
-          (ip.address >> 8)  & 0xFFu,
-           ip.address        & 0xFFu);
+          (address >> 24) & 0xFFu,
+          (address >> 16) & 0xFFu,
+          (address >> 8)  & 0xFFu,
+           address        & 0xFFu);
+}
+
+void printHexaIPv4(uint32_t address)
+{
+    printf("%#x", address);
+    printf("%02X.%02X.%02X.%02X\n",
+          (address >> 24) & 0xFFu,
+          (address >> 16) & 0xFFu,
+          (address >> 8)  & 0xFFu,
+           address        & 0xFFu);
 }
 
 void displayDevice(Device device)
@@ -134,9 +149,9 @@ void displayDevice(Device device)
     printf("Type:    ");
     printDeviceType(device.type);
     printf("Adresse: ");
-    printIpv4(device.ip);
+    printDecimalIpv4(device.ip.address);
     printf("Masque:  ");
-    printIpv4(device.subnet_mask);
+    printDecimalIpv4(device.subnet_mask.address);
     printf("Statut:  ");
     printDeviceStatus(device.status);
     putc('\n', stdout);
