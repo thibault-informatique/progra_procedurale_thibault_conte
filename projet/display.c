@@ -126,7 +126,7 @@ void askConfirmation()
 // >> fait descendre les bits de gauche vers la D; & 0xFF (mask) ne garde que les 8 derniers bits
 void printDecimalIpv4(uint32_t address)
 {
-    printf("%u.%u.%u.%u\n", 
+    printf("Adresse IPv4: %u.%u.%u.%u\n", 
           (address >> 24) & 0xFFu,
           (address >> 16) & 0xFFu,
           (address >> 8)  & 0xFFu,
@@ -135,12 +135,14 @@ void printDecimalIpv4(uint32_t address)
 
 void printHexaIPv4(uint32_t address)
 {
-    printf("%#x", address);
-    printf("%02X.%02X.%02X.%02X\n",
+    printf("Adresse IPv4: %02X.%02X.%02X.%02X\n",
           (address >> 24) & 0xFFu,
           (address >> 16) & 0xFFu,
           (address >> 8)  & 0xFFu,
            address        & 0xFFu);
+
+    // variante
+    // printf("%#x", address);
 }
 
 void displayDevice(Device device)

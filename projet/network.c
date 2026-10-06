@@ -6,6 +6,7 @@
 #include "network.h"
 #include "compat.h"
 #include "display.h"
+#include "constants.h"
 
 // TODO isValidIp, isValidMask, isPrivateIp 
 bool isValidIp(Ipv4_t ip)
@@ -32,6 +33,7 @@ bool confirmation()
     askConfirmation();
 
     int answer = '\0';
+    int c = '\0';
 
     do
     {
@@ -46,9 +48,12 @@ bool confirmation()
     } while (answer != 'o' && answer != 'n');
 
     // purger buffer
-    while (answer != '\n' && answer != EOF)
-        answer = getchar();
+    while ((c = getchar()) != '\n' && c != EOF);
 
+#if DEBUG
+    printf(" char answer vaut dans confirmation : %c\n", answer);
+    printf("bool answer dans confirmation : %d\n", answer == 'o');
+#endif
     return answer == 'o';
 }
 
@@ -68,7 +73,7 @@ uint32_t setHexaIPv4Address()
 
     do
     {
-        printf("Encodez une adresse IPv4 en Hexa (ex: C0A80101):\n");
+        printf("\nEncodez une adresse IPv4 en Hexa (ex: C0A80101):\n");
         printf("Les 0 de poids fort peuvent être omis (ex: FF): ");
 
         // étape 1: lecture donnée et vérif stdin ouvert
@@ -100,16 +105,20 @@ uint32_t setHexaIPv4Address()
             address = (uint32_t)strtoul(buffer, NULL, 16);     
             isWrong = false;
 
-            printf("Adresse entrée: ");
             printHexaIPv4(address);
-            if( (userApproval = confirmation()) == false)
+            userApproval = confirmation();
+
+            #if DEBUG
+            printf("Valeur debug userApproval dans setHexaIPv4 : %d\n", userApproval);
+            #endif
+            if(!userApproval)
                 puts("Veuillez recommencer");
         }       
             
         else
         {
             isWrong = true;
-            fprintf(stderr, "Erreur: 1 à 8 chiffres/lettres attendus pour l'adresse en hexa\n");
+            fprintf(stderr, "Erreur: 1 à 8 chiffres[0-9] et lettres [a-f/A-F] attendus pour l'adresse en hexa\n");
         }   
 
     } while (isWrong || !userApproval);   
