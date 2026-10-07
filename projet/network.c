@@ -74,7 +74,7 @@ uint32_t setHexaIPv4Address()
     do
     {
         printf("\nEncodez une adresse IPv4 en Hexa (ex: C0A80101):\n");
-        printf("Les 0 de poids fort peuvent être omis (ex: FF): ");
+        printf("Les 0 de poids fort peuvent être omis (ex: FF pour O0...FF): ");
 
         // étape 1: lecture donnée et vérif stdin ouvert
         if (fgets(buffer, sizeof(buffer), stdin) == NULL)
@@ -108,9 +108,9 @@ uint32_t setHexaIPv4Address()
             printHexaIPv4(address);
             userApproval = confirmation();
 
-            #if DEBUG
-            printf("Valeur debug userApproval dans setHexaIPv4 : %d\n", userApproval);
-            #endif
+#if DEBUG
+    printf("Valeur debug userApproval dans setHexaIPv4 : %d\n", userApproval);
+#endif
             if(!userApproval)
                 puts("Veuillez recommencer");
         }       
