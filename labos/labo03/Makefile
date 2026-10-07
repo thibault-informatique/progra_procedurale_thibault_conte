@@ -6,8 +6,8 @@ EXEC = prog
 all: $(EXEC) 
  
 # Éditon de liens 
-$(EXEC): main.o produit.o 
-	$(CC) $(CFLAGS) main.o produit.o -o $(EXEC) 
+$(EXEC): main.o produit.o inventaire.o
+	$(CC) $(CFLAGS) main.o produit.o inventaire.o -o $(EXEC) 
  
 # Compilaton de main.c (dépend de main.c et du header produit.h) 
 main.o: main.c produit.h 
@@ -16,6 +16,10 @@ main.o: main.c produit.h
 # Compilaton de produit.c (dépend de produit.c et produit.h) 
 produit.o: produit.c produit.h 
 	$(CC) $(CFLAGS) -c produit.c 
+
+# Compilaton de produit.c (dépend de produit.c et produit.h) 
+inventaire.o: inventaire.c inventaire.h 
+	$(CC) $(CFLAGS) -c inventaire.c 
  
 # Netoyage 
 clean: 

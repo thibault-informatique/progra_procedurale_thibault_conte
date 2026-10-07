@@ -5,8 +5,8 @@
     #include <windows.h>
 #endif
 
-//#include "inventaire.h"
 #include "produit.h"
+#include "inventaire.h"
 
 int main(void)
 {
@@ -15,10 +15,22 @@ int main(void)
         SetConsoleOutputCP(CP_UTF8);
     #endif
 
-    Produit test = {"bananes", 3.5, 10};
+    Produit banane = {"banane", 1.5f, 10};
+    Produit pomme = {"pomme", 1.0f, 8};
+    Produit poire = {"poire", 1.25f, 4};
 
-    afficherProduit(test);
+    Inventaire monInventaire = {0};
+    monInventaire= ajouterProduit(monInventaire, banane);
+    monInventaire= ajouterProduit(monInventaire, pomme);
+    monInventaire= ajouterProduit(monInventaire, poire);
 
+    puts("\n\n*** INVENTAIRE ***\n\n");
+    printf("L'inventaire contient %u produits pour une valeur de %.2f€\n\n", 
+            monInventaire.nbreProduitStocke, 
+            calculerValeurStock(monInventaire));
+
+    for (unsigned int i = 0; i < monInventaire.nbreProduitStocke; i++)
+        afficherProduit(monInventaire.inventaire[i]);
 
     return 0;
 }
