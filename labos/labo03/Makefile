@@ -7,20 +7,24 @@ all: $(EXEC)
  
 # Éditon de liens 
 $(EXEC): main.o produit.o inventaire.o
-	$(CC) $(CFLAGS) main.o produit.o inventaire.o -o $(EXEC) 
+	$(CC) $(CFLAGS) -o $(EXEC) main.o produit.o inventaire.o 
  
-# Compilaton de main.c (dépend de main.c et du header produit.h) 
-main.o: main.c produit.h 
-	$(CC) $(CFLAGS) -c main.c 
- 
-# Compilaton de produit.c (dépend de produit.c et produit.h) 
-produit.o: produit.c produit.h 
-	$(CC) $(CFLAGS) -c produit.c 
 
-# Compilaton de produit.c (dépend de produit.c et produit.h) 
-inventaire.o: inventaire.c inventaire.h 
-	$(CC) $(CFLAGS) -c inventaire.c 
- 
-# Netoyage 
+# Compilation des différents .c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# dépendances sur les headers
+main.o: produit.h inventaire.h
+produit.o: produit.h
+inventaire.o: inventaire.h produit.h
+
+# PHONY Dit que all/clean/run ne sont pas de vrais fichiers
+.PHONY: all clean run
+
+run: $(EXEC)
+	./$(EXEC)
+
+# Nettoyage 
 clean: 
 	rm -f *.o $(EXEC) 
