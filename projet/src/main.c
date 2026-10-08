@@ -5,9 +5,9 @@
     #include <windows.h>
 #endif
 
-#include "display.h"
-#include "device.h"
-#include "network.h"
+#include "../include/display.h"
+#include "../include/device.h"
+#include "../include/network.h"
 
 #define NB_OF_DEVICES 3
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "display.h"
-#include "compat.h"
+#include "../include/compat.h"
+#include "../include/device.h"
 
 #define GREEN "\033[32m"
 #define CYAN  "\033[36m"

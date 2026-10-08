@@ -54,3 +54,6 @@ prog
 #fichiers compressés
 *.zip
 *.tar
+
+#fichiers sensibles
+.env
