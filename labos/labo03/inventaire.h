@@ -6,7 +6,7 @@
 typedef struct
 {
     Produit inventaire[10];
-    unsigned int nbreProduitStocke;
+    int nbreProduitStocke;
 } Inventaire;
 
 Inventaire ajouterProduit(Inventaire inv, Produit p);
