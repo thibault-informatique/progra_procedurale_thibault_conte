@@ -8,6 +8,8 @@ Inventaire ajouterProduit(Inventaire inv, Produit p)
     Inventaire temp = inv;  
 
      // on ajoute le nouveau produit p dans l'inventaire temp s'il reste de la place
+     // sinon on retourne l'inventaire initial
+     
     if (inv.nbreProduitStocke < 10)
     {
          temp.inventaire[inv.nbreProduitStocke] = p;     

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 #ifdef _WIN32
     #include <windows.h>
@@ -7,6 +8,7 @@
 
 #include "produit.h"
 #include "inventaire.h"
+#include "utils.h"
 
 int main(void)
 {
@@ -14,6 +16,8 @@ int main(void)
     #ifdef _WIN32    
         SetConsoleOutputCP(CP_UTF8);
     #endif
+
+    logDebutProg(stdout);
 
     Produit banane = {"banane", 1.5f, 10};
     Produit pomme = {"pomme", 1.0f, 8};
@@ -31,6 +35,8 @@ int main(void)
 
     for (unsigned int i = 0; i < monInventaire.nbreProduitStocke; i++)
         afficherProduit(monInventaire.inventaire[i]);
+    
+    logFinProg(stdout);
 
     return 0;
 }
