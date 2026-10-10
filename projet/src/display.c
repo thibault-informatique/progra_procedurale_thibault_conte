@@ -117,7 +117,7 @@ static void printDeviceStatus(Device_status status)
     }
 }
 
-void askConfirmation()
+void printAskConfirmation()
 {
     printf("Voulez-vous valider ? [o]/[n]: ");
 }
@@ -127,7 +127,7 @@ void askConfirmation()
 // >> fait descendre les bits de gauche vers la D; & 0xFF (mask) ne garde que les 8 derniers bits
 void printDecimalIpv4(uint32_t address)
 {
-    printf("Adresse IPv4: %u.%u.%u.%u\n", 
+    printf("%u.%u.%u.%u\n", 
           (address >> 24) & 0xFFu,
           (address >> 16) & 0xFFu,
           (address >> 8)  & 0xFFu,
@@ -136,7 +136,7 @@ void printDecimalIpv4(uint32_t address)
 
 void printHexaIPv4(uint32_t address)
 {
-    printf("Adresse IPv4: %02X.%02X.%02X.%02X\n",
+    printf("%02X.%02X.%02X.%02X\n",
           (address >> 24) & 0xFFu,
           (address >> 16) & 0xFFu,
           (address >> 8)  & 0xFFu,
@@ -146,17 +146,17 @@ void printHexaIPv4(uint32_t address)
     // printf("%#x", address);
 }
 
-void displayDevice(Device device)
+void printDevice(const Device *device)
 {    
-    printf("\nNom:     %s\n", device.name);
+    printf("\nNom:     %s\n", device->name);
     printf("Type:    ");
-    printDeviceType(device.type);
+    printDeviceType(device->type);
     printf("Adresse: ");
-    printDecimalIpv4(device.ip.address);
+    printDecimalIpv4(device->ipAddress.address);
     printf("Masque:  ");
-    printDecimalIpv4(device.subnet_mask.address);
+    printDecimalIpv4(device->subnet_mask.address);
     printf("Statut:  ");
-    printDeviceStatus(device.status);
+    printDeviceStatus(device->status);
     putc('\n', stdout);
 }
 
@@ -165,6 +165,6 @@ void displayPark(Device park[], int tabLength)
     for (int i = 0; i< tabLength; i++)
     {
         printf(BOLD "Equipement n°%d\n" RESET, i + 1);
-        displayDevice(park[i]);
+        printDevice(&park[i]);
     }
 }

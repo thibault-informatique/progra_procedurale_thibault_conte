@@ -6,20 +6,8 @@
 #include "device.h"
 #include "network.h"
 
-bool initPark(Device park[], int tabLength)
-{
-    assert (park != NULL && tabLength <= 0);
- 
-    for (int i = 0 ; i < tabLength; i++)
-    {
-        park[i] = (Device){0};  
-    }
 
-    return true;
-}
-
-
-Return_crud addDevice(Device *device, const char name[], Device_type type, Ipv4_t ip, Ipv4_t subnet_mask, Device_status status)
+Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status)
 {
     // gestion erreurs dev
     assert (device != NULL && name != NULL);
@@ -32,22 +20,39 @@ Return_crud addDevice(Device *device, const char name[], Device_type type, Ipv4_
 
     if(!isValidIp(ip))
         return ERR_INVALID_IP;
-    if(!isValidMask(subnet_mask))
+    if(!isValidMask(mask))
         return ERR_INVALID_MASK;    
     
     // code d'init / ajout device
     strcpy(device->name, name);
     device->type = type;    
-    device->ip = ip;
-    device->subnet_mask = subnet_mask;
+    device->ipAddress = ip;
+    device->subnet_mask = mask;
     device->status = status;
 
     return SUCCES;
 }
 
-// si device trouvé => retourne un pointeur sur le device
-// NULL sinon
-Device* readDevice(Device park[], int count, const char name[])
+
+//  ***  PARK    ***
+
+bool initPark(Device park[], int tabLength)
+{
+    assert (park != NULL && tabLength > 0);
+ 
+    for (int i = 0 ; i < tabLength; i++)
+    {
+        park[i] = (Device){0};  
+    }
+
+    return true;
+}
+
+// CRUD
+
+
+
+Device* findDevice(Device park[], int count, const char name[])
 {
     for (int i = 0; i < count; i++)
     {
@@ -63,8 +68,10 @@ bool updateDevice(Device* device)
     // TODO fct updateDevice
     return true;
 }
-bool deleteDevice(Device* device)
+bool removeDevice(Device* device)
 {
     // TODO fct deleteDevice
     return true;
 }
+
+

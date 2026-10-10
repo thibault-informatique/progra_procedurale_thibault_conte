@@ -9,13 +9,13 @@ static void printDeviceType(Device_type type);
 
 static void printDeviceStatus(Device_status status);
 
-void askConfirmation();
+void printAskConfirmation();
 
 void printDecimalIPv4(uint32_t address);
 
 void printHexaIPv4(uint32_t address);
 
-void displayDevice(Device device);
+void printDevice(const Device *device);
 
 void displayPark(Device park[], int tabLength);
 
