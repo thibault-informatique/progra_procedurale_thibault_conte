@@ -21,12 +21,12 @@ void logHoroDate(FILE* flux)
 
 void logDebutProg(FILE* flux)
 {
-    fputs("\nDébut programme", flux);
+    fputs("\nDébut programme: ", flux);
     logHoroDate(flux);
 }
 
 void logFinProg(FILE* flux)
 {
-    fputs("\nFin du programme", flux);
+    fputs("\nFin du programme: ", flux);
     logHoroDate(flux);
 }
