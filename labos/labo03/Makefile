@@ -27,5 +27,6 @@ run: $(EXEC)
 	./$(EXEC)
 
 # Nettoyage 
-clean: 
-	rm -f *.o $(EXEC) 
+# Linux rm -f *.o $(EXEC) 
+clean:
+	del /f /q *.o $(EXEC)
