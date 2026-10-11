@@ -5,12 +5,12 @@
 
 #include "device.h"
 
-bool isValidIp(Ipv4_t ip);
-bool isValidMask(Ipv4_t subnet_mask);
+bool isValidIp(Ipv4 ip);
+bool isValidMask(Ipv4 subnet_mask);
 
-bool isPrivateIp(Ipv4_t ip);
+bool isPrivateIp(Ipv4 ip);
 
-bool confirmation();
+bool userConfirmInput();
 
 uint32_t setHexaIPv4Address();
 //uint32_t getDecimalIPv4Address();

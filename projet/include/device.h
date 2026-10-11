@@ -4,26 +4,33 @@
     #include <stdint.h> // types entiers à largeurs fixe (dont la taille en bits est garantie, indépendamment de la plateforme) / utile pour le réseau
     #include <stdbool.h>
 
+    #include "constants.h"
+
     /*************************
     ****** ADRESSES IPv4 *****
     **************************/
 
+    // TODO: fct calcul reseau + fct calcul prefixe "human readable" en /... 
+
     // créer une struct permet une sécurité de type => vérif compilateur possible lors des calculs réseaux
     // choix de valider les adresses par fct lors de la création/ modification des devices
 
-    // utilité d'avoir un champ adresse valide dans la struct ipv4_t?  si récup adresses "sales" d'un inventaire 
+    // utilité d'avoir un champ adresse valide dans la struct Ipv4?  si récup adresses "sales" d'un inventaire 
     // ou si machine découverte sur le réseau dont l'adresse n'a pu être vérifiée
+
+    // struct IPv4 en 32 bits imposés (uint32_t std)
+    // utilité : gateway, dns, broadcast,... (sans masque ou préfixe)
     typedef struct 
     {
         uint32_t address; // IPv4 (32bits) unsigned int qui fait exactement 32 bits       
-    } Ipv4_t;
-
-    // couple (ip, masque) à envisager? 
+    } Ipv4;    
+    
+    /*
     typedef struct 
     {
         uint8_t bytes[16]; // IPv6 (128bits) soit 16 * 8 bits
-    } Ipv6_t;
-
+    } Ipv6;
+    */
 
 
     /****************************
@@ -59,13 +66,21 @@
     {
         char name[50];
         Device_type type;
-        Ipv4_t ip;
-        Ipv4_t subnet_mask;
+        Ipv4 ipAddress;
+        Ipv4 subnet_mask;
         Device_status status;
 
     } Device;
 
-    bool initPark(Device Park[], int tabLength);
+    typedef struct 
+    {
+        Device device[PARK_LENGTH];
+        int nbOfDevice;
+        int maxParkLength;
+    } Park;
+    
+
+
  
     /*** CRUD ***/
 
@@ -77,13 +92,23 @@
         ERR_INVALID_MASK
     } Return_crud;
 
-    // conseil de créer le device puis l'ajouter afin de diminuer le nbre de para de la fct
     // TODO après cours double **
-    Return_crud addDevice(Device *device, const char name[], Device_type type, Ipv4_t ip, Ipv4_t subnet_mask, Device_status status);
-    
-    Device* readDevice(Device park[], int count, const char name[]);
-    bool updateDevice(Device* device);
-    bool deleteDevice(Device* device);
+    Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status);
 
+
+
+    /****************************
+    ******       PARK       *****
+    *****************************/
+    bool initPark(Device Park[], int tabLength);
+
+    // CRUD
+    Return_crud addDevice(Device park[], int count);
+    Device* findDevice(Device park[], int count, const char name[]);
+    bool updateDevice(Device* device);
+    bool removeDevice(Device* device);
+    // si device trouvé => retourne un pointeur sur le device | NULL sinon
+   
+   
 
 #endif

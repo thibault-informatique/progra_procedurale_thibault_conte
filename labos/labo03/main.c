@@ -10,6 +10,8 @@
 #include "inventaire.h"
 #include "utils.h"
 
+#define FLUX stdout
+
 int main(void)
 {
     // permet d'afficher les accents,... via encodage UTF8
@@ -17,7 +19,7 @@ int main(void)
         SetConsoleOutputCP(CP_UTF8);
     #endif
 
-    logDebutProg(stdout);
+    logDebutProg(FLUX);
 
     Produit banane = {"banane", 1.5f, 10};
     Produit pomme = {"pomme", 1.0f, 8};
@@ -36,7 +38,7 @@ int main(void)
     for (unsigned int i = 0; i < monInventaire.nbreProduitStocke; i++)
         afficherProduit(monInventaire.inventaire[i]);
     
-    logFinProg(stdout);
+    logFinProg(FLUX);
 
     return 0;
 }
