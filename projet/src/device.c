@@ -40,6 +40,7 @@ bool initPark(Device park[], int tabLength)
 {
     assert (park != NULL && tabLength > 0);
  
+    // plus court,  memset(park, 0, sizeof(Device) * (size_t)tabLength);
     for (int i = 0 ; i < tabLength; i++)
     {
         park[i] = (Device){0};  
