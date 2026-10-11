@@ -76,7 +76,6 @@
     {
         Device device[PARK_LENGTH];
         int nbOfDevice;
-        int maxParkLength;
     } Park;
     
 
@@ -89,7 +88,8 @@
         SUCCES,
         ERR_STR_LENGTH,
         ERR_INVALID_IP,
-        ERR_INVALID_MASK
+        ERR_INVALID_MASK,
+        ERR_PARK_FULL
     } Return_crud;
 
     // TODO après cours double **
@@ -100,10 +100,10 @@
     /****************************
     ******       PARK       *****
     *****************************/
-    bool initPark(Device Park[], int tabLength);
+    bool initPark(Park *park);
 
     // CRUD
-    Return_crud addDevice(Device park[], int count);
+    Return_crud addDevice(Park *park, Device *device);
     Device* findDevice(Device park[], int count, const char name[]);
     bool updateDevice(Device* device);
     bool removeDevice(Device* device);

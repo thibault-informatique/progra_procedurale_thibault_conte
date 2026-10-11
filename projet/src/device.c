@@ -36,21 +36,33 @@ Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4
 
 //  ***  PARK    ***
 
-bool initPark(Device park[], int tabLength)
+bool initPark(Park *park)
 {
-    assert (park != NULL && tabLength > 0);
- 
+    assert (park != NULL);    
+   
     // plus court,  memset(park, 0, sizeof(Device) * (size_t)tabLength);
-    for (int i = 0 ; i < tabLength; i++)
+    for (int i = 0 ; i < PARK_LENGTH; i++)
     {
-        park[i] = (Device){0};  
+        park->device[i] = (Device){0};  
     }
+
+    park->nbOfDevice = 0;
 
     return true;
 }
 
 // CRUD
 
+Return_crud addDevice(Park *park, Device *device)
+{
+    assert(park != NULL && device != NULL);
+
+    if (park->nbOfDevice == PARK_LENGTH)
+        return ERR_PARK_FULL;
+    
+    park->device[park->nbOfDevice++] = *device;    
+    return SUCCES;    
+}
 
 
 Device* findDevice(Device park[], int count, const char name[])
