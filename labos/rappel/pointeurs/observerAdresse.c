@@ -9,4 +9,6 @@ int main(void)
     printf("Valeur adresse nbre: %p\n", (void*)&nbre);
     printf("Valeur adresse contenue par le pointeur: %p\n", (void*)pNbre);
     printf("Valeur pointée: %d\n", *pNbre);
+
+    return 0;
 }
