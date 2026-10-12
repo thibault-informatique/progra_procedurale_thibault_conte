@@ -21,7 +21,7 @@ int main(void)
 
     logDebutProg(FLUX);
 
-    Produit banane = {"banane", 1.5f, 10};
+    /*Produit banane = {"banane", 1.5f, 10};
     Produit pomme = {"pomme", 1.0f, 8};
     Produit poire = {"poire", 1.25f, 4};
 
@@ -37,7 +37,20 @@ int main(void)
 
     for (unsigned int i = 0; i < monInventaire.nbreProduitStocke; i++)
         afficherProduit(monInventaire.inventaire[i]);
-    
+    */
+
+    Produit cahier = {"cahier", 2.5f, 20};
+    afficherProduit(cahier);
+
+    if (appliquerPromotion(&cahier, 0.5f) == false)
+    {
+        printf("Promotion non applicable\n");
+    }
+    else
+    {
+        afficherProduit(cahier);
+    }
+
     logFinProg(FLUX);
 
     return 0;

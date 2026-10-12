@@ -1,6 +1,8 @@
 #ifndef PRODUIT_H
 #define PRODUIT_H
 
+#include <stdbool.h>
+
 typedef struct 
 {
     char nom[50];
@@ -10,4 +12,6 @@ typedef struct
 
 
 void afficherProduit(Produit p);
+
+bool appliquerPromotion(Produit *produit, float reduction);
 #endif
