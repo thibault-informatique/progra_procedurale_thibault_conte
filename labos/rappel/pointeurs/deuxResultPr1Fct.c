@@ -14,7 +14,8 @@ int diviser(int a, int b, int *quotient, int *reste)
 
 int main(void)
 {
-    int quotient1 = 0, reste = 0;
+    // bonne pratique d'initialiser à -1 car dans ce cas de figure ne sera pas un résultat valable ou problèmatique
+    int quotient1 = -1, reste = -1;
 
     printf("Quotient et reste valent %d et %d avant le calcul.\n", quotient1, reste);
 
