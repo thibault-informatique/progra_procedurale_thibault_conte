@@ -2,6 +2,8 @@
 hello: hello.c
  gcc hello.c -o hello
 
+#hello est la cible(target) | hello.c est la dépendance | gcc ... représente la commande
+
 # Plus "complexe"
 
 ## Main target
@@ -15,10 +17,12 @@ hello.o: hello.c
 utils.o: utils.c
  gcc -c utils.c -o utils.o
 
+.PHONY: clean
 ## Phony target for cleaning build artifacts
 clean:
  rm -f hello hello.o utils.o
 
  
 
- le -c permet de compiler uniquement sans linkage => permet de compiler un ou plusieurs.c si nécessaire (et pas tous si une minorité a été modifiée)
+ # -c permet de compiler uniquement sans linkage => permet de compiler un ou plusieurs.c si nécessaire (et pas tous si une minorité a été modifiée)
+ # .PHONY précise à Makefile que ce les dépendances ne sont pas des fichiers
