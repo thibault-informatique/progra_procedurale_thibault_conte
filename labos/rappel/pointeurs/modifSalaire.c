@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 void augmenterSalaire(float *montant, float pourcentage)
 {
+    if(montant == NULL) 
+        return;
+
     *montant *= 1 + pourcentage;
 }
 

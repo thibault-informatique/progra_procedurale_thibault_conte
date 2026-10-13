@@ -2,12 +2,18 @@
 
 void doublerTableau(int *tab, int taille)
 {
+    if (tab == NULL)
+        return;
+
     for (int i = 0; i < taille; i++)
         *(tab + i) *= 2;
 }
 
 void printTab(int *tab, int taille)
 {
+    if (tab == NULL)
+        return;
+        
     int i;
 
     for (i = 0; i < taille - 1 ; i++)

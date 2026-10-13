@@ -2,7 +2,7 @@
 
 int diviser(int a, int b, int *quotient, int *reste)
 {
-    if(b == 0)
+    if(b == 0 || quotient == NULL || reste == NULL)
         return 0;
     
     *quotient = a / b;

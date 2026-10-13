@@ -2,6 +2,9 @@
 
 void ajouterBonus(int *score, int bonus)
 {
+    if(score == NULL)
+        return;
+        
     *score += bonus;
 }
 
