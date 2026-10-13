@@ -1,5 +1,5 @@
 # Simple Makefile example
-hello: hello.c
+hello: hello.o
  gcc hello.c -o hello
 
 #hello est la cible(target) | hello.c est la dépendance | gcc ... représente la commande
