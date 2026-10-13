@@ -17,6 +17,7 @@ bin/
 obj/
 Debug/
 Release/
+test/
 
 # Fichiers de configuration d'IDE
 .vscode/
@@ -41,5 +42,18 @@ Thumbs.db
 *.gdb
 *.valgrind
 core
+
+#fichiers excécutables
+prog.exe
 prog
+
+#fichiers objets
 *.o
+*.obj
+
+#fichiers compressés
+*.zip
+*.tar
+
+#fichiers sensibles
+.env
