@@ -32,7 +32,6 @@ vendor/
 # Fichiers de documentation générés (Doxygen, etc.)
 doc/
 *.dvi
-*.pdf
 
 # Fichiers de cache (macOS, Linux, etc.)
 .DS_Store
