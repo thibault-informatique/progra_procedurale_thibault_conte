@@ -7,5 +7,10 @@
 
 int main(void)
 {
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
+
+    
     return 0;
 }
