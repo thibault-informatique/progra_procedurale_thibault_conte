@@ -1,4 +1,4 @@
-/*** V2 ex 10 ***/
+/*** v2 ex 10 ***/
 
 /*
 ajoute successivement trois produits à l'aide de realloc — le realloc doit se faire à chaque ajout, pas une seule fois.
@@ -8,6 +8,13 @@ Pourquoi l'adresse du pointeur ?
 C'est le point central de l'exercice (un pointeur de pointeur). realloc peut déplacer le bloc mémoire : il renvoie une nouvelle adresse.
 Si la fonction recevait seulement Produit *inventaire, le nouveau pointeur serait perdu au retour de la fonction—
 main garderait l'ancienne adresse. En recevant Produit **inventaire, la fonction peut écrire *inventaire = <nouvelle adresse> et main voit le changement.
+*/
+
+/*
+    RECAP:
+    inventaire: c'est le pointeur de pointeur, et sa valeur est l'adresse du pointeur de main.
+    *inventaire: c'est la valeur de ce pointeur, donc l'adresse du tableau.
+    **inventaire: c'est un Produit entier (la première case).
 */
 
 
@@ -50,6 +57,8 @@ bool ajouterProduit(Produit **inventaire, const Produit *nouvProduit, int *nbEle
     if (inventaire == NULL || nouvProduit == NULL || nbElementsDsInventaire == NULL)
     {
         fprintf(stderr, "Erreur pointeur NULL ds ajouterProduit()\n");
+        if(inventaire != NULL)
+            free(*inventaire); // libérer le tableau si adresse reçue du main non NULL
         exit(EXIT_FAILURE);
     }
 
