@@ -21,6 +21,16 @@ arg9:labex
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+
+void getTwoFirstCharArgv(const char *argv, char *result, size_t resultSize)
+{
+    assert(argv != NULL && result != NULL);
+
+    // on met dans result uniquement les 2 premiers caractères de argv
+    if(snprintf(result, resultSize, "%.2s", argv) >= (int)resultSize)
+        fprintf(stderr, "Erreur snprintf\n");
+}
 
 int main(int argc, char* argv[])
 {
@@ -29,15 +39,14 @@ int main(int argc, char* argv[])
     // on appelle les arguments reçus un par un jusqu'au dernier
     for (int i = 1; i < argc; i++)
         {
-            char temp[3] = "\0";
+            char tempArg[3] = "\0";
             int nbOfTrueArg = 0;
 
-            // on met dans temp uniquement les 2 premiers caractères
-            if(snprintf(temp, sizeof(temp), "%.2s", argv[i]) >= (int)sizeof(temp))
-                fprintf(stderr, "Erreur snprintf\n");
+            // on met dans tempArg uniquement les 2 premiers caractères
+            getTwoFirstCharArgv(argv[i], tempArg, sizeof(tempArg));
 
             // s'ils commencent par -- on affiche les paramètres sans les --
-            if(strcmp(temp, "--") == 0)
+            if(strcmp(tempArg, "--") == 0)
             {
                 ++nbOfTrueArg;               
 
@@ -60,10 +69,23 @@ int main(int argc, char* argv[])
                     printf("%c", argv[i][j]);
                 }
 
-                
+                // si il reste au moins un arg à lire et que c'est une valeur de l'arg précédent (!= "--")
+                if(i + 1 < argc)
+                {
+                    char tempValue[3] = "\0";
+
+                    getTwoFirstCharArgv(argv[i+1], tempValue, sizeof(tempValue));
+
+                    if(strcmp(tempValue, "--") != 0)
+                    {
+                        i++;
+                        putc(':', stdout);
+                        for(int j = 0; argv[i][j] != '\0'; j++)
+                            printf("%c", argv[i][j]);
+                    }        
+                }
                 putc('\n', stdout);
             }
-        }
-    
+        }    
     return 0;
 }
