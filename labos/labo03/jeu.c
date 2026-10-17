@@ -17,6 +17,9 @@ void printMenu()
     puts("[1] Partie classique\n");
     puts("[2] Partie personnalisée\n");   
     puts("[3] Mode 2 joueurs\n"); 
+#if DEBUG
+    puts("[4] tests/DEBUG\n");
+#endif
     puts("0. Quitter le programme");
 }
 
@@ -76,33 +79,65 @@ void genRandomCode(int code[], short int tabLength)
     }  
 }
 
-int* intToTab(const int number, int nbOfDigit)
+// transformer un int de n digit et retourner un pointeur sur int tab[n]
+int* intToTab(int number, int nbOfDigit)
 {
-    // verif taille nbre?
     if(number < 0)
     {
         fprintf(stderr, "Erreur le code ne peut être négatif\n");
         return NULL;
     }
 
+    if(nbOfDigit <= 0)
+    {
+        fprintf(stderr, "Erreur le nombre de digit doit valoir au moins 1\n");
+        return NULL;
+    }
+
     int *result = (int*) calloc (nbOfDigit, sizeof(int));
 
-
-    assert (result != NULL);
-
-    for (int i = (nbOfDigit - 1); i >= 0; i--)
+    if(result == NULL)
     {
-        if (i == nbOfDigit)
-            result[i] = number % 10; 
-        else if (i == nbOfDigit - 1)
-            result[i] = number % 10 - result[i + 1];
-        else if (i == nbOfDigit - 1 -1)
-            result[i] = number % 10 - result[i + 1] - result [i + 1 + 1];   
-        else
-            result[i] = number % 10 - result[i + 1] - result [i + 1 + 1] - result [i + 1 + 1 + 1];                  
+       fprintf(stderr, "Erreur allocation de mémoire pour stocker le code dans un tableau\n");
+        return NULL; 
+    }
+
+    // verif taille nbre et attribution valeurs tableau
+    // 1) si nbre plus petit que le tableau => remplissage à G par des 0
+    for (int i = nbOfDigit - 1; i >=0 ; i--)
+    {
+        result[i] =  number % 10;
+        
+        number /= 10;          
+    }
+
+     // 2) si nbre plus grand que le tableau (conseil IA)
+    if (number != 0)
+    {
+        fprintf(stderr, "Erreur code trop grand par rapport au nbre de digit\n");
+        free(result);
+        return NULL;           
     }
     return result;
 }
+
+#if DEBUG
+void testIntToTab(int number, int nbOfDigit)
+{
+    printf("intToTab(%d, %d) -> ", number, nbOfDigit);
+
+    int *t = intToTab(number, nbOfDigit);
+    if (t == NULL)
+    {
+        printf("NULL\n");
+        return;
+    }
+
+    printCode(t, nbOfDigit);
+    free(t);
+}
+#endif
+
 
 void classicGame()
 {    

@@ -10,6 +10,8 @@
 #include "jeu.h"
 #include "code.h"
 
+#define DEBUG 1
+
 int main(void)
 {
     #ifdef _WIN32
@@ -24,7 +26,11 @@ int main(void)
     do
     {
         printMenu();
+#if DEBUG
+        userChoice = getUserChoice(0,4);
+#else
         userChoice = getUserChoice(0,3);
+#endif
         
         switch(userChoice)
         {
@@ -33,7 +39,8 @@ int main(void)
                 puts("\n*** Fin du programme ***\n");               
                 break;
             case 1 :                
-                classicGame();
+                //classicGame();
+
 
                 break;
             case 2 : 
@@ -42,6 +49,16 @@ int main(void)
             case 3 :
                 puts("\n*** Mode 2 joueurs ***\n");
                 break;
+#if DEBUG
+            case 4:
+               puts("\nFCT: \n");
+                testIntToTab(1234, 4);
+                testIntToTab(42, 5);
+                testIntToTab(123456, 4);
+                testIntToTab(-7, 4);
+                testIntToTab(42, 0);
+                break;
+#endif
             default :
             fprintf(stderr, "Erreur dans le choix du Menu principal\n");
         }
