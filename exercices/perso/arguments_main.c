@@ -48,11 +48,19 @@ int main(int argc, char* argv[])
                 } 
                 */
 
+                /*
+                    on affiche ce qu'il y a après les -- (index commence à 2)
+                    1) on indique le nom renseigné après les --
+                    2) s'il y a une valeur ( argument d'après sans --), on affiche la valeur en précédant de ':'
+                */
+
                  // on commence après le --
                 for(int j = 2; argv[i][j] != '\0'; j++)
                 {                                               
                     printf("%c", argv[i][j]);
                 }
+
+                
                 putc('\n', stdout);
             }
         }
