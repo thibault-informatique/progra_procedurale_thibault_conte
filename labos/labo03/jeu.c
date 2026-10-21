@@ -26,7 +26,18 @@ void printMenu()
     printf("\nQuel est votre choix? ");
 }
 
+static void askPlayerChoice(int codeLength, int nbOfTries)
+{
+    printf("Code de %d chiffres - %d tentatives\n", codeLength, nbOfTries);
+    printf("Quel est le bon code? ");
+}
 
+void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition)
+{
+    assert(goodPosition != NULL && wrongPosition != NULL);
+
+    printf("Bien placés : %d | Mal placés : %d\n", *goodPosition, *wrongPosition);
+}
 
 // fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
 short int getUserChoice(unsigned short int minValue, unsigned short int maxValue)
@@ -105,17 +116,83 @@ int* intToTab(int number, int nbOfDigit)
     return result;
 }
 
+void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
+{
+    assert(trueCode != NULL && playerCode != NULL && goodPosition != NULL && wrongPosition != NULL && codeLength > 0);
+
+    // init / reinit compteurs
+    *goodPosition = 0;
+    *wrongPosition = 0;
+
+    // on compare les 2 tableaux
+    // si ça match, on vérifie si les indexs sont les mêmes ou non
+    for (int i = 0; i < codeLength; i++)
+        for(int j = 0; j < codeLength; j++)
+            {
+                if (trueCode[i] == playerCode[j])
+                {
+                    if( i == j)
+                    {
+                        // erreur car problème de priorité sans les ()
+                        (*goodPosition)++;
+                        break;
+                    }
+                    else
+                    {
+                        (*wrongPosition)++;
+                        break;
+                    }
+                }
+            }
+}
+
+// le joueur gagne s'il trouve tous les chiffres du code au bon endroit
+bool playerWin( const int * goodPosition, int codeLength)
+{
+    return *goodPosition == codeLength;
+}
 
 void classicGame()
 {    
-    int code[CLASSIC_GAME_CODE_LENGTH];
-    unsigned short int nbOfTries = CLASSIC_GAME_MAX_TRIES;
+    // declaration
+    int trueCode[CLASSIC_GAME_CODE_LENGTH] = {0}, playerCode[CLASSIC_GAME_CODE_LENGTH] = {0};
 
-    genRandomCode(code, CLASSIC_GAME_CODE_LENGTH);
+    int *pPlayerCode = playerCode;
+
+    unsigned short int nbOfTries = CLASSIC_GAME_MAX_TRIES;
+    
+    // contient le nbre de chiffres trouvés et si 
+    // à la bonne ou mauvaise place
+    int goodPosition = 0, wrongPosition = 0;
+
+    bool playerWins = false;
+
+    // création du code secret
+    genRandomCode(trueCode, CLASSIC_GAME_CODE_LENGTH);
     
     puts("\n*** Partie Classique ***\n");
+
 #if DEBUG
-    printCode(code, CLASSIC_GAME_CODE_LENGTH);
+    printCode(trueCode, CLASSIC_GAME_CODE_LENGTH);
 #endif
 
+    // demande au joueur de proposer et trouver le code en x tentatives
+    // MAJ des compteurs puis affichage
+    // test pour voir si le joueur a gagné avant de reboucler
+    do
+    {
+        askPlayerChoice(CLASSIC_GAME_CODE_LENGTH, nbOfTries);
+
+        pPlayerCode = (intToTab(getUserChoice(0,9),CLASSIC_GAME_CODE_LENGTH));
+
+        updatePositionsCounters(trueCode, playerCode, CLASSIC_GAME_CODE_LENGTH, &goodPosition, &wrongPosition);
+
+        printValuesPositionsCounter(&goodPosition, &wrongPosition);
+
+    } while (!playerWins || nbOfTries != 0);
+
+    if(playerWin)
+        printf("Victoire en %d tentatives!\n", CLASSIC_GAME_MAX_TRIES - nbOfTries);
+    else
+        puts("Vous avez perdu...\n");
 }
