@@ -1,6 +1,11 @@
 #ifndef JEU_H
 #define JEU_H
 
+#define GREEN "\033[32m"
+#define RED   "\033[33m"
+#define BOLD  "\033[1m"
+#define RESET "\033[0m"
+
 
 void printMenu();
 
@@ -12,7 +17,7 @@ int* intToTab(int number, int nbOfDigit);
 
 void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
 
-bool playerWin( const int * goodPosition, int codeLength);
+bool hasPlayerWin( const int * goodPosition, int codeLength);
 
 void classicGame();
 

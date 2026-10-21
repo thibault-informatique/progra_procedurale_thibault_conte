@@ -22,7 +22,8 @@ int main(void)
     bool play = true;
     short int userChoice = -1;
 
-    srand((unsigned)time(NULL)); // initialisation graine pour gestion nbre aléatoire
+    // initialisation graine pour gestion nbre aléatoire
+    srand((unsigned)time(NULL)); 
 
     do
     {
@@ -40,9 +41,7 @@ int main(void)
                 puts("\n*** Fin du programme ***\n");               
                 break;
             case 1 :                
-                //classicGame();
-
-
+               classicGame();
                 break;
             case 2 : 
                 puts("\n*** Partie personnalisée ***\n");
@@ -52,28 +51,11 @@ int main(void)
                 break;
 #if DEBUG
             case 4:
-                puts("\nTest debug fonctions: \n");
-                
-                int code1[4] = {1,2,3,4};
-                int code2[4] = {2,3,4,1};  //  0 - 4
-                int code3[4] = {7,8,9,1};  //  0 - 1
-                int code4[4] = {1,0,4,3};  //  1 - 2
-                int code5[4] = {5,6,7,8};  //  0 - 0
-                int code6[4] = {1,2,3,4};  //  4 - 0
-
-                int goodPos = 0;
-                int wrongPos = 0;
-
-                updatePositionsCounters(code1, code6, 4, &goodPos, &wrongPos);
-                printValuesPositionsCounter(&goodPos, &wrongPos);
-                printf("%s\n", playerWin(&goodPos, 4)? "Victoire" : "Encore x essais");                        
-
-
-                
+                puts("\nTest debug fonctions: \n");                
                 break;
 #endif
             default :
-            fprintf(stderr, "Erreur dans le choix du Menu principal\n");
+                fprintf(stderr, "Erreur dans le choix du Menu principal\n");
         }
     } while (play);
     
