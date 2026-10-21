@@ -44,7 +44,7 @@ int main(void)
                classicGame();
                 break;
             case 2 : 
-                puts("\n*** Partie personnalisée ***\n");
+                customGame();
                 break;
             case 3 :
                 puts("\n*** Mode 2 joueurs ***\n");

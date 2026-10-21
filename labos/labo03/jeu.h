@@ -17,10 +17,13 @@ bool intToTab(int playerCode[], int number, int nbOfDigit);
 
 void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
 
-bool hasPlayerWin( const int * goodPosition, int codeLength);
+bool hasPlayerWin(const int * goodPosition, int codeLength);
 
 void classicGame();
 
+void customGame();
+
+bool launchGame(int codeLength, int maxTries, int *nbOfTries);
 
 
 #endif

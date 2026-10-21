@@ -147,29 +147,28 @@ bool hasPlayerWin( const int * goodPosition, int codeLength)
     return *goodPosition == codeLength;
 }
 
-// 1) générer code aléatoirement
-// 2) lancer le jeu avec affichage / choix du joueur
-// 3) vérifier si le joueur a gagné ou perdu
-// 4) boucler jusqu'à atteindre 1 des 2 résultats 
-void classicGame()
-{    
-    // declaration
+// lance le jeu
+// retourne vrai si le joueur a gagné, faux s'il a perdu
+bool launchGame(int codeLength, int maxTries, int *nbOfTries)
+{
+    assert(nbOfTries != NULL && maxTries >= 1 && codeLength >= 1);
 
-    int trueCode[CLASSIC_GAME_CODE_LENGTH] = {0}, playerCode[CLASSIC_GAME_CODE_LENGTH] = {0};
-    unsigned short int nbOfTries = CLASSIC_GAME_MAX_TRIES;    
-    // contient le nbre de chiffres trouvés et si 
-    // à la bonne ou mauvaise place
+    int trueCode[codeLength], playerCode[codeLength];
+
+    int maxValue = 1;
+    for (int i = 0; i < codeLength; i++)
+        maxValue *= 10;
+    maxValue -= 1; //(pour 4 chiffres: de 0 à 9999 possibilités)
+
     int goodPosition = 0, wrongPosition = 0;
     bool playerWins = false;
 
     // création du code secret
 
-    genRandomCode(trueCode, CLASSIC_GAME_CODE_LENGTH);
-    
-    puts("\n*** Partie Classique ***\n");
+    genRandomCode(trueCode, codeLength);    
 
 #if DEBUG
-    printCode(trueCode, CLASSIC_GAME_CODE_LENGTH);
+    printCode(trueCode, codeLength);
 #endif
 
     // demande au joueur de proposer et trouver le code en x tentatives
@@ -177,35 +176,74 @@ void classicGame()
     // test pour voir si le joueur a gagné avant de reboucler
     do
     {
-        askPlayerChoice(CLASSIC_GAME_CODE_LENGTH, nbOfTries);
+        askPlayerChoice(codeLength, *nbOfTries);
 
         bool distinctsDigits = true;
 
+        // choix joueur doit être adéquat à la longueur du code et à l'unicité des chiffres choisis
         do
-        {
-            
-            if(intToTab(playerCode, getUserChoice(0,9999),CLASSIC_GAME_CODE_LENGTH) == false)
+        {            
+            if(intToTab(playerCode, (int)getUserChoice(0,maxValue),codeLength) == false)
                 fprintf(stderr, "Erreur fct intToTab\n");
 
-            distinctsDigits = isDigitDistinctInCode(playerCode, CLASSIC_GAME_CODE_LENGTH);
+            distinctsDigits = isDigitDistinctInCode(playerCode, codeLength);
 
             if(!distinctsDigits)
-                puts("Attention le code doit contenir 4 chiffres différents, recommencez.");
+                printf("Attention le code doit contenir %d chiffres différents, recommencez.", codeLength);
 
         } while (!distinctsDigits);
 
-        nbOfTries--;
+        (*nbOfTries)++;
 
-        updatePositionsCounters(trueCode, playerCode, CLASSIC_GAME_CODE_LENGTH, &goodPosition, &wrongPosition);
+        updatePositionsCounters(trueCode, playerCode, codeLength, &goodPosition, &wrongPosition);
 
         printValuesPositionsCounter(&goodPosition, &wrongPosition);
 
-        playerWins = hasPlayerWin(&goodPosition, CLASSIC_GAME_CODE_LENGTH);
+        playerWins = hasPlayerWin(&goodPosition, codeLength);
 
-    } while (!playerWins && nbOfTries > 0);
+    } while (!playerWins && *nbOfTries <= maxTries);
 
-    if(playerWins)
-        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, CLASSIC_GAME_MAX_TRIES - nbOfTries);
+    return playerWins;
+}
+
+// 1) générer code aléatoirement
+// 2) lancer le jeu avec affichage / choix du joueur
+// 3) vérifier si le joueur a gagné ou perdu
+void classicGame()
+{    
+    
+    int nbOfTries = 0;    
+    bool hasPlayerWon;
+
+    puts("\n*** Partie Classique ***\n");
+
+    hasPlayerWon = launchGame(CLASSIC_GAME_CODE_LENGTH, CLASSIC_GAME_MAX_TRIES, &nbOfTries);
+
+    if(hasPlayerWon)
+        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
     else
         puts("Vous avez perdu...\n");
+}
+
+// TODO tentative débute à 0 ; erreur trop de tentative
+void customGame()
+{
+    int nbOfTries = 0;    
+    bool hasPlayerWon;
+
+    // declaration et affichage
+    puts("\n*** Partie Personnalisée ***\n");
+
+    puts("Veuillez choisir la longueur du code (4-6)");
+    int codeLength = (int)getUserChoice(4,6);
+
+    puts("Veuillez choisir le nombre de tentatives autorisées (5-15)");
+    int maxTries = (int)getUserChoice(5,15);
+
+    hasPlayerWon = launchGame(codeLength, maxTries, &nbOfTries);
+
+    if(hasPlayerWon)
+        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
+    else
+        puts("Vous avez perdu...\n");   
 }
