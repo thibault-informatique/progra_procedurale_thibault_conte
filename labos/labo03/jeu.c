@@ -210,7 +210,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
 
         playerWins = hasPlayerWin(&goodPosition, codeLength);
 
-    } while (!playerWins && *nbOfTries <= maxTries);
+    } while (!playerWins && *nbOfTries < maxTries);
 
     return playerWins;
 }
@@ -235,7 +235,7 @@ void classicGame()
         puts("Vous avez perdu...\n");
 }
 
-// TODO tentative débute à 0 ; erreur trop de tentative
+
 void customGame()
 {
     int nbOfTries = 0;    

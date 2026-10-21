@@ -1,6 +1,8 @@
 #ifndef JEU_H
 #define JEU_H
 
+#include <stdbool.h>
+
 #define GREEN "\033[32m"
 #define RED   "\033[33m"
 #define BOLD  "\033[1m"
