@@ -26,9 +26,9 @@ void printMenu()
     printf("\nQuel est votre choix? ");
 }
 
-static void askPlayerChoice(int codeLength, int nbOfTries)
+static void askPlayerChoice(int codeLength, int nbOfRemainingTries)
 {
-    printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfTries);
+    printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfRemainingTries);
     printf("Quel est le bon code? ");
 }
 
@@ -40,10 +40,10 @@ void printValuesPositionsCounter(const int *goodPosition, const int *wrongPositi
 }
 
 // fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
-short int getUserChoice(unsigned short int minValue, unsigned short int maxValue)
+int getUserChoice(unsigned int minValue, unsigned int maxValue)
 {
     char buffer[20];
-    short int userChoice;
+    int userChoice;
     bool isValid = false;
 
     while (!isValid)
@@ -64,12 +64,12 @@ short int getUserChoice(unsigned short int minValue, unsigned short int maxValue
         }
 
         // etape 3 : validation
-        isValid = (sscanf_s(buffer, "%hu", &userChoice) == 1) &&
-                  (userChoice >= minValue)                    &&
-                  (userChoice <= maxValue);
+        isValid = (sscanf_s(buffer, "%d", &userChoice) == 1) &&
+                  (userChoice >= (int)minValue)                    &&
+                  (userChoice <= (int)maxValue);
 
         if (!isValid)
-            fprintf(stderr, "Format attendu : 1 chiffre compris entre %hu et %hu\n", minValue, maxValue);
+            fprintf(stderr, "Format attendu : 1 chiffre compris entre %u et %u\n", minValue, maxValue);
     }
     return userChoice;
 }
@@ -155,10 +155,17 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
 
     int trueCode[codeLength], playerCode[codeLength];
 
+    int remainingTries = maxTries;
+
     int maxValue = 1;
     for (int i = 0; i < codeLength; i++)
         maxValue *= 10;
     maxValue -= 1; //(pour 4 chiffres: de 0 à 9999 possibilités)
+
+    
+#if DEBUG
+    printf("Valeur max pour l'utilisateur = %d\n", maxValue);
+#endif
 
     int goodPosition = 0, wrongPosition = 0;
     bool playerWins = false;
@@ -168,6 +175,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
     genRandomCode(trueCode, codeLength);    
 
 #if DEBUG
+    puts("Debug: code aléatoire généré");
     printCode(trueCode, codeLength);
 #endif
 
@@ -176,7 +184,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
     // test pour voir si le joueur a gagné avant de reboucler
     do
     {
-        askPlayerChoice(codeLength, *nbOfTries);
+        askPlayerChoice(codeLength, remainingTries);
 
         bool distinctsDigits = true;
 
@@ -189,11 +197,12 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
             distinctsDigits = isDigitDistinctInCode(playerCode, codeLength);
 
             if(!distinctsDigits)
-                printf("Attention le code doit contenir %d chiffres différents, recommencez.", codeLength);
+                printf("Attention le code doit contenir %d chiffres différents, recommencez.\n", codeLength);
 
         } while (!distinctsDigits);
 
         (*nbOfTries)++;
+        remainingTries--;
 
         updatePositionsCounters(trueCode, playerCode, codeLength, &goodPosition, &wrongPosition);
 
@@ -217,6 +226,7 @@ void classicGame()
 
     puts("\n*** Partie Classique ***\n");
 
+    // jeu
     hasPlayerWon = launchGame(CLASSIC_GAME_CODE_LENGTH, CLASSIC_GAME_MAX_TRIES, &nbOfTries);
 
     if(hasPlayerWon)
@@ -240,6 +250,7 @@ void customGame()
     puts("Veuillez choisir le nombre de tentatives autorisées (5-15)");
     int maxTries = (int)getUserChoice(5,15);
 
+    // jeu
     hasPlayerWon = launchGame(codeLength, maxTries, &nbOfTries);
 
     if(hasPlayerWon)

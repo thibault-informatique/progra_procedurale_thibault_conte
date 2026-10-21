@@ -11,7 +11,7 @@ void printMenu();
 
 void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition);
 
-short int getUserChoice(unsigned short int minValue, unsigned short int maxValue);
+int getUserChoice(unsigned int minValue, unsigned int maxValue);
 
 bool intToTab(int playerCode[], int number, int nbOfDigit);
 
