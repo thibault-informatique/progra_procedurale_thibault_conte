@@ -9,6 +9,7 @@
 
 #include "jeu.h"
 #include "code.h"
+#include "debug.h"
 
 #define DEBUG 1
 
@@ -51,12 +52,28 @@ int main(void)
                 break;
 #if DEBUG
             case 4:
-               puts("\nFCT: \n");
-                testIntToTab(1234, 4);
-                testIntToTab(42, 5);
-                testIntToTab(123456, 4);
-                testIntToTab(-7, 4);
-                testIntToTab(42, 0);
+                puts("\nFCT: \n");
+                
+                int code1[4] = {0};
+
+                genRandomCode(code1,4);
+                printCode(code1,4);
+                
+                   genRandomCode(code1,4);
+                printCode(code1,4);
+                
+                   genRandomCode(code1,4);
+                printCode(code1,4);
+                
+                   genRandomCode(code1,4);
+                printCode(code1,4);
+                
+                   genRandomCode(code1,4);
+                printCode(code1,4);
+                
+                   genRandomCode(code1,4);
+                printCode(code1,4);
+                
                 break;
 #endif
             default :

@@ -4,6 +4,8 @@
 #include <assert.h>
 
 #include "jeu.h"
+#include "code.h"
+#include "debug.h"
 
 #define CLASSIC_GAME_MAX_TRIES 10
 #define CLASSIC_GAME_CODE_LENGTH 4
@@ -13,7 +15,7 @@
 void printMenu()
 {
     puts("\n");
-    puts("Code Breaker\n");
+    puts("Bienvenue dans \"CODE BREAKER\"\n");
     puts("[1] Partie classique\n");
     puts("[2] Partie personnalisée\n");   
     puts("[3] Mode 2 joueurs\n"); 
@@ -21,18 +23,10 @@ void printMenu()
     puts("[4] tests/DEBUG\n");
 #endif
     puts("0. Quitter le programme");
+    printf("\nQuel est votre choix? ");
 }
 
-void printCode(int code[], short int tabLength)
-{
-    assert(code != NULL && tabLength > 0);
 
-    for(int i = 0; i < tabLength ; i++)
-    {
-        printf("%d", code[i]);
-    }
-    putc('\n', stdout);
-}
 
 // fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
 short int getUserChoice(unsigned short int minValue, unsigned short int maxValue)
@@ -67,16 +61,6 @@ short int getUserChoice(unsigned short int minValue, unsigned short int maxValue
             fprintf(stderr, "Format attendu : 1 chiffre compris entre %hu et %hu\n", minValue, maxValue);
     }
     return userChoice;
-}
-
-void genRandomCode(int code[], short int tabLength)
-{
-    assert(code != NULL && tabLength > 0);
-
-    for(int i = 0; i < tabLength ; i++)
-    {
-        code[i] = rand() % 10;
-    }  
 }
 
 // transformer un int de n digit et retourner un pointeur sur int tab[n]
@@ -121,23 +105,6 @@ int* intToTab(int number, int nbOfDigit)
     return result;
 }
 
-#if DEBUG
-void testIntToTab(int number, int nbOfDigit)
-{
-    printf("intToTab(%d, %d) -> ", number, nbOfDigit);
-
-    int *t = intToTab(number, nbOfDigit);
-    if (t == NULL)
-    {
-        printf("NULL\n");
-        return;
-    }
-
-    printCode(t, nbOfDigit);
-    free(t);
-}
-#endif
-
 
 void classicGame()
 {    
@@ -150,6 +117,5 @@ void classicGame()
 #if DEBUG
     printCode(code, CLASSIC_GAME_CODE_LENGTH);
 #endif
-
 
 }

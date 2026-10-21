@@ -8,8 +8,6 @@ short int getUserChoice(unsigned short int minValue, unsigned short int maxValue
 
 void classicGame();
 
-void genRandomCode(int code[], short int tabLength);
-
-void testIntToTab(int number, int nbOfDigit);
+int* intToTab(int number, int nbOfDigit);
 
 #endif
