@@ -13,7 +13,7 @@ void printValuesPositionsCounter(const int *goodPosition, const int *wrongPositi
 
 short int getUserChoice(unsigned short int minValue, unsigned short int maxValue);
 
-int* intToTab(int number, int nbOfDigit);
+bool intToTab(int playerCode[], int number, int nbOfDigit);
 
 void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
 

@@ -74,46 +74,41 @@ short int getUserChoice(unsigned short int minValue, unsigned short int maxValue
     return userChoice;
 }
 
-// transformer un int de n digit et retourner un pointeur sur int tab[n]
-int* intToTab(int number, int nbOfDigit)
+// transformer un int en n digit dans un tableau de int
+bool intToTab(int playerCode[], int number, int nbOfDigit)
 {
+    assert (playerCode != NULL);
+
     if(number < 0)
     {
         fprintf(stderr, "Erreur le code ne peut être négatif\n");
-        return NULL;
+        return false;
     }
 
     if(nbOfDigit <= 0)
     {
         fprintf(stderr, "Erreur le nombre de digit doit valoir au moins 1\n");
-        return NULL;
-    }
-
-    int *result = (int*) calloc (nbOfDigit, sizeof(int));
-
-    if(result == NULL)
-    {
-       fprintf(stderr, "Erreur allocation de mémoire pour stocker le code dans un tableau\n");
-        return NULL; 
+        return false;
     }
 
     // verif taille nbre et attribution valeurs tableau
     // 1) si nbre plus petit que le tableau => remplissage à G par des 0
     for (int i = nbOfDigit - 1; i >=0 ; i--)
     {
-        result[i] =  number % 10;
+        playerCode[i] =  number % 10;
         
         number /= 10;          
     }
 
      // 2) si nbre plus grand que le tableau (conseil IA)
+     // donc nombre pas nul à la fin
     if (number != 0)
     {
         fprintf(stderr, "Erreur code trop grand par rapport au nbre de digit\n");
-        free(result);
-        return NULL;           
+        return false;           
     }
-    return result;
+
+    return true;
 }
 
 void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
@@ -160,8 +155,7 @@ void classicGame()
 {    
     // declaration
 
-    int trueCode[CLASSIC_GAME_CODE_LENGTH] = {0};
-    int *playerCode = NULL;
+    int trueCode[CLASSIC_GAME_CODE_LENGTH] = {0}, playerCode[CLASSIC_GAME_CODE_LENGTH] = {0};
     unsigned short int nbOfTries = CLASSIC_GAME_MAX_TRIES;    
     // contient le nbre de chiffres trouvés et si 
     // à la bonne ou mauvaise place
@@ -189,7 +183,9 @@ void classicGame()
 
         do
         {
-            playerCode = intToTab(getUserChoice(0,9999),CLASSIC_GAME_CODE_LENGTH);
+            
+            if(intToTab(playerCode, getUserChoice(0,9999),CLASSIC_GAME_CODE_LENGTH) == false)
+                fprintf(stderr, "Erreur fct intToTab\n");
 
             distinctsDigits = isDigitDistinctInCode(playerCode, CLASSIC_GAME_CODE_LENGTH);
 
@@ -198,9 +194,6 @@ void classicGame()
 
         } while (!distinctsDigits);
 
-        if (playerCode == NULL)
-            exit(EXIT_FAILURE);
-
         nbOfTries--;
 
         updatePositionsCounters(trueCode, playerCode, CLASSIC_GAME_CODE_LENGTH, &goodPosition, &wrongPosition);
@@ -208,7 +201,6 @@ void classicGame()
         printValuesPositionsCounter(&goodPosition, &wrongPosition);
 
         playerWins = hasPlayerWin(&goodPosition, CLASSIC_GAME_CODE_LENGTH);
-        free(playerCode);
 
     } while (!playerWins && nbOfTries > 0);
 

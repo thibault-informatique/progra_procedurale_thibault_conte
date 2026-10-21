@@ -15,18 +15,3 @@ void printCode(int code[], short int tabLength)
     }
     putc('\n', stdout);
 }
-
-void testIntToTab(int number, int nbOfDigit)
-{
-    printf("intToTab(%d, %d) -> ", number, nbOfDigit);
-
-    int *t = intToTab(number, nbOfDigit);
-    if (t == NULL)
-    {
-        printf("NULL\n");
-        return;
-    }
-
-    printCode(t, nbOfDigit);
-    free(t);
-}
