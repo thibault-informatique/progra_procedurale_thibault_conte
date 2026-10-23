@@ -15,4 +15,8 @@ void genRandomCode(int code[], short int tabLength);
 
 void genHumanCode(int code[], short int tabLength);
 
+/***  HISTORIQUE DU CODE ***/
+
+void printHistoryCode(int nbOfTries, int codeLength, const int historyCode[][codeLength]);
+
 #endif

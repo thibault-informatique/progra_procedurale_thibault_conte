@@ -116,3 +116,19 @@ void genHumanCode(int code[], short int tabLength)
 }
 
 
+/***  HISTORIQUE DU CODE ***/
+
+void printHistoryCode(int nbOfTries, int codeLength, const int historyCode[][codeLength])
+{
+    assert(historyCode != NULL && codeLength > 0 && nbOfTries > 0);
+
+    puts("\nHISTORIQUE");
+    for(int i = 0; i < nbOfTries; i++)
+    {
+        printf("%d) ", i + 1);
+
+        for(int j = 0; j < codeLength; j++)
+            printf("%d", historyCode[i][j]);
+        putchar('\n');
+    }
+}

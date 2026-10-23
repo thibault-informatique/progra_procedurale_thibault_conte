@@ -23,6 +23,8 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHu
 
 int getUserChoice(unsigned int minValue, unsigned int maxValue);
 
+bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue, char commandChar, int *choice);
+
 bool hasPlayerWin(const int * goodPosition, int codeLength);
 
 void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);

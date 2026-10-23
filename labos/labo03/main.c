@@ -11,7 +11,7 @@
 #include "code.h"
 #include "debug.h"
 
-#define DEBUG 1
+// nouveautés : première utilisation de memcpy
 
 int main(void)
 {

@@ -5,6 +5,8 @@
 #include "debug.h"
 #include "jeu.h"
 
+
+
 void printCode(int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);
