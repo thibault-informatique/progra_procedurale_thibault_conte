@@ -3,15 +3,16 @@
 
 #include <stdbool.h>
 
+/***  OUTILS GENERATION CODE ***/
 
+bool intToTab(int playerCode[], int number, int nbOfDigit);
+
+int getCodeMaxValue(int codeLength);
+
+bool isDigitDistinctInCode(int code[], short int tabLength);
 
 void genRandomCode(int code[], short int tabLength);
 
 void genHumanCode(int code[], short int tabLength);
-
-int getCodeMaxValue(int codeLength);
-
-// vérification du code: chaque chiffre est bien différent des autres?
-bool isDigitDistinctInCode(int code[], short int tabLength);
 
 #endif

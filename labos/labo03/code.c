@@ -6,8 +6,74 @@
 #include "code.h"
 #include "jeu.h"
 
-// on génère les chiffres du code 1 par 1
-// il faut que chaque nouveau chiffre soit différents des autres
+/***  OUTILS GENERATION CODE ***/
+
+// transformer un code (nombre) depuis un integer vers un tableau de n digits (playerCode)
+bool intToTab(int playerCode[], int number, int nbOfDigit)
+{
+    assert (playerCode != NULL);
+
+    if(number < 0)
+    {
+        fprintf(stderr, "Erreur le code ne peut être négatif\n");
+        return false;
+    }
+
+    if(nbOfDigit <= 0)
+    {
+        fprintf(stderr, "Erreur le nombre de digit doit valoir au moins 1\n");
+        return false;
+    }
+
+    // verif taille nbre et attribution valeurs tableau
+    // 1) si nbre plus petit que le tableau => remplissage à G par des 0
+    for (int i = nbOfDigit - 1; i >=0 ; i--)
+    {
+        playerCode[i] =  number % 10;
+        
+        number /= 10;          
+    }
+
+     // 2) si nbre plus grand que le tableau (conseil IA)
+     // donc nombre pas nul à la fin
+    if (number != 0)
+    {
+        fprintf(stderr, "Erreur code trop grand par rapport au nbre de digit\n");
+        return false;           
+    }
+
+    return true;
+}
+
+// calcul valeur maximale du code en fonction du nbre de digits
+int getCodeMaxValue(int codeLength)
+{
+    int maxValue = 1;
+
+    for (int i = 0; i < codeLength; i++)
+        maxValue *= 10;
+
+    return --maxValue;
+}
+
+// vérification du code: chaque chiffre est bien différent des autres?
+// si doublon => la fct retourne false
+bool isDigitDistinctInCode(int code[], short int tabLength)
+{
+    assert(code != NULL && tabLength > 0);
+
+    // on vérifie chaque chiffre de G à D avec tous ses voisin de D
+    for (int i = 0; i < tabLength; i++)
+        for(int j = i + 1; j < tabLength; j++)
+        {
+            if(code[i] == code[j])
+                return false;
+        }
+    return true;
+}
+
+// on génère aléatoirement un code stocké dans un tableau de int 
+// chiffres distincts générés 1 par 1 via rand
 void genRandomCode(int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);
@@ -22,6 +88,7 @@ void genRandomCode(int code[], short int tabLength)
     }  
 }
 
+// même contrainte, génération par un autre joueur
 void genHumanCode(int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);
@@ -48,28 +115,4 @@ void genHumanCode(int code[], short int tabLength)
     }while(!distinctCode);    
 }
 
-int getCodeMaxValue(int codeLength)
-{
-    int maxValue = 1;
 
-    for (int i = 0; i < codeLength; i++)
-        maxValue *= 10;
-
-    return --maxValue;
-}
-
-// vérification du code: chaque chiffre est bien différent des autres?
-// si doublon => la fct retourne false
-bool isDigitDistinctInCode(int code[], short int tabLength)
-{
-    assert(code != NULL && tabLength > 0);
-
-    // on vérifie chaque chiffre de G à D avec tous ses voisin de D
-    for (int i = 0; i < tabLength; i++)
-        for(int j = i + 1; j < tabLength; j++)
-        {
-            if(code[i] == code[j])
-                return false;
-        }
-    return true;
-}

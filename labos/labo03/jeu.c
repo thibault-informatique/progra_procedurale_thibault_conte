@@ -12,6 +12,14 @@
 
 #define DEBUG 1
 
+static void printGuessCode(int codeLength, int nbOfRemainingTries)
+{
+    printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfRemainingTries);
+    printf("Quel est le bon code? ");
+}
+
+/*** AFFICHAGE ***/ 
+
 void printMenu()
 {
     puts("\n");
@@ -26,12 +34,6 @@ void printMenu()
     printf("\nQuel est votre choix? ");
 }
 
-static void askPlayerChoice(int codeLength, int nbOfRemainingTries)
-{
-    printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfRemainingTries);
-    printf("Quel est le bon code? ");
-}
-
 void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition)
 {
     assert(goodPosition != NULL && wrongPosition != NULL);
@@ -39,76 +41,12 @@ void printValuesPositionsCounter(const int *goodPosition, const int *wrongPositi
     printf("Bien placés : " GREEN"%d"RESET " | Mal placés : " RED"%d"RESET"\n", *goodPosition, *wrongPosition);
 }
 
-// fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
-int getUserChoice(unsigned int minValue, unsigned int maxValue)
+void printResultGame(bool victory, int nbOfTries)
 {
-    char buffer[20];
-    int userChoice;
-    bool isValid = false;
-
-    while (!isValid)
-    {
-        // etape 1 : lecture
-        if (fgets(buffer, sizeof(buffer), stdin) == NULL)
-        {
-            // flux ferme (Ctrl+D, redirection) : on sort, sinon boucle infinie
-            fprintf(stderr, "Fin de flux d'entree\n");
-            exit(EXIT_FAILURE);
-        }
-
-        // etape 2 : purge si la saisie depassait le buffer
-        if (strchr(buffer, '\n') == NULL)
-        {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
-        }
-
-        // etape 3 : validation
-        isValid = (sscanf_s(buffer, "%d", &userChoice) == 1) &&
-                  (userChoice >= (int)minValue)                    &&
-                  (userChoice <= (int)maxValue);
-
-        if (!isValid)
-            fprintf(stderr, "Format attendu : 1 chiffre compris entre %u et %u\n", minValue, maxValue);
-    }
-    return userChoice;
-}
-
-// transformer un int en n digit dans un tableau de int
-bool intToTab(int playerCode[], int number, int nbOfDigit)
-{
-    assert (playerCode != NULL);
-
-    if(number < 0)
-    {
-        fprintf(stderr, "Erreur le code ne peut être négatif\n");
-        return false;
-    }
-
-    if(nbOfDigit <= 0)
-    {
-        fprintf(stderr, "Erreur le nombre de digit doit valoir au moins 1\n");
-        return false;
-    }
-
-    // verif taille nbre et attribution valeurs tableau
-    // 1) si nbre plus petit que le tableau => remplissage à G par des 0
-    for (int i = nbOfDigit - 1; i >=0 ; i--)
-    {
-        playerCode[i] =  number % 10;
-        
-        number /= 10;          
-    }
-
-     // 2) si nbre plus grand que le tableau (conseil IA)
-     // donc nombre pas nul à la fin
-    if (number != 0)
-    {
-        fprintf(stderr, "Erreur code trop grand par rapport au nbre de digit\n");
-        return false;           
-    }
-
-    return true;
+      if(victory)
+        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
+    else
+        puts("\n\nVous avez perdu...\n");
 }
 
 // appel fct système pour effacer le contenu de la console
@@ -121,52 +59,14 @@ void clearScreen()
         system("clear");
     #endif
 }
-void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
-{
-    assert(trueCode != NULL && playerCode != NULL && goodPosition != NULL && wrongPosition != NULL && codeLength > 0);
 
-    // init / reinit compteurs
-    *goodPosition = 0;
-    *wrongPosition = 0;
-
-    // on compare les 2 tableaux
-    // si ça match, on vérifie si les indexs sont les mêmes ou non
-    for (int i = 0; i < codeLength; i++)
-        for(int j = 0; j < codeLength; j++)
-            {
-                if (trueCode[i] == playerCode[j])
-                {
-                    if( i == j)
-                    {
-                        // erreur car problème de priorité sans les ()
-                        (*goodPosition)++;
-                        break;
-                    }
-                    else
-                    {
-                        (*wrongPosition)++;
-                        break;
-                    }
-                }
-            }
-}
-
-// le joueur gagne s'il trouve tous les chiffres du code au bon endroit
-bool hasPlayerWin( const int * goodPosition, int codeLength)
-{
-    return *goodPosition == codeLength;
-}
-
-void printResultGame(bool victory, int nbOfTries)
-{
-      if(victory)
-        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
-    else
-        puts("\n\nVous avez perdu...\n");
-}
+/*** MECANIQUES DE JEU ***/
 
 // lance le jeu
 // retourne vrai si le joueur a gagné, faux s'il a perdu
+// 1) générer code soit aléatoirement soit via saisie autre joueur
+// 2) lancer le jeu avec affichage / choix du joueur
+// 3) vérifier si le joueur a gagné ou perdu
 bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman)
 {
     assert(nbOfTries != NULL && maxTries >= 1 && codeLength >= 1);
@@ -204,7 +104,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHu
     // test pour voir si le joueur a gagné avant de reboucler
     do
     {
-        askPlayerChoice(codeLength, remainingTries);
+        printGuessCode(codeLength, remainingTries);
 
         bool distinctsDigits = true;
 
@@ -235,9 +135,79 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHu
     return playerWins;
 }
 
-// 1) générer code aléatoirement
-// 2) lancer le jeu avec affichage / choix du joueur
-// 3) vérifier si le joueur a gagné ou perdu
+// fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
+int getUserChoice(unsigned int minValue, unsigned int maxValue)
+{
+    char buffer[20];
+    int userChoice;
+    bool isValid = false;
+
+    while (!isValid)
+    {
+        // etape 1 : lecture
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL)
+        {
+            // flux ferme (Ctrl+D, redirection) : on sort, sinon boucle infinie
+            fprintf(stderr, "Fin de flux d'entree\n");
+            exit(EXIT_FAILURE);
+        }
+
+        // etape 2 : purge si la saisie depassait le buffer
+        if (strchr(buffer, '\n') == NULL)
+        {
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
+
+        // etape 3 : validation
+        isValid = (sscanf_s(buffer, "%d", &userChoice) == 1) &&
+                  (userChoice >= (int)minValue)                    &&
+                  (userChoice <= (int)maxValue);
+
+        if (!isValid)
+            fprintf(stderr, "Format attendu : 1 chiffre compris entre %u et %u\n", minValue, maxValue);
+    }
+    return userChoice;
+}
+
+// le joueur gagne s'il trouve tous les chiffres du code au bon endroit
+bool hasPlayerWin( const int * goodPosition, int codeLength)
+{
+    return *goodPosition == codeLength;
+}
+
+void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
+{
+    assert(trueCode != NULL && playerCode != NULL && goodPosition != NULL && wrongPosition != NULL && codeLength > 0);
+
+    // init / reinit compteurs
+    *goodPosition = 0;
+    *wrongPosition = 0;
+
+    // on compare les 2 tableaux
+    // si ça match, on vérifie si les indexs sont les mêmes ou non
+    for (int i = 0; i < codeLength; i++)
+        for(int j = 0; j < codeLength; j++)
+            {
+                if (trueCode[i] == playerCode[j])
+                {
+                    if( i == j)
+                    {
+                        // erreur car problème de priorité sans les ()
+                        (*goodPosition)++;
+                        break;
+                    }
+                    else
+                    {
+                        (*wrongPosition)++;
+                        break;
+                    }
+                }
+            }
+}
+
+/*** DIFFERENTS TYPES DE JEU ***/
+
 void classicGame()
 {    
     
@@ -252,7 +222,6 @@ void classicGame()
     printResultGame(hasPlayerWon, nbOfTries);
   
 }
-
 
 void customGame()
 {

@@ -8,28 +8,30 @@
 #define BOLD  "\033[1m"
 #define RESET "\033[0m"
 
-
+/*** AFFICHAGE  ***/
 void printMenu();
 
 void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition);
 
-int getUserChoice(unsigned int minValue, unsigned int maxValue);
-
-bool intToTab(int playerCode[], int number, int nbOfDigit);
+void printResultGame(bool victory, int nbOfTries);
 
 void clearScreen();
 
-void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
+
+/*** MECANIQUES DE JEU ***/
+bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman);
+
+int getUserChoice(unsigned int minValue, unsigned int maxValue);
 
 bool hasPlayerWin(const int * goodPosition, int codeLength);
 
-void printResultGame(bool victory, int nbOfTries);
+void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
+
+/*** DIFFERENTS TYPES DE JEU ***/
 
 void classicGame();
 
 void customGame();
-
-bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman);
 
 void gameAgainstHuman();
 
