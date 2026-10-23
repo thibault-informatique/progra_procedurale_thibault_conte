@@ -7,8 +7,8 @@
 #include "code.h"
 #include "debug.h"
 
-#define CLASSIC_GAME_MAX_TRIES 10
-#define CLASSIC_GAME_CODE_LENGTH 4
+#define STD_MAX_TRIES 10
+#define STD_NB_OF_DIGITS 4
 
 #define DEBUG 1
 
@@ -111,6 +111,16 @@ bool intToTab(int playerCode[], int number, int nbOfDigit)
     return true;
 }
 
+// appel fct système pour effacer le contenu de la console
+// utile ici pour masquer le code entré par le joueur
+void clearScreen()
+{
+    #ifdef _WIN32
+        system("cls");
+    #else 
+        system("clear");
+    #endif
+}
 void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
 {
     assert(trueCode != NULL && playerCode != NULL && goodPosition != NULL && wrongPosition != NULL && codeLength > 0);
@@ -147,9 +157,17 @@ bool hasPlayerWin( const int * goodPosition, int codeLength)
     return *goodPosition == codeLength;
 }
 
+void printResultGame(bool victory, int nbOfTries)
+{
+      if(victory)
+        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
+    else
+        puts("\n\nVous avez perdu...\n");
+}
+
 // lance le jeu
 // retourne vrai si le joueur a gagné, faux s'il a perdu
-bool launchGame(int codeLength, int maxTries, int *nbOfTries)
+bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman)
 {
     assert(nbOfTries != NULL && maxTries >= 1 && codeLength >= 1);
 
@@ -157,11 +175,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
 
     int remainingTries = maxTries;
 
-    int maxValue = 1;
-    for (int i = 0; i < codeLength; i++)
-        maxValue *= 10;
-    maxValue -= 1; //(pour 4 chiffres: de 0 à 9999 possibilités)
-
+    int maxValue = getCodeMaxValue(codeLength);
     
 #if DEBUG
     printf("Valeur max pour l'utilisateur = %d\n", maxValue);
@@ -171,8 +185,14 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries)
     bool playerWins = false;
 
     // création du code secret
-
-    genRandomCode(trueCode, codeLength);    
+    if(gameAgainstHuman)
+    {
+        genHumanCode(trueCode, codeLength);
+        clearScreen();
+        puts("Le code a été choisi, à son adversaire de le deviner");
+    }
+    else
+        genRandomCode(trueCode, codeLength);    
 
 #if DEBUG
     puts("Debug: code aléatoire généré");
@@ -227,12 +247,10 @@ void classicGame()
     puts("\n*** Partie Classique ***\n");
 
     // jeu
-    hasPlayerWon = launchGame(CLASSIC_GAME_CODE_LENGTH, CLASSIC_GAME_MAX_TRIES, &nbOfTries);
+    hasPlayerWon = launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, &nbOfTries, false);
 
-    if(hasPlayerWon)
-        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
-    else
-        puts("Vous avez perdu...\n");
+    printResultGame(hasPlayerWon, nbOfTries);
+  
 }
 
 
@@ -251,10 +269,21 @@ void customGame()
     int maxTries = (int)getUserChoice(5,15);
 
     // jeu
-    hasPlayerWon = launchGame(codeLength, maxTries, &nbOfTries);
+    hasPlayerWon = launchGame(codeLength, maxTries, &nbOfTries, false);
 
-    if(hasPlayerWon)
-        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
-    else
-        puts("Vous avez perdu...\n");   
+   printResultGame(hasPlayerWon, nbOfTries);
+}
+
+void gameAgainstHuman()
+{
+    int nbOfTries = 0;    
+    bool hasPlayerWon;
+
+    // declaration et affichage
+    puts("\n*** Mode 2 joueurs ***\n");
+
+    // jeu
+    hasPlayerWon = launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, &nbOfTries, true);
+
+    printResultGame(hasPlayerWon, nbOfTries);
 }

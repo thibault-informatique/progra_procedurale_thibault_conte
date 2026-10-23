@@ -47,7 +47,7 @@ int main(void)
                 customGame();
                 break;
             case 3 :
-                puts("\n*** Mode 2 joueurs ***\n");
+                gameAgainstHuman();
                 break;
 #if DEBUG
             case 4:
