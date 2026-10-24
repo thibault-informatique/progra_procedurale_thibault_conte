@@ -11,9 +11,30 @@
 #define STD_NB_OF_DIGITS 4
 
 
-static void printGuessCode(int codeLength, int nbOfRemainingTries)
+/*** SCORE ***/
+
+// calcul un score à chaque coup du joueur
+// renvoie le score si pas d'erreur, -1 sinon
+// tient compte de la longueur du code et du nbre d'essai
+// choix volontaire d'avoir une troncature du retour pour ne pas afficher de décimal au score
+// score de 1000 si réussite au premier essai
+static int calculateScore(int codeLength, int nbOfTries)
+{
+    if (codeLength < 4 || codeLength > 6 || nbOfTries < 0 || nbOfTries > 15)
+    {
+        fprintf(stderr, "Erreur: le code doit faire entre 4 à 6 chiffres et le nb d'essai doit être entre 0 et 15.\n");
+        return -1;
+    }
+
+    return  1000 - (nbOfTries * 100 / ((float)codeLength / 2));
+}
+
+/*** AFFICHAGE ***/ 
+
+static void printGuessCode(int codeLength, int nbOfRemainingTries, int nbOfTries)
 {
     printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfRemainingTries);
+    printf("Score actuel = %d\n", calculateScore(codeLength, nbOfTries));
     printf("Quel est le bon code ? ");
 }
 
@@ -22,7 +43,6 @@ static void printHistoricCommand()
      printf("NB: Appuyez sur " GREEN "'h'" RESET " puis " GREEN "ENTER " RESET "pour afficher " BOLD "l'historique." RESET "\n\n" );
 }
 
-/*** AFFICHAGE ***/ 
 
 void printMenu()
 {
@@ -38,17 +58,20 @@ void printMenu()
     printf("\nQuel est votre choix? ");
 }
 
-void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition)
+static void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition)
 {
     assert(goodPosition != NULL && wrongPosition != NULL);
 
     printf("Bien placés : " GREEN"%d"RESET " | Mal placés : " RED"%d"RESET"\n", *goodPosition, *wrongPosition);
 }
 
-void printResultGame(bool victory, int nbOfTries)
+static void printResultGame(bool victory, int nbOfTries, int codeLength)
 {
-      if(victory)
-        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n"RESET, nbOfTries);
+    if(victory)
+    {
+        printf(BOLD"\nFélicitations! Victoire en %d tentative(s)!\n", nbOfTries);
+        printf("Score final = %d\n"RESET, calculateScore(codeLength, nbOfTries - 1));
+    }
     else
         puts("\n\nVous avez perdu...\n");
 }
@@ -73,7 +96,7 @@ void clearScreen()
 // 3) permettre au joueur d'afficher l'historique en pressant la touche 'h' puis enter
 // 4) vérifier si le joueur a gagné ou perdu
 // 5) sinon boucler
-bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman)
+static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman)
 {
     assert(nbOfTries != NULL && maxTries >= 1 && codeLength >= 1);
 
@@ -110,7 +133,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHu
     // test pour voir si le joueur a gagné avant de reboucler
     do
     {
-        printGuessCode(codeLength, remainingTries);
+        printGuessCode(codeLength, remainingTries, *nbOfTries);
 
         bool distinctsDigits = false;
 
@@ -126,7 +149,7 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHu
                 if(*nbOfTries > 0)
                 {
                     printHistoryCode(*nbOfTries, codeLength, historyCode);
-                    printGuessCode(codeLength, remainingTries);
+                    printGuessCode(codeLength, remainingTries, *nbOfTries);
                 }
                 else
                     puts("Aucun code dans l'historique");
@@ -153,15 +176,18 @@ bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHu
         // memcpy = "copie moi ces N octets de là vers ici"
         memcpy(historyCode[*nbOfTries], tPlayerCode, codeLength * sizeof(int));
 
-        (*nbOfTries)++;
-        remainingTries--;
-
         updatePositionsCounters(trueCode, tPlayerCode, codeLength, &goodPosition, &wrongPosition);
 
         printValuesPositionsCounter(&goodPosition, &wrongPosition);
 
-        // 4) verif victoire ou défaite? 
+        // le coup qui vient d'être joué compte comme un essai consommé
+        (*nbOfTries)++;
+
+        // 4) verif victoire ou défaite?
         playerWins = hasPlayerWin(&goodPosition, codeLength);
+
+        if (!playerWins)
+            remainingTries--;
 
     } while (!playerWins && *nbOfTries < maxTries);
 
@@ -284,7 +310,7 @@ void updatePositionsCounters(const int trueCode[], const int playerCode[], int c
 void classicGame()
 {    
     
-    int nbOfTries = 0;    
+    int nbOfTries = 0;
     bool hasPlayerWon;
 
     puts("\n*** Partie Classique ***\n");
@@ -293,13 +319,13 @@ void classicGame()
     // jeu
     hasPlayerWon = launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, &nbOfTries, false);
 
-    printResultGame(hasPlayerWon, nbOfTries);
+    printResultGame(hasPlayerWon, nbOfTries, STD_NB_OF_DIGITS);
   
 }
 
 void customGame()
 {
-    int nbOfTries = 0;    
+    int nbOfTries = 0;
     bool hasPlayerWon;
 
     // declaration et affichage
@@ -315,12 +341,12 @@ void customGame()
     // jeu
     hasPlayerWon = launchGame(codeLength, maxTries, &nbOfTries, false);
 
-   printResultGame(hasPlayerWon, nbOfTries);
+   printResultGame(hasPlayerWon, nbOfTries, codeLength);
 }
 
 void gameAgainstHuman()
 {
-    int nbOfTries = 0;    
+    int nbOfTries = 0;
     bool hasPlayerWon;
 
     // declaration et affichage
@@ -330,5 +356,5 @@ void gameAgainstHuman()
     // jeu
     hasPlayerWon = launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, &nbOfTries, true);
 
-    printResultGame(hasPlayerWon, nbOfTries);
+    printResultGame(hasPlayerWon, nbOfTries, STD_NB_OF_DIGITS);
 }

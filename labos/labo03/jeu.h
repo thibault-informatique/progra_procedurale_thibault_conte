@@ -11,15 +11,10 @@
 /*** AFFICHAGE  ***/
 void printMenu();
 
-void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition);
-
-void printResultGame(bool victory, int nbOfTries);
-
 void clearScreen();
 
 
 /*** MECANIQUES DE JEU ***/
-bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman);
 
 int getUserChoice(unsigned int minValue, unsigned int maxValue);
 
