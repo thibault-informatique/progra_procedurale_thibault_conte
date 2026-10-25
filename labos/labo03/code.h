@@ -20,7 +20,9 @@ void genRandomCode(int code[], short int tabLength);
 // génération du code par un autre joueur humain (stockage tab int)
 void genHumanCode(int code[], short int tabLength);
 
-/***  HISTORIQUE DU CODE ***/
+/***  AFFICHAGE DU CODE ***/
+
+void printCode(int code[], short int tabLength);
 
 void printHistoryCode(int nbOfTries, int codeLength, const int historyCode[][codeLength]);
 

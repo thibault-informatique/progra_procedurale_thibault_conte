@@ -10,6 +10,9 @@
 #define STD_MAX_TRIES 10
 #define STD_NB_OF_DIGITS 4
 
+// TODO : remodeler code pour afficher code quand on a perdu
+// printtResultGame dans gameLaunch et pas dans chaque mode de jeu
+
 /****************************
         SOMMAIRE DE jeu.c 
     (dont les fcts statics)
@@ -47,6 +50,7 @@ static bool hasPlayerWin(const int * goodPosition, int codeLength);
 
 // maj des compteurs bon chiffre à la bonne place ou bon chiffre mauvaise place
 static void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
+
 
 /*** DIFFERENTS TYPES DE JEU ***/
 
@@ -114,7 +118,7 @@ static void printValuesPositionsCounter(const int *goodPosition, const int *wron
     printf("Bien placés : " GREEN"%d"RESET " | Mal placés : "YELLOW"%d"RESET"\n", *goodPosition, *wrongPosition);
 }
 
-static void printResultGame(bool victory, int nbOfTries, int codeLength)
+static void printResultGame(bool victory, const int code[], int nbOfTries, int codeLength)
 {
     if(victory)
     {
@@ -122,7 +126,12 @@ static void printResultGame(bool victory, int nbOfTries, int codeLength)
         printf("Score final = %d\n"RESET, calculateScore(codeLength, nbOfTries - 1));
     }
     else
+    {
         puts("\n\nVous avez perdu...\n");
+        printf("Le code était : ");
+        printCode(code, codeLength);
+        putchar('\n');
+    }
 }
 
 // appel fct système pour effacer le contenu de la console
