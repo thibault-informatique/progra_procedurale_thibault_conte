@@ -10,6 +10,55 @@
 #define STD_MAX_TRIES 10
 #define STD_NB_OF_DIGITS 4
 
+/****************************
+        SOMMAIRE DE jeu.c 
+    (dont les fcts statics)
+*****************************/
+
+/*** SCORE ***/
+
+// calcul un score à chaque coup du joueur, -1 si erreur(troncature volontaire)
+static int calculateScore(int codeLength, int nbOfTries);
+
+
+/*** AFFICHAGE  ***/
+
+void printMenu();
+
+// utilité: masquer le code entré par le joueur (mode JcJ)
+static void clearScreen();
+static void printGuessCode(int codeLength, int nbOfRemainingTries, int nbOfTries);
+// affichage raccourci pour afficher l'historique ('h')
+static void printHistoricCommand();
+static void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition);
+static void printResultGame(bool victory, int nbOfTries, int codeLength);
+
+
+
+/*** MECANIQUES DE JEU ***/
+
+int getUserChoice(unsigned int minValue, unsigned int maxValue);
+
+// amélioration de getUserChoice(): recuperation nombre ou commande (ici 'h' : historique)
+static bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue, char commandChar, int *choice);
+
+// tous les chiffres du code sont exacts et au bon endroit?
+static bool hasPlayerWin(const int * goodPosition, int codeLength);
+
+// maj des compteurs bon chiffre à la bonne place ou bon chiffre mauvaise place
+static void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
+
+/*** DIFFERENTS TYPES DE JEU ***/
+
+static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman);
+void classicGame();
+void customGame();
+void gameAgainstHuman();
+
+
+/**********************
+   CODE DES FONCTIONS
+***********************/
 
 /*** SCORE ***/
 
@@ -31,19 +80,6 @@ static int calculateScore(int codeLength, int nbOfTries)
 
 /*** AFFICHAGE ***/ 
 
-static void printGuessCode(int codeLength, int nbOfRemainingTries, int nbOfTries)
-{
-    printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfRemainingTries);
-    printf("Score actuel = %d\n", calculateScore(codeLength, nbOfTries));
-    printf("Quel est le bon code ? ");
-}
-
-static void printHistoricCommand()
-{
-     printf("NB: Appuyez sur " GREEN "'h'" RESET " puis " GREEN "ENTER " RESET "pour afficher " BOLD "l'historique." RESET "\n\n" );
-}
-
-
 void printMenu()
 {
     puts("\n");
@@ -58,11 +94,24 @@ void printMenu()
     printf("\nQuel est votre choix? ");
 }
 
+static void printGuessCode(int codeLength, int nbOfRemainingTries, int nbOfTries)
+{
+    printf("\nCode de %d chiffres - %d tentatives\n", codeLength, nbOfRemainingTries);
+    printf("Score actuel = %d\n", calculateScore(codeLength, nbOfTries));
+    printf("Quel est le bon code ? ");
+}
+
+static void printHistoricCommand()
+{
+     printf("NB: Appuyez sur " GREEN "'h'" RESET " puis " GREEN "ENTER " RESET "pour afficher " BOLD "l'historique." RESET "\n\n" );
+}
+
+
 static void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition)
 {
     assert(goodPosition != NULL && wrongPosition != NULL);
 
-    printf("Bien placés : " GREEN"%d"RESET " | Mal placés : " RED"%d"RESET"\n", *goodPosition, *wrongPosition);
+    printf("Bien placés : " GREEN"%d"RESET " | Mal placés : "YELLOW"%d"RESET"\n", *goodPosition, *wrongPosition);
 }
 
 static void printResultGame(bool victory, int nbOfTries, int codeLength)
@@ -77,8 +126,7 @@ static void printResultGame(bool victory, int nbOfTries, int codeLength)
 }
 
 // appel fct système pour effacer le contenu de la console
-// utile ici pour masquer le code entré par le joueur
-void clearScreen()
+static void clearScreen()
 {
     #ifdef _WIN32
         system("cls");
@@ -194,7 +242,7 @@ static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAg
     return playerWins;
 }
 
-// fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
+
 int getUserChoice(unsigned int minValue, unsigned int maxValue)
 {
     char buffer[20];
@@ -229,9 +277,10 @@ int getUserChoice(unsigned int minValue, unsigned int maxValue)
     return userChoice;
 }
 
-// amélioration de getUserChoice() et qui permet de retourner true si une commande est passée en premier char de la saisie user
-// retourne false si un nombre est renseigné (accesible via para *choice)
-bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue, char commandChar, int *choice)
+
+// amélioration de getUserChoice(): permet de retourner true si une commande est passée en premier char de la saisie user
+// retourne false si un nombre est renseigné ( ce nombre reste accesible via int *choice)
+static bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue, char commandChar, int *choice)
 {
     char buffer[20];
     bool isValid = false;
@@ -269,13 +318,13 @@ bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue, char c
     return false;
 }
 
-// le joueur gagne s'il trouve tous les chiffres du code au bon endroit
-bool hasPlayerWin( const int * goodPosition, int codeLength)
+static bool hasPlayerWin( const int * goodPosition, int codeLength)
 {
     return *goodPosition == codeLength;
 }
 
-void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
+
+static void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int * goodPosition, int *wrongPosition)
 {
     assert(trueCode != NULL && playerCode != NULL && goodPosition != NULL && wrongPosition != NULL && codeLength > 0);
 

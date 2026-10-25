@@ -3,33 +3,24 @@
 
 #include <stdbool.h>
 
-#define GREEN "\033[32m"
-#define RED   "\033[33m"
+// affichage couleurs / bold console
+#define GREEN "\033[32m" 
+#define YELLOW "\033[33m"
 #define BOLD  "\033[1m"
 #define RESET "\033[0m"
 
 /*** AFFICHAGE  ***/
 void printMenu();
 
-void clearScreen();
-
-
 /*** MECANIQUES DE JEU ***/
 
+// fonction + performante et sécurisée que scanf (recup saisie user pour un unsigned int), via IA pour tests et sécurité
 int getUserChoice(unsigned int minValue, unsigned int maxValue);
-
-bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue, char commandChar, int *choice);
-
-bool hasPlayerWin(const int * goodPosition, int codeLength);
-
-void updatePositionsCounters(const int trueCode[], const int playerCode[], int codeLength, int *goodPosition, int *wrongPosition);
 
 /*** DIFFERENTS TYPES DE JEU ***/
 
 void classicGame();
-
 void customGame();
-
 void gameAgainstHuman();
 
 #endif

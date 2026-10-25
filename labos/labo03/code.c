@@ -6,9 +6,38 @@
 #include "code.h"
 #include "jeu.h"
 
+/****************************
+      SOMMAIRE DE code.c 
+*****************************/
+
+
 /***  OUTILS GENERATION CODE ***/
 
-// transformer un code (nombre) depuis un integer vers un tableau de n digits (playerCode)
+bool intToTab(int playerCode[], int number, int nbOfDigit);
+
+int getCodeMaxValue(int codeLength);
+
+bool isDigitDistinctInCode(int code[], short int tabLength);
+
+void genRandomCode(int code[], short int tabLength);
+
+void genHumanCode(int code[], short int tabLength);
+
+/***  HISTORIQUE DU CODE ***/
+
+void printHistoryCode(int nbOfTries, int codeLength, const int historyCode[][codeLength]);
+
+
+
+
+/**********************
+   CODE DES FONCTIONS
+***********************/
+
+
+/***  OUTILS GENERATION CODE ***/
+
+
 bool intToTab(int playerCode[], int number, int nbOfDigit)
 {
     assert (playerCode != NULL);
@@ -45,7 +74,7 @@ bool intToTab(int playerCode[], int number, int nbOfDigit)
     return true;
 }
 
-// calcul valeur maximale du code en fonction du nbre de digits
+
 int getCodeMaxValue(int codeLength)
 {
     int maxValue = 1;
@@ -56,8 +85,6 @@ int getCodeMaxValue(int codeLength)
     return --maxValue;
 }
 
-// vérification du code: chaque chiffre est bien différent des autres?
-// si doublon => la fct retourne false
 bool isDigitDistinctInCode(int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);
@@ -72,7 +99,6 @@ bool isDigitDistinctInCode(int code[], short int tabLength)
     return true;
 }
 
-// on génère aléatoirement un code stocké dans un tableau de int 
 // chiffres distincts générés 1 par 1 via rand
 void genRandomCode(int code[], short int tabLength)
 {
@@ -88,7 +114,7 @@ void genRandomCode(int code[], short int tabLength)
     }  
 }
 
-// même contrainte, génération par un autre joueur
+// le joueur encode un int et appel intToTab pour stocker dans un tab de int
 void genHumanCode(int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);

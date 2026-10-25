@@ -5,6 +5,4 @@
 
 void printCode(int code[], short int tabLength);
 
-void testIntToTab(int number, int nbOfDigit);
-
 #endif 
