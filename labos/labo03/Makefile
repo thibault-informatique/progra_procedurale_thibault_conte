@@ -3,7 +3,7 @@
 CC	    = gcc
 CFLAGS	= -Wall -Wextra -Wpedantic -std=c23 -g
 NAME	= codebreaker.exe
-OBJETS	= code.o debug.o jeu.o main.o
+OBJETS	= code.o jeu.o main.o
 
 all: $(NAME)
 
@@ -18,9 +18,6 @@ main.o: main.c jeu.h code.h debug.h
 
 code.o: code.c code.h jeu.h
 	$(CC) $(CFLAGS) -c code.c -o code.o
-
-debug.o: debug.c debug.h jeu.h
-	$(CC) $(CFLAGS) -c debug.c -o debug.o
 
 jeu.o: jeu.c code.h debug.h
 	$(CC) $(CFLAGS) -c jeu.c -o jeu.o

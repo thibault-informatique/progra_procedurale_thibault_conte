@@ -17,15 +17,15 @@ bool intToTab(int playerCode[], int number, int nbOfDigit);
 
 int getCodeMaxValue(int codeLength);
 
-bool isDigitDistinctInCode(int code[], short int tabLength);
+bool isDigitDistinctInCode(const int code[], short int tabLength);
 
 void genRandomCode(int code[], short int tabLength);
 
 void genHumanCode(int code[], short int tabLength);
 
-/***  HISTORIQUE DU CODE ***/
+/***  AFFICHAGE DU CODE ***/
 
-void printCode(int code[], short int tabLength);
+void printCode(const int code[], short int tabLength);
 
 void printHistoryCode(int nbOfTries, int codeLength, const int historyCode[][codeLength]);
 
@@ -87,7 +87,7 @@ int getCodeMaxValue(int codeLength)
     return --maxValue;
 }
 
-bool isDigitDistinctInCode(int code[], short int tabLength)
+bool isDigitDistinctInCode(const int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);
 
@@ -146,7 +146,7 @@ void genHumanCode(int code[], short int tabLength)
 
 /***  HISTORIQUE DU CODE ***/
 
-void printCode(int code[], short int tabLength)
+void printCode(const int code[], short int tabLength)
 {
     assert(code != NULL && tabLength > 0);
 

@@ -10,9 +10,6 @@
 #define STD_MAX_TRIES 10
 #define STD_NB_OF_DIGITS 4
 
-// TODO : remodeler code pour afficher code quand on a perdu
-// printtResultGame dans gameLaunch et pas dans chaque mode de jeu
-
 /****************************
         SOMMAIRE DE jeu.c 
     (dont les fcts statics)
@@ -34,7 +31,7 @@ static void printGuessCode(int codeLength, int nbOfRemainingTries, int nbOfTries
 // affichage raccourci pour afficher l'historique ('h')
 static void printHistoricCommand();
 static void printValuesPositionsCounter(const int *goodPosition, const int *wrongPosition);
-static void printResultGame(bool victory, int nbOfTries, int codeLength);
+static void printResultGame(bool victory, const int code[], int nbOfTries, int codeLength);
 
 
 
@@ -54,7 +51,7 @@ static void updatePositionsCounters(const int trueCode[], const int playerCode[]
 
 /*** DIFFERENTS TYPES DE JEU ***/
 
-static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman);
+static void launchGame(int codeLength, int maxTries, bool gameAgainstHuman);
 void classicGame();
 void customGame();
 void gameAgainstHuman();
@@ -152,12 +149,13 @@ static void clearScreen()
 // 2) lancer le jeu avec affichage / choix du joueur
 // 3) permettre au joueur d'afficher l'historique en pressant la touche 'h' puis enter
 // 4) vérifier si le joueur a gagné ou perdu
-// 5) sinon boucler
-static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAgainstHuman)
+// 5) sinon boucler, puis afficher le résultat
+static void launchGame(int codeLength, int maxTries, bool gameAgainstHuman)
 {
-    assert(nbOfTries != NULL && maxTries >= 1 && codeLength >= 1);
+    assert(maxTries >= 1 && codeLength >= 1);
 
     // declaration
+    int nbOfTries = 0;
     int trueCode[codeLength], tPlayerCode[codeLength];
     int historyCode[maxTries][codeLength];
     int remainingTries = maxTries;
@@ -190,7 +188,7 @@ static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAg
     // test pour voir si le joueur a gagné avant de reboucler
     do
     {
-        printGuessCode(codeLength, remainingTries, *nbOfTries);
+        printGuessCode(codeLength, remainingTries, nbOfTries);
 
         bool distinctsDigits = false;
 
@@ -203,10 +201,10 @@ static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAg
            // cas 1 : historique demandé via touche 'h' + enter 
             if (getUserChoiceOrCommand(0,maxValue, 'h', &dPlayerCode))
             {
-                if(*nbOfTries > 0)
+                if(nbOfTries > 0)
                 {
-                    printHistoryCode(*nbOfTries, codeLength, historyCode);
-                    printGuessCode(codeLength, remainingTries, *nbOfTries);
+                    printHistoryCode(nbOfTries, codeLength, historyCode);
+                    printGuessCode(codeLength, remainingTries, nbOfTries);
                 }
                 else
                     puts("Aucun code dans l'historique");
@@ -231,14 +229,13 @@ static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAg
         // on stocke le dernier code essayé par le joueur dans le tableau historique
         // via IA pour ne pas devoir réécrire une fonction qui copie un tab dans un autre
         // memcpy = "copie moi ces N octets de là vers ici"
-        memcpy(historyCode[*nbOfTries], tPlayerCode, codeLength * sizeof(int));
+        memcpy(historyCode[nbOfTries], tPlayerCode, codeLength * sizeof(int));
 
         updatePositionsCounters(trueCode, tPlayerCode, codeLength, &goodPosition, &wrongPosition);
 
         printValuesPositionsCounter(&goodPosition, &wrongPosition);
 
-        // le coup qui vient d'être joué compte comme un essai consommé
-        (*nbOfTries)++;
+        nbOfTries++;
 
         // 4) verif victoire ou défaite?
         playerWins = hasPlayerWin(&goodPosition, codeLength);
@@ -246,9 +243,10 @@ static bool launchGame(int codeLength, int maxTries, int *nbOfTries, bool gameAg
         if (!playerWins)
             remainingTries--;
 
-    } while (!playerWins && *nbOfTries < maxTries);
+    } while (!playerWins && nbOfTries < maxTries);
 
-    return playerWins;
+    // affichage quand fin de partie
+    printResultGame(playerWins, trueCode, nbOfTries, codeLength);
 }
 
 
@@ -276,7 +274,7 @@ int getUserChoice(unsigned int minValue, unsigned int maxValue)
         }
 
         // etape 3 : validation
-        isValid = (sscanf_s(buffer, "%d", &userChoice) == 1) &&
+        isValid = (sscanf(buffer, "%d", &userChoice) == 1) &&
                   (userChoice >= (int)minValue)              &&
                   (userChoice <= (int)maxValue);
 
@@ -317,7 +315,7 @@ static bool getUserChoiceOrCommand(unsigned int minValue, unsigned int maxValue,
             return true;
 
         // sinon , on gère et modifie le pointeur afin qu'il contienne un nbre
-        isValid = (sscanf_s(buffer, "%d", choice) == 1) &&
+        isValid = (sscanf(buffer, "%d", choice) == 1) &&
                   (*choice >= (int)minValue)             &&
                   (*choice <= (int)maxValue);
 
@@ -366,26 +364,15 @@ static void updatePositionsCounters(const int trueCode[], const int playerCode[]
 /*** DIFFERENTS TYPES DE JEU ***/
 
 void classicGame()
-{    
-    
-    int nbOfTries = 0;
-    bool hasPlayerWon;
-
+{
     puts("\n*** Partie Classique ***\n");
     printHistoricCommand();
 
-    // jeu
-    hasPlayerWon = launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, &nbOfTries, false);
-
-    printResultGame(hasPlayerWon, nbOfTries, STD_NB_OF_DIGITS);
-  
+    launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, false);
 }
 
 void customGame()
 {
-    int nbOfTries = 0;
-    bool hasPlayerWon;
-
     // declaration et affichage
     puts("\n*** Partie Personnalisée ***\n");
     printHistoricCommand();
@@ -396,23 +383,14 @@ void customGame()
     puts("Veuillez choisir le nombre de tentatives autorisées (5-15)");
     int maxTries = (int)getUserChoice(5,15);
 
-    // jeu
-    hasPlayerWon = launchGame(codeLength, maxTries, &nbOfTries, false);
-
-   printResultGame(hasPlayerWon, nbOfTries, codeLength);
+    launchGame(codeLength, maxTries, false);
 }
 
 void gameAgainstHuman()
 {
-    int nbOfTries = 0;
-    bool hasPlayerWon;
-
     // declaration et affichage
     puts("\n*** Mode 2 joueurs ***\n");
     printHistoricCommand();
 
-    // jeu
-    hasPlayerWon = launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, &nbOfTries, true);
-
-    printResultGame(hasPlayerWon, nbOfTries, STD_NB_OF_DIGITS);
+    launchGame(STD_NB_OF_DIGITS, STD_MAX_TRIES, true);
 }

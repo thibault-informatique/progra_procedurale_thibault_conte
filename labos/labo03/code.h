@@ -12,7 +12,7 @@ bool intToTab(int playerCode[], int number, int nbOfDigit);
 int getCodeMaxValue(int codeLength);
 
 // vérification du code: chaque chiffre est bien différent des autres? true : false
-bool isDigitDistinctInCode(int code[], short int tabLength);
+bool isDigitDistinctInCode(const int code[], short int tabLength);
 
 // génération aléatoire d'un code stocké dans un tableau de int (1 chiffre à la fois)
 void genRandomCode(int code[], short int tabLength);
@@ -22,7 +22,7 @@ void genHumanCode(int code[], short int tabLength);
 
 /***  AFFICHAGE DU CODE ***/
 
-void printCode(int code[], short int tabLength);
+void printCode(const int code[], short int tabLength);
 
 void printHistoryCode(int nbOfTries, int codeLength, const int historyCode[][codeLength]);
 
