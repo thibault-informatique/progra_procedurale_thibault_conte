@@ -112,7 +112,7 @@ static void printValuesPositionsCounter(const int *goodPosition, const int *wron
 {
     assert(goodPosition != NULL && wrongPosition != NULL);
 
-    printf("Bien placés : " GREEN"%d"RESET " | Mal placés : "YELLOW"%d"RESET"\n", *goodPosition, *wrongPosition);
+    printf("Bien placés : " GREEN"%d"RESET " | Mal placés : "RED"%d"RESET"\n", *goodPosition, *wrongPosition);
 }
 
 static void printResultGame(bool victory, const int code[], int nbOfTries, int codeLength)
@@ -234,6 +234,9 @@ static void launchGame(int codeLength, int maxTries, bool gameAgainstHuman)
         updatePositionsCounters(trueCode, tPlayerCode, codeLength, &goodPosition, &wrongPosition);
 
         printValuesPositionsCounter(&goodPosition, &wrongPosition);
+        printf("Code saisi: ");
+        printCode(tPlayerCode, codeLength);
+
 
         nbOfTries++;
 

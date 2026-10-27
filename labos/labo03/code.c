@@ -152,7 +152,7 @@ void printCode(const int code[], short int tabLength)
 
     for(int i = 0; i < tabLength ; i++)
     {
-        printf("%d", code[i]);
+        printf(YELLOW"%d"RESET, code[i]);
     }
     putc('\n', stdout);
 }
