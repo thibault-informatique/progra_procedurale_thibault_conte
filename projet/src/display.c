@@ -124,7 +124,8 @@ void printAskConfirmation()
 
 // conversion ipv4 32 bits ou Hexxa en base 10, human readable
 // A revoir les conditions binaires
-// >> fait descendre les bits de gauche vers la D; & 0xFF (mask) ne garde que les 8 derniers bits
+// >> fait descendre les bits de gauche vers la D
+// & 0xFF (mask) ne garde que les 8 derniers bits (sécurité si il y avait malgré tout des bits de poids parasites suppl)
 void printDecimalIpv4(uint32_t address)
 {
     printf("%u.%u.%u.%u\n", 

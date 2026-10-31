@@ -18,7 +18,7 @@ Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4
     if(strlen(name) >= sizeof(device->name))
         return ERR_STR_LENGTH;
 
-    if(!isValidIp(ip))
+    if(!isValidIp(ip, mask))
         return ERR_INVALID_IP;
     if(!isValidMask(mask))
         return ERR_INVALID_MASK;    

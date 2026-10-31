@@ -12,7 +12,11 @@ NAME	= bin/network_manager
 SRC		= src/device.c src/display.c src/main.c src/network.c
 OBJ		= $(SRC:src/%.c=build/%.o) # transforme src/main.c en build/main.o, etc.
 
+all : $(NAME)
 
+run: $(NAME)
+	./$(NAME)
+	
 #Création exécutable du projet | main target
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) 
@@ -38,7 +42,7 @@ build/network.o: src/network.c
 # include équivalent pour Makefile du #include <> en C | le '-': ignore silencieusement si le fichier n'existe pas (premier passage)
 # si des fichiers de dépendance existe charge les
 
-.PHONY: clean
+.PHONY: clean run
 clean:
 	rm -rf build/* bin/*
 # attention très dangereux si variables $(DIR)/* et que vide => car équivaudrait à la racine système -rf /*

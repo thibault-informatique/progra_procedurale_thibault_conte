@@ -9,7 +9,7 @@
 #include "constants.h"
 
 // TODO isValidIp, isValidMask, isPrivateIp 
-bool isValidIp(Ipv4 ip)
+bool isValidIp(Ipv4 ip, Ipv4 mask)
 {
     return true;
 }
@@ -18,6 +18,23 @@ bool isValidMask(Ipv4 subnet_mask)
 {
     return true;
 }
+
+// tous les bits de l'hôte sont-ils à zéro?
+// 1) extraire les bits partie l'hôte
+// 2) vérifier si = à 0
+bool isNetworkAddress(Ipv4 address, Ipv4 mask)
+{
+    return (address.address & ~mask.address) == 0;
+}
+
+// tous les bits de l'hôte sont-ils à 1?
+// 1) extraire les bits partie l'hôte
+// 2) vérifier si tous bits de la partie hôte = 1 ou = à l'inverse du masque réseau
+bool isBroadcastAddress(Ipv4 address, Ipv4 mask)
+{
+    return (address.address & ~mask.address) == ~mask.address;
+}
+
 
 // 10.0.0.0 à 10.255.255.255
 // 172.16.0.0 à 172.31.255.255
@@ -30,7 +47,7 @@ bool isPrivateIp(Ipv4 ip)
 // saisie user 'o' pour oui 'n' pour non
 bool userConfirmInput()
 {
-    askConfirmation();
+    printAskConfirmation();
 
     int answer = '\0';
     int c = '\0';
@@ -106,7 +123,7 @@ uint32_t setHexaIPv4Address()
             isWrong = false;
 
             printHexaIPv4(address);
-            userApproval = confirmation();
+            userApproval = userConfirmInput();
 
 #if DEBUG
     printf("Valeur debug userApproval dans setHexaIPv4 : %d\n", userApproval);
