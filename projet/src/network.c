@@ -8,10 +8,28 @@
 #include "display.h"
 #include "constants.h"
 
-// TODO isValidIp, isValidMask, isPrivateIp 
+static bool isNetworkAddress(Ipv4 address, Ipv4 mask);
+static bool isBroadcastAddress(Ipv4 address, Ipv4 mask);
+static bool isLoopBackIPv4Address(Ipv4 address);
+static bool isLinkLocalIPv4Address(Ipv4 address);
+static bool isTestNetIPv4Address(Ipv4 address);
+static bool isExperimentalAddress(Ipv4 address);
+static bool isMulticastAddress(Ipv4 address);
+static bool isLimitedBroadcast(Ipv4 address);
+static bool isThisNetworkAddress(Ipv4 address);
+
+// IP valide si n'est pas une adresse IPv4 spéciale
 bool isValidIp(Ipv4 ip, Ipv4 mask)
 {
-    return true;
+    return  (!isNetworkAddress(ip, mask))   &&
+            (!isBroadcastAddress(ip, mask)) &&
+            (!isLoopBackIPv4Address(ip))    &&
+            (!isLinkLocalIPv4Address(ip))   &&
+            (!isTestNetIPv4Address(ip))     &&
+            (!isExperimentalAddress(ip))    &&
+            (!isMulticastAddress(ip))       &&
+            (!isLimitedBroadcast(ip))       &&
+            (!isThisNetworkAddress(ip));
 }
 
 bool isValidMask(Ipv4 subnet_mask)
@@ -22,7 +40,7 @@ bool isValidMask(Ipv4 subnet_mask)
 // tous les bits de l'hôte sont-ils à zéro?
 // 1) extraire les bits partie l'hôte
 // 2) vérifier si = à 0
-bool isNetworkAddress(Ipv4 address, Ipv4 mask)
+static bool isNetworkAddress(Ipv4 address, Ipv4 mask)
 {
     return (address.address & ~mask.address) == 0;
 }
@@ -30,7 +48,7 @@ bool isNetworkAddress(Ipv4 address, Ipv4 mask)
 // tous les bits de l'hôte sont-ils à 1?
 // 1) extraire les bits partie l'hôte
 // 2) vérifier si tous bits de la partie hôte = 1 ou = à l'inverse du masque réseau
-bool isBroadcastAddress(Ipv4 address, Ipv4 mask)
+static bool isBroadcastAddress(Ipv4 address, Ipv4 mask)
 {
     return (address.address & ~mask.address) == ~mask.address;
 }
@@ -39,9 +57,46 @@ bool isBroadcastAddress(Ipv4 address, Ipv4 mask)
 // 10.0.0.0 à 10.255.255.255
 // 172.16.0.0 à 172.31.255.255
 // 192.168.0.0 à 192.168.255.255
-bool isPrivateIp(Ipv4 ip)
+bool isPrivateIPv4Address(Ipv4 address)
 {
-    return true;
+    return  (address.address >= IPV4(10,0,0,0)    && address.address <= IPV4(10,255,255,255)) ||
+            (address.address >= IPV4(172,16,0,0)  && address.address <= IPV4(172,31,255,255)) ||
+            (address.address >= IPV4(192,168,0,0) && address.address <= IPV4(192,168,255,255));
+}
+
+static bool isLoopBackIPv4Address(Ipv4 address)
+{
+    return (address.address >= IPV4(127,0,0,0) && address.address <= IPV4(127,255,255,254));
+}
+
+static bool isLinkLocalIPv4Address(Ipv4 address)
+{
+    return (address.address >= IPV4(169,254,0,0) && address.address <= IPV4(169,254,255,254));
+}
+
+static bool isTestNetIPv4Address(Ipv4 address)
+{
+    return (address.address >= IPV4(192,0,2,0) && address.address <= IPV4(192,0,2,255));
+}
+
+static bool isExperimentalAddress(Ipv4 address)
+{
+    return (address.address >= IPV4(240,0,0,0) && address.address <= IPV4(255,255,255,254));
+}
+
+static bool isMulticastAddress(Ipv4 address)
+{
+    return (address.address >= IPV4(224,0,0,0) && address.address <= IPV4(239,255,255,255));
+}
+
+static bool isLimitedBroadcast(Ipv4 address)
+{
+    return address.address == IPV4(255,255,255,255);
+}
+
+static bool isThisNetworkAddress(Ipv4 address)
+{
+    return address.address < IPV4(1,0,0,0);
 }
 
 // saisie user 'o' pour oui 'n' pour non

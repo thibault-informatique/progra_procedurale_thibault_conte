@@ -6,12 +6,11 @@
 #include "device.h"
 
 bool isValidIp(Ipv4 ip, Ipv4 mask);
+
+// pour qu'un masque soit valide il faut que tous les bits soient contigus à 1
 bool isValidMask(Ipv4 subnet_mask);
 
-bool isNetworkAddress(Ipv4 address, Ipv4 mask);
-bool isBroadcastAddress(Ipv4 address, Ipv4 mask);
-
-bool isPrivateIp(Ipv4 ip);
+bool isPrivateIPv4Address(Ipv4 address);
 
 bool userConfirmInput();
 
