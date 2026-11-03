@@ -19,21 +19,16 @@ static bool isLimitedBroadcast(Ipv4 address);
 static bool isThisNetworkAddress(Ipv4 address);
 
 // IP valide si n'est pas une adresse IPv4 spéciale
-bool isValidIp(Ipv4 ip, Ipv4 mask)
+bool isValidAsLocalIpaddress(Ipv4 ip, Ipv4 mask)
 {
-    return  (!isNetworkAddress(ip, mask))   &&
-            (!isBroadcastAddress(ip, mask)) &&
-            (!isLoopBackIPv4Address(ip))    &&
-            (!isLinkLocalIPv4Address(ip))   &&
-            (!isTestNetIPv4Address(ip))     &&
-            (!isExperimentalAddress(ip))    &&
-            (!isMulticastAddress(ip))       &&
-            (!isLimitedBroadcast(ip))       &&
-            (!isThisNetworkAddress(ip));
+    return  (isPrivateIPv4Address(ip))      &&
+            (!isNetworkAddress(ip, mask))   &&
+            (!isBroadcastAddress(ip, mask));
 }
 
 bool isValidMask(Ipv4 subnet_mask)
 {
+    // TODO si nécessaire  
     return true;
 }
 
@@ -66,17 +61,22 @@ bool isPrivateIPv4Address(Ipv4 address)
 
 static bool isLoopBackIPv4Address(Ipv4 address)
 {
-    return (address.address >= IPV4(127,0,0,0) && address.address <= IPV4(127,255,255,254));
+    return (address.address >= IPV4(127,0,0,0) && address.address <= IPV4(127,255,255,255));
 }
 
 static bool isLinkLocalIPv4Address(Ipv4 address)
 {
-    return (address.address >= IPV4(169,254,0,0) && address.address <= IPV4(169,254,255,254));
+    return (address.address >= IPV4(169,254,0,0) && address.address <= IPV4(169,254,255,255));
 }
+
 
 static bool isTestNetIPv4Address(Ipv4 address)
 {
-    return (address.address >= IPV4(192,0,2,0) && address.address <= IPV4(192,0,2,255));
+            // TEST-NET 1
+    return (address.address >= IPV4(192,0,2,0) && address.address <= IPV4(192,0,2,255)) ||
+            // TEST-NET 2 et 3 (ajout IA)
+           (address.address >= IPV4(198,51,100,0) && address.address <= IPV4(198,51,100,255)) ||
+           (address.address >= IPV4(203,0,113,0) && address.address <= IPV4(203,0,113,255));
 }
 
 static bool isExperimentalAddress(Ipv4 address)
