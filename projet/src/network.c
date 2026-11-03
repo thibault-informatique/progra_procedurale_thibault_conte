@@ -19,16 +19,30 @@ static bool isLimitedBroadcast(Ipv4 address);
 static bool isThisNetworkAddress(Ipv4 address);
 
 // IP valide si n'est pas une adresse IPv4 spéciale
-bool isValidAsLocalIpaddress(Ipv4 ip, Ipv4 mask)
+bool isValidAsLocalIpAddress(Ipv4 ip, Ipv4 mask)
 {
     return  (isPrivateIPv4Address(ip))      &&
             (!isNetworkAddress(ip, mask))   &&
             (!isBroadcastAddress(ip, mask));
 }
 
+// seuls les bits de poids le plus fort valent 1 et ce de façon contiguë
+// si un seul bit vaut 1 après le préfixe c'est qu'il y a une erreur de masque
+// on rejete 0.0.0.0/0
 bool isValidMask(Ipv4 subnet_mask)
 {
-    // TODO si nécessaire  
+    if(subnet_mask.address == 0)
+        return false;
+
+    unsigned short prefix = translateMaskInPrefix(subnet_mask);
+
+    if(prefix == 0)
+        return false;
+
+    for(int i = 31 - prefix; i >= 0; i--)
+        if (subnet_mask.address & (1u << i))
+            return false;
+    
     return true;
 }
 
@@ -97,6 +111,22 @@ static bool isLimitedBroadcast(Ipv4 address)
 static bool isThisNetworkAddress(Ipv4 address)
 {
     return address.address < IPV4(1,0,0,0);
+}
+
+// compte le nbre de bits de poids fort contigüs à 1
+unsigned short translateMaskInPrefix(Ipv4 mask)
+{
+    unsigned int prefix = 0;
+
+    // si bit à 1 dans l'adresse => on incrémente le préfixe
+    // sinon si bit à 0: on est à la fin du masque
+    for(int i = 31; i >= 0 ; i--)
+        if (mask.address &  (1u << i))
+            prefix++;
+        else
+            break;
+
+    return prefix;
 }
 
 // saisie user 'o' pour oui 'n' pour non

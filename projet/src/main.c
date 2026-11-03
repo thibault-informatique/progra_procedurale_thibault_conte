@@ -20,14 +20,11 @@ int main (void)
     #endif
 
 
-    Ipv4 testAdd1 = {.address = IPV4(192,167,1,10)};
-    Ipv4 testAdd2 = {.address = IPV4(192,168,1,255)};
+    Ipv4 mask = {.address = IPV4(128,0,1,0)};
 
-    Ipv4 mask = {.address = IPV4(255,255,255,0)};
-
-    printf("L'adresse IP : ");
-
-    printf("%s", isPrivateIPv4Address(testAdd2)? "est une adresse privée\n" : "n'est pas une adresse privée\n");
+    printf("le masque a un préfixe /%u\n", translateMaskInPrefix(mask));
+  
+    printf("le masque fournit est %s\n", isValidMask(mask)? "valide": "invalide");
 
     // displayMainPage();
 

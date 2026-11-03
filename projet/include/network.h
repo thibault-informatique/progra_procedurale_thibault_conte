@@ -12,6 +12,8 @@ bool isValidMask(Ipv4 subnet_mask);
 
 bool isPrivateIPv4Address(Ipv4 address);
 
+unsigned short translateMaskInPrefix(Ipv4 mask);
+
 bool userConfirmInput();
 
 uint32_t setHexaIPv4Address();
