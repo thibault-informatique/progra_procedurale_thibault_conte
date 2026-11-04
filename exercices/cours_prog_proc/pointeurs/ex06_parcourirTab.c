@@ -2,7 +2,7 @@
 
 void doublerTableau(int *tab, int taille)
 {
-    if (tab == NULL)
+    if (tab == NULL || taille <= 0)
         return;
 
     for (int i = 0; i < taille; i++)

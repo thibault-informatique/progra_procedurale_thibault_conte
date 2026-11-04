@@ -12,7 +12,7 @@ void afficherProduit(Produit p)
 
 bool appliquerPromotion(Produit *produit, float reduction)
 {
-    if (produit == NULL)
+    if (produit == NULL || reduction <= 0)
         return false;
 
     float temp = produit->prix;

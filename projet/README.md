@@ -2,7 +2,6 @@
 
 1. Finaliser le CRUD (prochaine étape logique) — device.c
 
-removeDevice() : trouver l'index du device, décaler les éléments suivants d'une case vers la gauche (memmove), décrémenter nbOfDevice. Note: la signature actuelle prend un Device* seul, mais il te faut probablement le Park* et le nom/index pour savoir quoi supprimer.
 updateDevice() : réutiliser initDevice (ou une variante) pour re-valider les nouvelles valeurs IP/masque avant modification.
 Ajouter ERR_NOT_FOUND à Return_crud pour les cas device introuvable.
 2. Fonctions utilitaires IP — main.c / network.c

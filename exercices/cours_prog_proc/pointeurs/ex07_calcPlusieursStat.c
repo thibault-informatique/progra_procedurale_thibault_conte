@@ -2,7 +2,7 @@
 
 int statistiques(const int *tab, int taille, int *minimum, int *maximum, double *moyenne)
 {
-    if(tab == NULL || minimum == NULL || maximum == NULL || moyenne == NULL)
+    if(tab == NULL || taille <= 0 || minimum == NULL || maximum == NULL || moyenne == NULL)
         return 0;
 
     int total = 0;
@@ -34,7 +34,7 @@ int statistiques(const int *tab, int taille, int *minimum, int *maximum, double 
 
 void printTab(int *tab, int taille)
 {
-    if(tab == NULL)
+    if(tab == NULL || taille <= 0)
         return;
         
     int i;
