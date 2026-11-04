@@ -17,6 +17,9 @@ void printHexaIPv4(uint32_t address);
 
 void printDevice(const Device *device);
 
-void displayPark(Device park[], int tabLength);
+// NB: le premier device index 0 aura la valeur n°1 pour l'utilisateur
+void displayPark(Park *park);
+
+void printUpdateDeviceMenu(Park *Park);
 
 #endif

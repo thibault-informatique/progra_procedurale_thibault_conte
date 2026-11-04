@@ -4,9 +4,6 @@
 #include <string.h>
 
 #include "network.h"
-#include "compat.h"
-#include "display.h"
-#include "constants.h"
 
 static bool isNetworkAddress(Ipv4 address, Ipv4 mask);
 static bool isBroadcastAddress(Ipv4 address, Ipv4 mask);

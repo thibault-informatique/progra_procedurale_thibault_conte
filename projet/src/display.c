@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "display.h"
+
+#include "../include/display.h"
 #include "../include/compat.h"
 #include "../include/device.h"
 
@@ -161,11 +162,18 @@ void printDevice(const Device *device)
     putc('\n', stdout);
 }
 
-void displayPark(Device park[], int tabLength)
+void displayPark(Park *park)
 {
-    for (int i = 0; i< tabLength; i++)
+    for (int i = 0; i< park->nbOfDevice; i++)
     {
         printf(BOLD "Equipement n°%d\n" RESET, i + 1);
-        printDevice(&park[i]);
+        printDevice(&park->device[i]);
     }
+}
+
+void printUpdateDeviceMenu(Park *park)
+{
+    puts("Quel équipement réseau voulez-vous modifier?");
+    displayPark(park);
+    
 }

@@ -89,7 +89,8 @@
         ERR_STR_LENGTH,
         ERR_INVALID_IP,
         ERR_INVALID_MASK,
-        ERR_PARK_FULL
+        ERR_PARK_FULL,
+        ERR_DEVICE_NOT_FOUND
     } Return_crud;
 
     // TODO après cours double **
@@ -104,10 +105,11 @@
 
     // CRUD
     Return_crud addDevice(Park *park, Device *device);
-    Device* findDevice(Device park[], int count, const char name[]);
-    bool updateDevice(Device* device);
-    bool removeDevice(Device* device);
     // si device trouvé => retourne un pointeur sur le device | NULL sinon
+    Device* findDevice(Park *park, const char name[]);
+    bool updateDevice(Park *park, Device* device);
+    bool removeDevice(Park *park, const char name[]);
+    
    
    
 
