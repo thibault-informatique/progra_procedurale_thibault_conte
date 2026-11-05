@@ -5,6 +5,7 @@
 
 #include "device.h"
 #include "network.h"
+#include "display.h"
 
 
 Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status)
@@ -70,7 +71,7 @@ Device* findDevice(Park *park, const char name[])
     for (int i = 0; i < park->nbOfDevice; i++)
     {
         if (strcmp(park->device[i].name, name) == 0)
-            return &park[i];
+            return &park->device[i];
     }
 
     return NULL;

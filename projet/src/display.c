@@ -25,10 +25,10 @@ void displayMainPage(void)
     printf_s(CYAN BOLD "\t\t  Network Manager\n" RESET);
     printf_s(CYAN "----------------------------------------------------\n" RESET);
     printf_s(DIM "  Progra Procédurale | Décembre 26 | Thibault Conte\n\n" RESET); 
-    printf_s(BOLD "  [ Menu ]\n" RESET);
+    printf_s(BOLD "   [ Menu ]\n" RESET);
     printf_s("   1) Gestion des équipements      2) Recherche d'un élément\n");
     printf_s("   3) Calculs réseau               4) Stats \n");
-    printf_s("\n   0) Quitter\n");
+    printf_s("\n   0) Quitter\n\n");
 
       /* Banniere Network (figlet standard) - conservee pour usage futur
     printf_s("\n" GREEN BOLD
@@ -39,6 +39,15 @@ void displayMainPage(void)
         " |_| \\_|   \\___|   \\__|    \\_/\\_/     \\___/   |_|     |_|\\_\\\n" RESET);
     */
 }
+
+void displayHandlingDevicesMenu(void)
+{
+    printf_s(CYAN BOLD "\t\t  Gestion des appareils réseaux\n" RESET);    
+    puts("   1) Ajouter un équipement    2) Rechercher un équipement");
+    puts("   3) Modifier un équipement   4) Supprimer un équipement");
+    puts("   0) Revenir au menu principal");
+}
+
 
 static void printDeviceType(Device_type type)
 {

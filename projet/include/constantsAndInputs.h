@@ -1,7 +1,8 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef CONSTANTS_AND_INPUTS_H
+#define CONSTANTS_AND_INPUTS_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define PARK_LENGTH 10
 #define DEBUG 1

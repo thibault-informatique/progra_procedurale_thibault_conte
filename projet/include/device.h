@@ -4,7 +4,7 @@
     #include <stdint.h> // types entiers à largeurs fixe (dont la taille en bits est garantie, indépendamment de la plateforme) / utile pour le réseau
     #include <stdbool.h>
 
-    #include "constants.h"
+    #include "constantsAndInputs.h"
 
     /*************************
     ****** ADRESSES IPv4 *****

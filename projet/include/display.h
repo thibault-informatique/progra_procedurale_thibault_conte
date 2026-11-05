@@ -3,11 +3,14 @@
 
 #include "device.h"
 
+/***  AFFICHAGE DES MENUS ***/
 void displayMainPage(void);
 
-static void printDeviceType(Device_type type);
+void displayHandlingDevicesMenu(void);
 
-static void printDeviceStatus(Device_status status);
+void printUpdateDeviceMenu(Park *park);
+
+void printUpdateDeviceMenu(Park *park);
 
 void printAskConfirmation();
 
@@ -20,6 +23,6 @@ void printDevice(const Device *device);
 // NB: le premier device index 0 aura la valeur n°1 pour l'utilisateur
 void displayPark(Park *park);
 
-void printUpdateDeviceMenu(Park *Park);
+
 
 #endif

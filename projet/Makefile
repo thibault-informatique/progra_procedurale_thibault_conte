@@ -9,7 +9,7 @@ CFLAGS	= -Wall -Wextra -Wpedantic -std=c23 -g -MMD -MP
 
 INC		= -Iinclude
 NAME	= bin/network_manager
-SRC		= src/device.c src/display.c src/main.c src/network.c
+SRC		= src/device.c src/display.c src/main.c src/manager.c src/network.c 
 OBJ		= $(SRC:src/%.c=build/%.o) # transforme src/main.c en build/main.o, etc.
 
 all : $(NAME)
@@ -35,6 +35,9 @@ build/device.o: src/device.c
 build/display.o: src/display.c
 	$(CC) $(CFLAGS) $(INC) -c src/display.c -o build/display.o
 
+build/manager.o: src/manager.c
+	$(CC) $(CFLAGS) $(INC) -c src/manager.c -o build/manager.o
+	
 build/network.o: src/network.c
 	$(CC) $(CFLAGS) $(INC) -c src/network.c -o build/network.o
 
@@ -44,5 +47,7 @@ build/network.o: src/network.c
 
 .PHONY: clean run
 clean:
-	rm -rf build/* bin/*
+# Linux
+# rm -rf build/* bin/*
+	del /s /q  "build\*" "bin\*" 
 # attention très dangereux si variables $(DIR)/* et que vide => car équivaudrait à la racine système -rf /*
