@@ -15,9 +15,11 @@ typedef enum: unsigned char
 /***  AFFICHAGE DES MENUS ***/
 void displayMainPage(void);
 
-void displayHandlingDevicesMenu(void);
+void displayDevicesMenu(void);
 
 void displayCrudMenu(Crud_display_choice crud);
+
+void displayChoosePartOfDeviceToUpdate();
 
 /***  AFFICHAGE AUTRE***/
 void printAskConfirmation();

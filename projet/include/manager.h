@@ -14,8 +14,13 @@ bool getUserChoice(int minValue, int maxValue, int *number);
 bool getName(char *name, int nameLength);
 
 /*** MENUS MANAGER ***/
-void handlingDeviceMenu(Park *park);
+void handleDeviceMenu(Park *park);
 
-void handlingRemoveDevice(Park *park);
+//void handleAddDevce(Park *park);
+void handleReadDevice(Park *park);
+
+void handleUpdateDEvice(Park *park);
+
+void handleRemoveDevice(Park *park);
 
 #endif

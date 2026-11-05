@@ -6,6 +6,7 @@
 
 #define PARK_LENGTH 10
 #define DEVICE_NAME_LENGTH 50
+#define PART_OF_DEVICE_NAME_LENGTH 20
 #define DEBUG 1
 
 // MACRO faciliter encodage IPv4 test

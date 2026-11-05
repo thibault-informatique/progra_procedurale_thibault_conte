@@ -78,7 +78,7 @@ int main (void)
                 puts("\n*** Fin du programme ***\n");               
                 break;
             case 1 :                
-                handlingDeviceMenu(park);
+                handleDeviceMenu(park);
                 break;
             case 2 : 
                 // recherche d'un élément

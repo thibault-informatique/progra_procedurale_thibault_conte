@@ -1,9 +1,10 @@
-# TODO 04/11/26
+# TODO 05/11/26
 
 1. Finaliser le CRUD (prochaine étape logique) — device.c
+    => setters: nom, type, adresse, statut
 
-updateDevice() : réutiliser initDevice (ou une variante) pour re-valider les nouvelles valeurs IP/masque avant modification.
-Ajouter ERR_NOT_FOUND à Return_crud pour les cas device introuvable.
+NB: updateDevice() : réutiliser initDevice (ou une variante) pour re-valider les nouvelles valeurs IP/masque avant modification.
+
 2. Fonctions utilitaires IP — main.c / network.c
 
 Ton TODO: conversion IP 4 bytes ↔ binaire (déjà IPV4(a,b,c,d) en macro, il manque l'inverse: uint8_t × 4 depuis une Ipv4).

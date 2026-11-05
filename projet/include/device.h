@@ -79,7 +79,10 @@
     } Park;
     
 
+    /*** SETTERS ***/
 
+    bool setDeviceName(Device *device, const char newName[]);
+    // type - ADRESSE IP - MASQUE - STATUT
  
     /*** CRUD ***/
 
@@ -105,8 +108,9 @@
 
     // CRUD
     Return_crud addDevice(Park *park, Device *device);
-    // si device trouvé => retourne un pointeur sur le device | NULL sinon
-    Device* findDevice(Park *park, const char name[]);
+
+    // si device trouvé => retourne sa position (index) dans le park , -1 sinon
+    int findDevice(Park *park, const char name[]);
     bool updateDevice(Park *park, Device* device);
     bool removeDevice(Park *park, const char name[]);
     

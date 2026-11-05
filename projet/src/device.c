@@ -8,6 +8,21 @@
 #include "../include/display.h"
 #include "../include/constants.h"
 
+/****************************
+****** DEVICE SETTERS   *****
+*****************************/
+
+Return_crud setDeviceName(Device *device, const char newName[])
+{
+    assert (device != NULL && newName != NULL);
+
+    if(strlen(newName) >= sizeof(device->name))
+        return ERR_STR_LENGTH;
+
+    strcpy(device->name, newName);
+    return SUCCES;
+}
+
 
 Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status)
 {
@@ -36,7 +51,9 @@ Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4
 }
 
 
-//  ***  PARK    ***
+  /****************************
+  ******       PARK       *****
+  *****************************/
 
 bool initPark(Park *park)
 {
@@ -67,15 +84,17 @@ Return_crud addDevice(Park *park, Device *device)
 }
 
 
-Device* findDevice(Park *park, const char name[])
+int findDevice(Park *park, const char name[])
 {
+    assert(park != NULL);
+
     for (int i = 0; i < park->nbOfDevice; i++)
     {
         if (strcmp(park->device[i].name, name) == 0)
-            return &park->device[i];
+            return i;
     }
 
-    return NULL;
+    return -1;
 }
 
 bool updateDevice(Park *park, Device* device)

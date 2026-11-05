@@ -25,12 +25,12 @@ void displayMainPage(void)
         " |  __/   |  _ <   | |_| |  | |_| |  | |___     | |\n"
         " |_|      |_| \\_\\   \\___/    \\___/   |_____|    |_|\n" RESET);
 
-    printf_s(CYAN BOLD "Network Manager\n" RESET);
+    printf_s(CYAN BOLD "\t\t    Network Manager\n" RESET);
     printf_s(CYAN "----------------------------------------------------\n" RESET);
     printf_s(DIM "  Progra Procédurale | Décembre 26 | Thibault Conte\n\n" RESET); 
-    printf_s(BOLD "\t\t\t [ Menu ]\n" RESET);
-    printf_s("   1) Gestion des équipements      2) Recherche d'un élément\n");
-    printf_s("   3) Calculs réseau               4) Stats \n");
+    printf_s(BOLD "\t\t\t[ Menu ]\n" RESET);
+    printf_s("   1) Gestion du parc     2) Recherche (filtre/tri)\n");
+    printf_s("   3) Calculs réseau      4) Statistiques \n");
 #if DEBUG
     puts("   5) test debug");
 #endif 
@@ -46,13 +46,13 @@ void displayMainPage(void)
     */
 }
 
-void displayHandlingDevicesMenu(void)
+void displayDevicesMenu(void)
 {
-    printf_s(CYAN BOLD "\n\t\t  Gestion des appareils réseaux\n" RESET);    
-    puts("   1) Ajouter un équipement    2) Rechercher un équipement");
-    puts("   3) Modifier un équipement   4) Supprimer un équipement");
+    printf_s(CYAN BOLD "\n\t\t Gestion des appareils réseaux\n\n" RESET);    
+    puts("   1) Ajouter un équipement    \t 2) Afficher un équipement");
+    puts("   3) Modifier un équipement     4) Supprimer un équipement");
     puts("   5) Afficher le parc réseau");
-    puts("\t\t  0) Revenir au menu principal");
+    puts("\t\t 0) Revenir au menu principal");
 }
 
 void displayCrudMenu(Crud_display_choice crud)
@@ -63,9 +63,8 @@ void displayCrudMenu(Crud_display_choice crud)
             puts("Ajout d'un nouvel équipement");
             break;
         case DISPLAY_READ:
-            puts("Quel équipement réseau voulez-vous afficher");
+            puts("Quel équipement réseau voulez-vous afficher?");
             break;
-
         case DISPLAY_UPDATE:
             puts("Quel équipement réseau voulez-vous modifier?");
             break;
@@ -79,6 +78,14 @@ void displayCrudMenu(Crud_display_choice crud)
 }
 
 
+void displayChoosePartOfDeviceToUpdate()
+{
+    printf_s(BOLD "\nChoix de l'élément à modifier\n\n" RESET);    
+    puts("1) nom      2) type");
+    puts("3) adresse  4) masque");
+    puts("5) Statut");
+    puts("0) Revenir au menu précédent\n");
+}
 /***  AFFICHAGE AUTRE***/
 
 
