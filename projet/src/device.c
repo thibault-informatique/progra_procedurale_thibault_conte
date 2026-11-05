@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "device.h"
-#include "network.h"
-#include "display.h"
+#include "../include/device.h"
+#include "../include/network.h"
+#include "../include/display.h"
+#include "../include/constants.h"
 
 
 Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status)
@@ -79,7 +80,7 @@ Device* findDevice(Park *park, const char name[])
 
 bool updateDevice(Park *park, Device* device)
 {
-    printUpdateDeviceMenu(park);
+    displayCrudMenu(DISPLAY_UPDATE);
     
     return true;
 }

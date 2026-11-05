@@ -2,5 +2,5 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "../include/constantsAndInputs.h"
+#include "../include/constants.h"
 

@@ -10,6 +10,9 @@
 #define DIM   "\033[2m"
 #define RESET "\033[0m"
 
+/***  AFFICHAGE DES MENUS ***/
+
+
 // creation via IA de la bannière PROJET
 // programme en CLI "figlet" => transforme le texte en grand caractères dessinés
 // ASCII Art
@@ -22,13 +25,16 @@ void displayMainPage(void)
         " |  __/   |  _ <   | |_| |  | |_| |  | |___     | |\n"
         " |_|      |_| \\_\\   \\___/    \\___/   |_____|    |_|\n" RESET);
 
-    printf_s(CYAN BOLD "\t\t  Network Manager\n" RESET);
+    printf_s(CYAN BOLD "Network Manager\n" RESET);
     printf_s(CYAN "----------------------------------------------------\n" RESET);
     printf_s(DIM "  Progra Procédurale | Décembre 26 | Thibault Conte\n\n" RESET); 
-    printf_s(BOLD "   [ Menu ]\n" RESET);
+    printf_s(BOLD "\t\t\t [ Menu ]\n" RESET);
     printf_s("   1) Gestion des équipements      2) Recherche d'un élément\n");
     printf_s("   3) Calculs réseau               4) Stats \n");
-    printf_s("\n   0) Quitter\n\n");
+#if DEBUG
+    puts("   5) test debug");
+#endif 
+    printf_s("   0) Quitter\n\n");
 
       /* Banniere Network (figlet standard) - conservee pour usage futur
     printf_s("\n" GREEN BOLD
@@ -42,11 +48,38 @@ void displayMainPage(void)
 
 void displayHandlingDevicesMenu(void)
 {
-    printf_s(CYAN BOLD "\t\t  Gestion des appareils réseaux\n" RESET);    
+    printf_s(CYAN BOLD "\n\t\t  Gestion des appareils réseaux\n" RESET);    
     puts("   1) Ajouter un équipement    2) Rechercher un équipement");
     puts("   3) Modifier un équipement   4) Supprimer un équipement");
-    puts("   0) Revenir au menu principal");
+    puts("   5) Afficher le parc réseau");
+    puts("\t\t  0) Revenir au menu principal");
 }
+
+void displayCrudMenu(Crud_display_choice crud)
+{
+    switch(crud)
+    {
+        case DISPLAY_CREATE:
+            puts("Ajout d'un nouvel équipement");
+            break;
+        case DISPLAY_READ:
+            puts("Quel équipement réseau voulez-vous afficher");
+            break;
+
+        case DISPLAY_UPDATE:
+            puts("Quel équipement réseau voulez-vous modifier?");
+            break;
+        case DISPLAY_DELETE:
+            puts("Quel équipement réseau voulez-vous supprimer?");
+            break;
+        default :
+            fprintf(stderr, "Erreur switchcase displayCrudMenu\n");
+    }
+     
+}
+
+
+/***  AFFICHAGE AUTRE***/
 
 
 static void printDeviceType(Device_type type)
@@ -135,7 +168,7 @@ void printAskConfirmation()
 // conversion ipv4 32 bits ou Hexxa en base 10, human readable
 // A revoir les conditions binaires
 // >> fait descendre les bits de gauche vers la D
-// & 0xFF (mask) ne garde que les 8 derniers bits (sécurité si il y avait malgré tout des bits de poids parasites suppl)
+// & 0xFF (mask) ne garde que les 8 derniers bits (sécurité si il y avait malgré tout des bits de poids forts parasites suppl)
 void printDecimalIpv4(uint32_t address)
 {
     printf("%u.%u.%u.%u\n", 
@@ -178,11 +211,4 @@ void displayPark(Park *park)
         printf(BOLD "Equipement n°%d\n" RESET, i + 1);
         printDevice(&park->device[i]);
     }
-}
-
-void printUpdateDeviceMenu(Park *park)
-{
-    puts("Quel équipement réseau voulez-vous modifier?");
-    displayPark(park);
-    
 }

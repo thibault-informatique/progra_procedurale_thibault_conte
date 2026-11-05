@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define PARK_LENGTH 10
+#define DEVICE_NAME_LENGTH 50
 #define DEBUG 1
 
 // MACRO faciliter encodage IPv4 test

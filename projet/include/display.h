@@ -3,15 +3,23 @@
 
 #include "device.h"
 
+typedef enum: unsigned char
+{
+    DISPLAY_CREATE,
+    DISPLAY_READ,
+    DISPLAY_UPDATE,
+    DISPLAY_DELETE
+
+} Crud_display_choice;
+
 /***  AFFICHAGE DES MENUS ***/
 void displayMainPage(void);
 
 void displayHandlingDevicesMenu(void);
 
-void printUpdateDeviceMenu(Park *park);
+void displayCrudMenu(Crud_display_choice crud);
 
-void printUpdateDeviceMenu(Park *park);
-
+/***  AFFICHAGE AUTRE***/
 void printAskConfirmation();
 
 void printDecimalIPv4(uint32_t address);

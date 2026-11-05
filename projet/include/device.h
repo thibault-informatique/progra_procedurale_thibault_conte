@@ -4,7 +4,7 @@
     #include <stdint.h> // types entiers à largeurs fixe (dont la taille en bits est garantie, indépendamment de la plateforme) / utile pour le réseau
     #include <stdbool.h>
 
-    #include "constantsAndInputs.h"
+    #include "constants.h"
 
     /*************************
     ****** ADRESSES IPv4 *****
@@ -64,7 +64,7 @@
 
     typedef struct 
     {
-        char name[50];
+        char name[DEVICE_NAME_LENGTH];
         Device_type type;
         Ipv4 ipAddress;
         Ipv4 subnet_mask;

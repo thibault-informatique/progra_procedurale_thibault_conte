@@ -10,7 +10,7 @@
 #include "../include/device.h"
 #include "../include/manager.h"
 #include "../include/network.h"
-#include "../include/constantsAndInputs.h"
+#include "../include/constants.h"
 
 #define NB_OF_DEVICES 3
 
@@ -69,7 +69,8 @@ int main (void)
         if(!getUserChoice(0,4, &userChoice))
             fprintf(stderr, "Erreur dans la fct getUserChoice\n");
 #endif
-        
+        cleanBuffer();
+
         switch(userChoice)
         {
             case 0 : 
@@ -90,7 +91,12 @@ int main (void)
                 break;
 #if DEBUG
             case 5:
-                puts("\nTest debug fonctions: \n");                
+                puts("\nTest getName(): \n");  
+                char temp[50]="";
+                if(getName(temp, 50))
+                    printf("Nom encodé = %s\n", temp);
+                else
+                    printf("Erreur test getName\n");              
                 break;
 #endif
             default :
