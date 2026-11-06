@@ -12,7 +12,7 @@
 ****** DEVICE SETTERS   *****
 *****************************/
 
-Return_crud setDeviceName(Device *device, const char newName[])
+Return_code setDeviceName(Device *device, const char newName[])
 {
     assert (device != NULL && newName != NULL);
 
@@ -20,11 +20,42 @@ Return_crud setDeviceName(Device *device, const char newName[])
         return ERR_STR_LENGTH;
 
     strcpy(device->name, newName);
-    return SUCCES;
+    return SUCCESS;
+}
+
+void setDeviceType(Device *device, Device_type type)
+{
+    assert (device != NULL);
+
+    device->type = type;
+}
+
+/*Return_code setDeviceIpAddress(Device *device, Ipv4 address)
+{
+    assert (device != NULL);
+
+    Return_code result = checkLocalAddress(address, device->subnet_mask);
+
+    // si succès modification addresse IP
+    if(result == SUCCESS)
+        device->ipAddress = address;
+
+    // Retour du return code (SUCCESS ou ERR détaillée)
+    return result;
+
 }
 
 
-Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status)
+Return_code setDeviceSubnetMask(Device *device, Ipv4 mask)
+{
+    assert (device != NULL);
+
+    // le masque est-il correct (tous les bits à 1 contigus à G) ?
+    if(!isValidMask(mask))
+        return ERR_INVALID_MASK;
+} */
+
+Return_code initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status)
 {
     // gestion erreurs dev
     assert (device != NULL && name != NULL);
@@ -35,8 +66,10 @@ Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4
     if(strlen(name) >= sizeof(device->name))
         return ERR_STR_LENGTH;
 
-    if(!isValidAsLocalIpAddress(ip, mask))
-        return ERR_INVALID_IP;
+    Return_code result = checkLocalAddress(ip, mask);
+    if (result != SUCCESS)
+        return result;
+    
     if(!isValidMask(mask))
         return ERR_INVALID_MASK;    
     
@@ -47,7 +80,7 @@ Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4
     device->subnet_mask = mask;
     device->status = status;
 
-    return SUCCES;
+    return SUCCESS;
 }
 
 
@@ -72,7 +105,7 @@ bool initPark(Park *park)
 
 // CRUD
 
-Return_crud addDevice(Park *park, Device *device)
+Return_code addDevice(Park *park, Device *device)
 {
     assert(park != NULL && device != NULL);
 
@@ -80,7 +113,7 @@ Return_crud addDevice(Park *park, Device *device)
         return ERR_PARK_FULL;
     
     park->device[park->nbOfDevice++] = *device;    
-    return SUCCES;    
+    return SUCCESS;    
 }
 
 

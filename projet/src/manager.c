@@ -81,6 +81,31 @@ bool getName(char *name, int nameLength)
     return true;
 }
 
+
+Device_type setType()
+{
+    int choice;
+
+    displayDeviceType();
+    getUserChoice(1,9, &choice);
+
+    switch(choice)
+    {
+        case 1 : return ROUTER;
+        case 2 : return SWITCH;
+        case 3 : return FIREWALL;
+        case 4 : return SERVER;
+        case 5 : return WORKSTATION;
+        case 6 : return PRINTER;
+        case 7 : return ACCESS_POINT;
+        case 8 : return OTHER;
+        case 9 : return UNKNOWN;
+        default : 
+            fprintf(stdout, "Erreur dans le choix du switchcase fct setType()\n");
+            return UNKNOWN;
+    }
+}
+
 /*** MENUS MANAGER ***/
 
 void handleDeviceMenu(Park *park)
@@ -191,7 +216,8 @@ void handleUpdateDEvice(Park *park)
                 break;
                 
             case 1: 
-                // modifier nom
+                // demander nom
+
                 break;
                 
             case 2: 
@@ -204,6 +230,7 @@ void handleUpdateDEvice(Park *park)
                 
             case 4: 
                 // modifier masque
+                //si on modifie le masque, faut-il modifier l'addresse de l'appareil pour rester cohérent?
                 break;
             
             case 5:

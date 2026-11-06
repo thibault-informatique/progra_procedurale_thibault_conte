@@ -86,6 +86,20 @@ void displayChoosePartOfDeviceToUpdate()
     puts("5) Statut");
     puts("0) Revenir au menu précédent\n");
 }
+
+void displayDeviceType()
+{
+    printf("Choisissez un type d'appareil :\n");
+    puts("- ROUTER      [1]");
+    puts("- SWITCH      [2]");
+    puts("- FIREWALL    [3]");
+    puts("- SERVER      [4]");
+    puts("- WORKSTATION [5]");
+    puts("- PRINTER     [6]");
+    puts("- ACCES_POINT [7]");
+    puts("- OTHER       [8]");
+    puts("- UNKNOWN     [9]");
+}
 /***  AFFICHAGE AUTRE***/
 
 
@@ -164,6 +178,27 @@ static void printDeviceStatus(Device_status status)
             fprintf(stderr, "Erreur switch case printDeviceStatus");
             break;
 
+    }
+}
+
+void printAddressError(Return_code code)
+{
+    switch(code)
+    {
+        case ERR_PUBLIC_IP:
+            fprintf(stdout,"Erreur: c'est une adresse IPv4 publique.\n"); 
+            break;
+        case ERR_IS_NETWORK_ADDRESS:
+            fprintf(stdout,"Erreur: c'est l'adresse du réseau.\n");
+            break;
+        case ERR_IS_BROADCAST:
+            fprintf(stdout,"Erreur: c'est l'adresse de broadcast.\n");
+            break;
+        case ERR_INVALID_MASK:
+            fprintf(stdout,"Erreur masque réseau invalide\n");
+            break;
+        default :
+            fprintf(stderr,"Erreur switchase printAddressError()\n");
     }
 }
 

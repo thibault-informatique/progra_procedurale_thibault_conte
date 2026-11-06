@@ -40,19 +40,19 @@ int main (void)
     if(!initPark(park))
         fprintf(stderr, "Erreur initialisation du parc\n");
     
-    if(addDevice(park, &routeur1) != SUCCES)
+    if(addDevice(park, &routeur1) != SUCCESS)
         fprintf(stderr, "Erreur ajout équipement au parc\n");
 
-    if(addDevice(park, &switch1) != SUCCES)
+    if(addDevice(park, &switch1) != SUCCESS)
         fprintf(stderr, "Erreur ajout équipement au parc\n");
 
-    if(addDevice(park, &pc1) != SUCCES)
+    if(addDevice(park, &pc1) != SUCCESS)
         fprintf(stderr, "Erreur ajout équipement au parc\n");
 
-    if(addDevice(park, &printer1) != SUCCES)
+    if(addDevice(park, &printer1) != SUCCESS)
         fprintf(stderr, "Erreur ajout équipement au parc\n");
 
-    if(addDevice(park, &server1) != SUCCES)
+    if(addDevice(park, &server1) != SUCCESS)
         fprintf(stderr, "Erreur ajout équipement au parc\n");
 
 
@@ -91,12 +91,11 @@ int main (void)
                 break;
 #if DEBUG
             case 5:
-                puts("\nTest getName(): \n");  
-                char temp[50]="";
-                if(getName(temp, 50))
-                    printf("Nom encodé = %s\n", temp);
-                else
-                    printf("Erreur test getName\n");              
+                puts("\nTest setDeviceName() \n");  
+                printDevice(&routeur1);
+                if(setDeviceName(&routeur1, "routeuraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") == ERR_STR_LENGTH)
+                    fprintf(stderr,"Erreur nom trop grand\n");
+                printDevice(&routeur1);
                 break;
 #endif
             default :

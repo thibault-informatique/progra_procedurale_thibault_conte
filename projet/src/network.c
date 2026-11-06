@@ -16,12 +16,19 @@ static bool isMulticastAddress(Ipv4 address);
 static bool isLimitedBroadcast(Ipv4 address);
 static bool isThisNetworkAddress(Ipv4 address);
 
-// IP valide si n'est pas une adresse IPv4 spéciale
-bool isValidAsLocalIpAddress(Ipv4 ip, Ipv4 mask)
+// IP valide si n'est pas une adresse IPv4 spéciale et si adresse locale
+Return_code checkLocalAddress(Ipv4 ip, Ipv4 mask)
 {
-    return  (isPrivateIPv4Address(ip))      &&
-            (!isNetworkAddress(ip, mask))   &&
-            (!isBroadcastAddress(ip, mask));
+    if(!isPrivateIPv4Address(ip))
+        return ERR_PUBLIC_IP;
+
+    if(isNetworkAddress(ip, mask))
+        return ERR_IS_NETWORK_ADDRESS;
+
+    if(isBroadcastAddress(ip, mask))
+        return ERR_IS_BROADCAST;
+    
+    return SUCCESS;
 }
 
 // seuls les bits de poids le plus fort valent 1 et ce de façon contiguë

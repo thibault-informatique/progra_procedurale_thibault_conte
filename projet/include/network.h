@@ -5,7 +5,7 @@
 
 #include "device.h"
 
-bool isValidAsLocalIpAddress(Ipv4 ip, Ipv4 mask);
+Return_code checkLocalAddress(Ipv4 ip, Ipv4 mask);
 
 // pour qu'un masque soit valide il faut que tous les bits soient contigus à 1
 bool isValidMask(Ipv4 subnet_mask);

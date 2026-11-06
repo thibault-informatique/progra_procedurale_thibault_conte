@@ -21,7 +21,12 @@ void displayCrudMenu(Crud_display_choice crud);
 
 void displayChoosePartOfDeviceToUpdate();
 
+void displayDeviceType();
+
 /***  AFFICHAGE AUTRE***/
+
+void printAddressError(Return_code code);
+
 void printAskConfirmation();
 
 void printDecimalIPv4(uint32_t address);

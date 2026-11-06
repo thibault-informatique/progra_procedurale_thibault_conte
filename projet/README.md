@@ -1,4 +1,6 @@
 # TODO 05/11/26
+0. Fusionner setDeviceIpAddress et subnetMask pour garder la cohérence Ip/mask par facilité
+
 
 1. Finaliser le CRUD (prochaine étape logique) — device.c
     => setters: nom, type, adresse, statut

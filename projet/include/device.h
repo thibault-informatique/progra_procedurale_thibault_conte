@@ -6,6 +6,20 @@
 
     #include "constants.h"
 
+       typedef enum 
+    {
+        SUCCESS,
+        ERR_STR_LENGTH,
+        ERR_PUBLIC_IP,
+        ERR_INVALID_LOCAL_IP,
+        ERR_INVALID_MASK,
+        ERR_IS_NETWORK_ADDRESS,
+        ERR_IS_BROADCAST,
+        ERR_PARK_FULL,
+        ERR_DEVICE_NOT_FOUND
+    } Return_code;
+
+
     /*************************
     ****** ADRESSES IPv4 *****
     **************************/
@@ -80,34 +94,27 @@
     
 
     /*** SETTERS ***/
+    // nom - type - ADRESSE IP - MASQUE - STATUT
+    Return_code setDeviceName(Device *device, const char newName[]);    
 
-    bool setDeviceName(Device *device, const char newName[]);
-    // type - ADRESSE IP - MASQUE - STATUT
- 
-    /*** CRUD ***/
+    void setDeviceType(Device *device, Device_type type);
 
-    typedef enum 
-    {
-        SUCCES,
-        ERR_STR_LENGTH,
-        ERR_INVALID_IP,
-        ERR_INVALID_MASK,
-        ERR_PARK_FULL,
-        ERR_DEVICE_NOT_FOUND
-    } Return_crud;
+    Return_code setDeviceIpAddress(Device *device, Ipv4 address);
+
+    Return_code setDeviceSubnetMask(Device *device, Ipv4 mask);
+
 
     // TODO après cours double **
-    Return_crud initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status);
-
+    Return_code initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status);
 
 
     /****************************
-    ******       PARK       *****
+    ******  CRUD  PARK      *****
     *****************************/
     bool initPark(Park *park);
 
     // CRUD
-    Return_crud addDevice(Park *park, Device *device);
+    Return_code addDevice(Park *park, Device *device);
 
     // si device trouvé => retourne sa position (index) dans le park , -1 sinon
     int findDevice(Park *park, const char name[]);

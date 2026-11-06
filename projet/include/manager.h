@@ -13,6 +13,9 @@ bool getUserChoice(int minValue, int maxValue, int *number);
 
 bool getName(char *name, int nameLength);
 
+/*** Setters ***/
+Device_type setType();
+
 /*** MENUS MANAGER ***/
 void handleDeviceMenu(Park *park);
 
