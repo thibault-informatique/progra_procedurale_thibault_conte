@@ -7,6 +7,10 @@
 
 Return_code checkLocalAddress(Ipv4 ip, Ipv4 mask);
 
+bool isSameSubnet(Ipv4 newIp, Ipv4 mask, Ipv4 networkAddress);
+
+Return_code getNetworkAddress(Ipv4 ip, Ipv4 mask, Ipv4 *networkAddress);
+
 // pour qu'un masque soit valide il faut que tous les bits soient contigus à 1
 bool isValidMask(Ipv4 subnet_mask);
 

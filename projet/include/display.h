@@ -23,9 +23,13 @@ void displayChoosePartOfDeviceToUpdate();
 
 void displayDeviceType();
 
+void displayDeviceStatus();
+
 /***  AFFICHAGE AUTRE***/
 
 void printAddressError(Return_code code);
+
+void printTryAgainChoice();
 
 void printAskConfirmation();
 

@@ -13,6 +13,7 @@
         ERR_PUBLIC_IP,
         ERR_INVALID_LOCAL_IP,
         ERR_INVALID_MASK,
+        ERR_NOT_IN_SUBNET,
         ERR_IS_NETWORK_ADDRESS,
         ERR_IS_BROADCAST,
         ERR_PARK_FULL,
@@ -97,12 +98,11 @@
     // nom - type - ADRESSE IP - MASQUE - STATUT
     Return_code setDeviceName(Device *device, const char newName[]);    
 
-    void setDeviceType(Device *device, Device_type type);
+    void setDeviceType(Device *device, Device_type newType);
 
-    Return_code setDeviceIpAddress(Device *device, Ipv4 address);
+    Return_code setDeviceIpAddressAndMask(Device *device, Ipv4 address, Ipv4 mask);
 
-    Return_code setDeviceSubnetMask(Device *device, Ipv4 mask);
-
+    void setDeviceStatus(Device *device, Device_status newStatus);
 
     // TODO après cours double **
     Return_code initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status);

@@ -82,8 +82,8 @@ void displayChoosePartOfDeviceToUpdate()
 {
     printf_s(BOLD "\nChoix de l'élément à modifier\n\n" RESET);    
     puts("1) nom      2) type");
-    puts("3) adresse  4) masque");
-    puts("5) Statut");
+    puts("3) adresse et masque");
+    puts("4) Statut");
     puts("0) Revenir au menu précédent\n");
 }
 
@@ -100,6 +100,17 @@ void displayDeviceType()
     puts("- OTHER       [8]");
     puts("- UNKNOWN     [9]");
 }
+
+void displayDeviceStatus()
+{
+        printf("Choisissez un état/statut pour l'appareil:\n");
+    puts("- ONLINE      [1]");
+    puts("- OFFLINE     [2]");
+    puts("- MAINTENANCE [3]");
+    puts("- FAILED      [4]");
+    puts("- UNKNOWN     [5]");
+}
+
 /***  AFFICHAGE AUTRE***/
 
 
@@ -200,6 +211,13 @@ void printAddressError(Return_code code)
         default :
             fprintf(stderr,"Erreur switchase printAddressError()\n");
     }
+}
+
+void printTryAgainChoice()
+{
+    printf("Voulez-vous retenter la mise à jour? \n");
+    puts("[1] réessayer");
+    puts("[0] annuler");
 }
 
 void printAskConfirmation()

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
 
 #include "network.h"
 #include "display.h" 
@@ -28,6 +29,30 @@ Return_code checkLocalAddress(Ipv4 ip, Ipv4 mask)
     if(isBroadcastAddress(ip, mask))
         return ERR_IS_BROADCAST;
     
+    return SUCCESS;
+}
+
+// vérifie si la nouvelle adresse IP fait partie du réseau renseigné
+bool isSameSubnet(Ipv4 newIp, Ipv4 mask, Ipv4 networkAddress)
+{
+    if((newIp.address & mask.address) == networkAddress.address)
+        return true;
+    else
+        return false;
+}
+
+// obtenir l'adresse du réseau
+Return_code getNetworkAddress(Ipv4 ip, Ipv4 mask, Ipv4 *networkAddress)
+{
+    assert(networkAddress != NULL);
+
+    if(!isValidMask(mask))
+    {
+        return ERR_INVALID_MASK;
+    }
+
+    networkAddress->address = ip.address & mask.address;
+
     return SUCCESS;
 }
 
