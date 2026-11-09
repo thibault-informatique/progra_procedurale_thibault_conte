@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <windows.h>
+#include <assert.h>
 
 void afficherTableau(const int *tab, int taille)
 {
+    assert (tab != NULL && taille > 0);
+
     printf("Endroit : ");
     for (int i = 0; i < taille ; i++)
     {
@@ -13,6 +16,8 @@ void afficherTableau(const int *tab, int taille)
 
 void afficherALEnvers(const int *tab, int taille)
 {
+    assert (tab != NULL && taille > 0);
+    
     printf("Envers  : ");
     for (int i = taille - 1; i >= 0 ; i--)
     {
