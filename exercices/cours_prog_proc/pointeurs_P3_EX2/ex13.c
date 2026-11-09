@@ -29,5 +29,12 @@ int main(void)
         else
             printf("Valeur non trouvée ou erreur fct rechercher\n");
     }
+
+    resultat = rechercher(tab, 4, 5);
+
+    if(resultat != NULL)
+            printf(" %d se trouve à l'indice %td dans le tableau\n", 5, resultat - tab);
+        else
+            printf("Valeur non trouvée ou erreur fct rechercher\n");
     return 0;
 }
