@@ -32,13 +32,15 @@ Décembre 2026
 ## Compilation
 ```gcc -Wall -Wextra -Wpedantic -std=c23 *.c -o prog```
 
-## Idées BONUS:
+## BONUS:
 
 - ajout IPv6
 
-- utiliser argc / argv pour permettre d'appeler le programme avec paramètres via
-    - h : info général du programme
-    - f : find a device
-    - a : add a device
+- en ligne de commandes, en paramètres lors du lancement du programme
+
+ => utiliser argc / argv pour récupérer les arguments via
+    --help : info général du programme
+    --add : add a device
+    --show: affiche le parc d'équipements
 
 
