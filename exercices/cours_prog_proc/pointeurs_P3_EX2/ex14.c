@@ -26,7 +26,7 @@ double distance(const Point *a, const Point *b)
     double diffY = a->y - b->y;
 
     // via pythagore calcul distance entre 2 points 
-    // existe via IA dans math.h hypor(diffX, diffY)
+    // existe via IA dans math.h hypot(diffX, diffY)
 
     return sqrt(diffX * diffX + diffY * diffY);
 }
