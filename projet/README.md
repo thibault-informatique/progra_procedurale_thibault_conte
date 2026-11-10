@@ -16,6 +16,22 @@ Recherche par nom (déjà fait via findDevice), par IP; filtres par type/état; 
 
 6. Vérifier tous les TODO
 
+0. TODO :
+
+Compléter la saisie utilisateur d'un équipement — c'est le vrai goulot d'étranglement : tu sais valider une IP, mais tu n'as aucun moyen de rentrer un device complet. Il manque :
+
+getDecimalIPv4Address() (décommenter/finir) — plus naturel que l'hexa pour un utilisateur ;
+saisie du masque (décimal ou préfixe /n) ;
+saisie du nom, du type et du statut (menus numériques).
+Finition CRUD : updateDevice et removeDevice — au passage leurs signatures sont bancales : removeDevice(Device* device) ne peut pas le retirer du Park. Il faudrait plutôt removeDevice(Park *park, int index) avec décalage du tableau, et updateDevice(Device *device) qui redemande chaque champ via les fonctions de saisie du point 3.
+
+Brancher le menu dans main.c : displayMainPage existe, mais rien ne l'utilise. Objectif : pouvoir ajouter, lister, chercher, modifier, supprimer un équipement de bout en bout. Ça te donne un CRUD démontrable (section 3.1 des consignes).
+
+Ensuite seulement : les calculs réseau (§3.3 — adresse réseau, broadcast, /préfixe — les TODO de device.h), puis recherche/tri (§3.2), stats (§3.6), et sauvegarde fichier (§3.5) en tout dernier.
+
+L'idée directrice : viser d'abord un parcours utilisateur complet pour un seul équipement ("ajouter → afficher → modifier → supprimer"), plutôt que de polir chaque module isolément. Les points 2–3 sont le prochain commit logique. Veux-tu que je commence par corriger le build et implémenter isValidMask ?
+
+
 ## Network Manager 
 **Projet fin de cours Programmation Procédurale ITLg**
 
