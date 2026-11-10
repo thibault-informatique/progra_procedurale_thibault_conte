@@ -76,6 +76,17 @@ void trierParBullesPrix(Produit *cat, int n)
     }
 }
 
+void trierParBullesPointeursPrix(Produit *cat, int n)
+{
+    assert(cat != NULL && n > 0);
+
+    for (Produit *fin = cat + n - 1; fin > cat; fin--)
+        for (Produit *p = cat; p < fin; p++)
+            if(p->prix > (p+1)->prix)
+                echangerProduits(p, p + 1);
+
+}
+
 int main(void)
 {
     Produit cat[4] = {
