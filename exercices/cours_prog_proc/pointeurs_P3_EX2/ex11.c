@@ -7,6 +7,7 @@ void afficherTableau(const int *tab, int taille)
     assert (tab != NULL && taille > 0);
 
     printf("Endroit : ");
+    // for (const int *p = tab ; p < tab + taille; p++)
     for (int i = 0; i < taille ; i++)
     {
         printf("%d ", *(tab + i));
