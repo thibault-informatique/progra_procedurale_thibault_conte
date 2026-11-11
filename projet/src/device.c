@@ -31,7 +31,7 @@ void setDeviceType(Device *device, Device_type newType)
     device->type = newType;
 }
 
-// gérer le return_code lors de l'appel pour savoir si échoué ou réussi!
+
 Return_code setDeviceIpAddressAndMask(Device *device, Ipv4 address, Ipv4 mask)
 {
     assert (device != NULL);
