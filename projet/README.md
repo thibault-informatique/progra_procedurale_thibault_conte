@@ -1,13 +1,9 @@
 # TODO 05/11/26
+0. Erreir lorsque update addresse => masque invalide illogique
 
 1. Finaliser le CRUD (prochaine étape logique) — device.c
     => dans update : fignoler handleUpdateAddressAndMask
 
-
-2. Fonctions utilitaires IP — main.c / network.c
-
-Ton TODO: conversion IP 4 bytes ↔ binaire (déjà IPV4(a,b,c,d) en macro, il manque l'inverse: uint8_t × 4 depuis une Ipv4).
-3. Menu interactif — brancher displayMainPage() et l'IHM pour que l'utilisateur puisse réellement ajouter/consulter/modifier/supprimer (consigne 3.1 complète).
 
 4. Recherche, filtre, tri (consigne 3.2)
 

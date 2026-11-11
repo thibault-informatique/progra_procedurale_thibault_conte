@@ -192,6 +192,17 @@ static void printDeviceStatus(Device_status status)
     }
 }
 
+void displaySetHexaIpv4Address()
+{
+    printf("\nEncodez une adresse IPv4 en hexadécimal (ex: C0A80101):\n");
+    printf("Les 0 de poids fort peuvent être omis (ex: FF pour O0...FF): ");
+}
+
+void displaySetDecimalIpv4Address()
+{
+    printf("\nEncodez une adresse IPv4 en décimal de type (ex: 192.168.0.0):\n");
+}
+
 void printAddressError(Return_code code)
 {
     switch(code)
@@ -229,25 +240,25 @@ void printAskConfirmation()
 // A revoir les conditions binaires
 // >> fait descendre les bits de gauche vers la D
 // & 0xFF (mask) ne garde que les 8 derniers bits (sécurité si il y avait malgré tout des bits de poids forts parasites suppl)
-void printDecimalIpv4(uint32_t address)
+void printDecimalIpv4(const Ipv4 ip)
 {
     printf("%u.%u.%u.%u\n", 
-          (address >> 24) & 0xFFu,
-          (address >> 16) & 0xFFu,
-          (address >> 8)  & 0xFFu,
-           address        & 0xFFu);
+          (ip.address >> 24) & 0xFFu,
+          (ip.address >> 16) & 0xFFu,
+          (ip.address >> 8)  & 0xFFu,
+           ip.address        & 0xFFu);
 }
 
-void printHexaIpv4(uint32_t address)
+void printHexaIpv4(const Ipv4 ip)
 {
     printf("%02X.%02X.%02X.%02X\n",
-          (address >> 24) & 0xFFu,
-          (address >> 16) & 0xFFu,
-          (address >> 8)  & 0xFFu,
-           address        & 0xFFu);
+          (ip.address >> 24) & 0xFFu,
+          (ip.address >> 16) & 0xFFu,
+          (ip.address >> 8)  & 0xFFu,
+           ip.address        & 0xFFu);
 
     // variante
-    // printf("%#x", address);
+    // printf("%#x", ip.address);
 }
 
 void printDevice(const Device *device)
@@ -256,9 +267,9 @@ void printDevice(const Device *device)
     printf("Type:    ");
     printDeviceType(device->type);
     printf("Adresse: ");
-    printDecimalIpv4(device->ipAddress.address);
+    printDecimalIpv4(device->ipAddress);
     printf("Masque:  ");
-    printDecimalIpv4(device->subnet_mask.address);
+    printDecimalIpv4(device->subnet_mask);
     printf("Statut:  ");
     printDeviceStatus(device->status);
     putc('\n', stdout);

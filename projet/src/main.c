@@ -91,20 +91,15 @@ int main (void)
                 break;
 #if DEBUG
             case 5:
-            while(true)
-            {
+           
                 Ipv4 test = {0};
                 
-                puts("\nTest setDecimalIpAddress \n");  
-                printf("Encodez une adresse Ipv4 en décimal (ex: 192.168.1.1)\n");
-                if(setDecimalIpv4Address(&test) != SUCCESS)
-                    fprintf(stdout,"Erreur dans le choix de la fct\n");
-                else
-                {
-                    printf("Encodage correct : ");
-                    printDecimalIpv4(test.address);
-                }
-            }
+                puts("\nTest isValidMask \n"); 
+                printDecimalIpv4(IPV4(255,255,255,255));
+                printf("masque de sous réseau: %s\n", isValidMask((Ipv4){.address= IPV4(255,255,255,255)})? "valide": "invalide");
+
+                printf("masque de sous réseau: %s\n", isValidMask((Ipv4){.address= IPV4(256,0,255,255)})? "valide": "invalide");
+                
                 break;
 #endif
             default :

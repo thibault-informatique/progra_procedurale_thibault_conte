@@ -21,7 +21,7 @@ unsigned short translateMaskInPrefix(Ipv4 mask);
 
 bool userConfirmInput();
 
-uint32_t setHexaIpv4Address();
+Return_code setHexaIpv4Address(Ipv4 *newIp);
 Return_code setDecimalIpv4Address(Ipv4 *newIp);
 
 

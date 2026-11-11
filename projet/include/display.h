@@ -28,15 +28,18 @@ void displayDeviceStatus();
 
 /***  AFFICHAGE AUTRE***/
 
+void displaySetHexaIpv4Address();
+void displaySetDecimalIpv4Address();
+
 void printAddressError(Return_code code);
 
 void printTryAgainChoice();
 
 void printAskConfirmation();
 
-void printDecimalIpv4(uint32_t address);
+void printDecimalIpv4(const Ipv4 ip);
 
-void printHexaIpv4(uint32_t address);
+void printHexaIpv4(const Ipv4 ip);
 
 void printDevice(const Device *device);
 

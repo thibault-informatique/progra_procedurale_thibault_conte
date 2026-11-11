@@ -172,13 +172,15 @@ Return_code handleUpdateAddressAndMask(Device *device)
     Ipv4 newAddress = {0};
     Ipv4 newMask    = {0};
 
+    displaySetDecimalIpv4Address();
+
     // saisie de la nouvelle adresse IP
-    fprintf(stdout, "1) Adresse de l'appareil:\n");
-    newAddress.address = setHexaIpv4Address();
+    fprintf(stdout, "- pour l'appareil:\n");
+    newAddress.address = setDecimalIpv4Address(&newAddress);
 
     // saisie du nouveau masque
-    fprintf(stdout, "\nMasque de sous-réseau:\n");
-    newMask.address = setHexaIpv4Address();
+    fprintf(stdout, "\n- le masque de sous-réseau:\n");
+    newMask.address = setDecimalIpv4Address(&newMask);
 
     Return_code result = setDeviceIpAddressAndMask(device, newAddress, newMask);
 
