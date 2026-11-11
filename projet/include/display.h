@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 #include "device.h"
+#include "constants.h"
 
 typedef enum: unsigned char
 {
@@ -33,9 +34,9 @@ void printTryAgainChoice();
 
 void printAskConfirmation();
 
-void printDecimalIPv4(uint32_t address);
+void printDecimalIpv4(uint32_t address);
 
-void printHexaIPv4(uint32_t address);
+void printHexaIpv4(uint32_t address);
 
 void printDevice(const Device *device);
 

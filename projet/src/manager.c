@@ -169,16 +169,16 @@ Return_code handleUpdateAddressAndMask(Device *device)
 {
     assert(device != NULL);
 
- Ipv4 newAddress = {0};
+    Ipv4 newAddress = {0};
     Ipv4 newMask    = {0};
 
     // saisie de la nouvelle adresse IP
-    fprintf(stdout, "\nNouvelle adresse IP:\n");
-    newAddress.address = setHexaIPv4Address();
+    fprintf(stdout, "1) Adresse de l'appareil:\n");
+    newAddress.address = setHexaIpv4Address();
 
     // saisie du nouveau masque
-    fprintf(stdout, "\nNouveau masque de sous-réseau:\n");
-    newMask.address = setHexaIPv4Address();
+    fprintf(stdout, "\nMasque de sous-réseau:\n");
+    newMask.address = setHexaIpv4Address();
 
     Return_code result = setDeviceIpAddressAndMask(device, newAddress, newMask);
 
@@ -349,6 +349,7 @@ void handleUpdateDevice(Park *park)
                    {
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
+                        cleanBuffer();
                    }
                 } while (retry);  
                 break;
@@ -360,6 +361,7 @@ void handleUpdateDevice(Park *park)
                    {
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
+                        cleanBuffer();
                    }
                 } while (retry);  
                 break;
@@ -371,6 +373,7 @@ void handleUpdateDevice(Park *park)
                    {
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
+                        cleanBuffer();
                    }
                 } while (retry);  
                 break;

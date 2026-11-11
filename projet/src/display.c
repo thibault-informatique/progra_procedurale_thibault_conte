@@ -238,7 +238,7 @@ void printDecimalIpv4(uint32_t address)
            address        & 0xFFu);
 }
 
-void printHexaIPv4(uint32_t address)
+void printHexaIpv4(uint32_t address)
 {
     printf("%02X.%02X.%02X.%02X\n",
           (address >> 24) & 0xFFu,

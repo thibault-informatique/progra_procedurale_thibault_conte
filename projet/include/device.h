@@ -6,21 +6,6 @@
 
     #include "constants.h"
 
-       typedef enum 
-    {
-        SUCCESS,
-        ERR_STR_LENGTH,
-        ERR_PUBLIC_IP,
-        ERR_INVALID_LOCAL_IP,
-        ERR_INVALID_MASK,
-        ERR_NOT_IN_SUBNET,
-        ERR_IS_NETWORK_ADDRESS,
-        ERR_IS_BROADCAST,
-        ERR_PARK_FULL,
-        ERR_DEVICE_NOT_FOUND
-    } Return_code;
-
-
     /*************************
     ****** ADRESSES IPv4 *****
     **************************/

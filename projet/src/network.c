@@ -6,7 +6,9 @@
 
 #include "network.h"
 #include "display.h" 
+#include "manager.h"
 
+static bool isDecimalBetween0And255(const int nb);
 static bool isNetworkAddress(Ipv4 address, Ipv4 mask);
 static bool isBroadcastAddress(Ipv4 address, Ipv4 mask);
 static bool isLoopBackIPv4Address(Ipv4 address);
@@ -16,6 +18,12 @@ static bool isExperimentalAddress(Ipv4 address);
 static bool isMulticastAddress(Ipv4 address);
 static bool isLimitedBroadcast(Ipv4 address);
 static bool isThisNetworkAddress(Ipv4 address);
+
+// octet reçu (int) compris entre 0 et 255 => utilisé dans les saisies IPv4 en décimal
+static bool isDecimalBetween0And255(const int nb)
+{
+    return nb >= 0 && nb <= 255;
+}
 
 // IP valide si n'est pas une adresse IPv4 spéciale et si adresse locale
 Return_code checkLocalAddress(Ipv4 ip, Ipv4 mask)
@@ -194,7 +202,7 @@ bool userConfirmInput()
 // en Hexa de 0X00.00.00.00 à 0XFF.FF.FF.FF
 
 // aide IA pour saisie sécurisée
-uint32_t setHexaIPv4Address()
+uint32_t setHexaIpv4Address()
 {
     uint32_t address = 0;
     bool isWrong = true;
@@ -237,12 +245,9 @@ uint32_t setHexaIPv4Address()
             address = (uint32_t)strtoul(buffer, NULL, 16);     
             isWrong = false;
 
-            printHexaIPv4(address);
+            printHexaIpv4(address);
             userApproval = userConfirmInput();
 
-#if DEBUG
-    printf("Valeur debug userApproval dans setHexaIPv4 : %d\n", userApproval);
-#endif
             if(!userApproval)
                 puts("Veuillez recommencer");
         }       
@@ -259,38 +264,60 @@ uint32_t setHexaIPv4Address()
     return address;
 }
 
-// obtenir addresse IPv4 via encodage octet par octet (192.168.1.1)
+// obtenir addresse IPv4 via encodage avec '.' (192.168.1.1)
 // fonction + performante et sécurisée que scanf , via IA pour tests et sécurité
-/*uint32_t getDecimalIPv4Address()
+Return_code setDecimalIpv4Address(Ipv4 *newIp)
 {
-    uint32_t address;
-    bool isValid = false;
+    assert (newIp != NULL);
 
-    do
+    char buffer[17] = "";
+    int octet1;
+    int octet2;
+    int octet3;
+    int octet4;
+
+    int pos;
+
+    // etape 1 : lecture
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL)
     {
-        // etape 1 : lecture
-        if (fgets(buffer, sizeof(buffer), stdin) == NULL)
-        {
-            // flux ferme (Ctrl+D, redirection) : on sort, sinon boucle infinie
-            fprintf(stderr, "Fin de flux d'entree\n");
-            exit(EXIT_FAILURE);
-        }
+        // flux ferme (Ctrl+D, redirection) : on sort, sinon boucle infinie
+        fprintf(stderr, "Fin de flux d'entree\n");
+        exit(EXIT_FAILURE);
+    }
 
-        // etape 2 : purge si la saisie depassait le buffer
-        if (strchr(buffer, '\n') == NULL)
-        {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
-        }
+    // etape 2 : purge si la saisie depassait le newAddress
+    if (strchr(buffer, '\n') == NULL)
+    {
+        cleanBuffer();
+        return ERR_STR_LENGTH;
+    }
 
-        // etape 3 : validation
-        isValid = (sscanf_s(buffer, "%hu", &userChoice) == 1) &&
-                  (userChoice >= minValue)                    &&
-                  (userChoice <= maxValue);
+    // etape 3 : recup des 4 octets depuis le tab de char buffer
+    // %n récupère le nbre de caractère consommé par sscanf
+    // si nbre de caractère < taille buffer alors il reste des éléments excédentaires
+    if(sscanf(buffer, "%d.%d.%d.%d%n", &octet1, 
+                                        &octet2, 
+                                        &octet3, 
+                                        &octet4,
+                                        &pos) != 4)
+        return ERR_INVALID_DECIMAL_ADDRESS;
+    
+    // étape 4: on détecte le '\n capturé dans la string et on la remplace par le caractère fin de string
+    buffer[strcspn(buffer,"\n")] = '\0';
 
-        if (!isValid)
-            fprintf(stderr, "Format attendu : 1 chiffre compris entre %hu et %hu\n", minValue, maxValue);
-    } while (!isValid);
+    // étape 5: si buffer plus grand que pos alors saisie user trop grande
+    if(pos != strlen(buffer))
+        return ERR_INVALID_DECIMAL_ADDRESS;
 
-    return address;
-}*/
+    // etape 6 : vérifier que chaque octet soit compris dans la plage autorisée 0 à 255
+    if(!isDecimalBetween0And255(octet1) ||
+       !isDecimalBetween0And255(octet2) ||
+       !isDecimalBetween0And255(octet3) ||
+       !isDecimalBetween0And255(octet4))
+        return ERR_OCTET_SIZE;
+    else
+        newIp->address = IPV4(octet1, octet2, octet3, octet4);
+
+    return SUCCESS;
+}

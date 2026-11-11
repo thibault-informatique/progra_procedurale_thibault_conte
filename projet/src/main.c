@@ -91,11 +91,20 @@ int main (void)
                 break;
 #if DEBUG
             case 5:
-                puts("\nTest setDeviceName() \n");  
-                printDevice(&routeur1);
-                if(setDeviceName(&routeur1, "routeuraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") == ERR_STR_LENGTH)
-                    fprintf(stderr,"Erreur nom trop grand\n");
-                printDevice(&routeur1);
+            while(true)
+            {
+                Ipv4 test = {0};
+                
+                puts("\nTest setDecimalIpAddress \n");  
+                printf("Encodez une adresse Ipv4 en décimal (ex: 192.168.1.1)\n");
+                if(setDecimalIpv4Address(&test) != SUCCESS)
+                    fprintf(stdout,"Erreur dans le choix de la fct\n");
+                else
+                {
+                    printf("Encodage correct : ");
+                    printDecimalIpv4(test.address);
+                }
+            }
                 break;
 #endif
             default :

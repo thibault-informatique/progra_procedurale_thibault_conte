@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "device.h"
+#include "constants.h"
 
 Return_code checkLocalAddress(Ipv4 ip, Ipv4 mask);
 
@@ -20,8 +21,8 @@ unsigned short translateMaskInPrefix(Ipv4 mask);
 
 bool userConfirmInput();
 
-uint32_t setHexaIPv4Address();
-//uint32_t getDecimalIPv4Address();
+uint32_t setHexaIpv4Address();
+Return_code setDecimalIpv4Address(Ipv4 *newIp);
 
 
 

@@ -2,6 +2,7 @@
 #define MANAGER_H
 
 #include "device.h"
+#include "constants.h"
 
 void cleanBuffer();
 /***  Getters ***/
