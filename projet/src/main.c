@@ -75,7 +75,7 @@ int main (void)
         {
             case 0 : 
                 runningProg = false;
-                puts("\n*** Fin du programme ***\n");               
+                displayEndMessage();               
                 break;
             case 1 :                
                 handleDeviceMenu(park);
@@ -95,7 +95,7 @@ int main (void)
                 Ipv4 test = {0};
                 
                 puts("\nTest isValidMask \n"); 
-                printDecimalIpv4(IPV4(255,255,255,255));
+                printDecimalIpv4((Ipv4){.address = IPV4(255,255,255,255)});
                 printf("masque de sous réseau: %s\n", isValidMask((Ipv4){.address= IPV4(255,255,255,255)})? "valide": "invalide");
 
                 printf("masque de sous réseau: %s\n", isValidMask((Ipv4){.address= IPV4(256,0,255,255)})? "valide": "invalide");

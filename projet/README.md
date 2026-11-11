@@ -1,9 +1,5 @@
 # TODO 05/11/26
-0. Erreir lorsque update addresse => masque invalide illogique
-
-1. Finaliser le CRUD (prochaine étape logique) — device.c
-    => dans update : fignoler handleUpdateAddressAndMask
-
+1. Finaliser le CRUD (prochaine étape logique) — addDevice
 
 4. Recherche, filtre, tri (consigne 3.2)
 

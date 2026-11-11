@@ -20,7 +20,7 @@ bool getUserChoice(int minValue, int maxValue, int *number)
 
     while (!correctNumber)
     {
-        printf("Votre choix: ");
+        printf("   Votre choix: ");
         int nbRead = scanf("%d", number);
 
         if(nbRead == 1 && *number >= minValue && *number <= maxValue)
@@ -176,18 +176,35 @@ Return_code handleUpdateAddressAndMask(Device *device)
 
     // saisie de la nouvelle adresse IP
     fprintf(stdout, "- pour l'appareil:\n");
-    newAddress.address = setDecimalIpv4Address(&newAddress);
+    Return_code result = setDecimalIpv4Address(&newAddress);
 
-    // saisie du nouveau masque
-    fprintf(stdout, "\n- le masque de sous-réseau:\n");
-    newMask.address = setDecimalIpv4Address(&newMask);
+    // saisie du nouveau masque si l'info précédente est correcte
+    if(result == SUCCESS)
+    {
+        fprintf(stdout, "\n- le masque de sous-réseau:\n");
+        result = setDecimalIpv4Address(&newMask);
+    }
 
-    Return_code result = setDeviceIpAddressAndMask(device, newAddress, newMask);
+    // idem pour attribuer l'adresse et le masque : seulement si les 2 attributions précédentes = succès
+    if(result == SUCCESS)
+        result = setDeviceIpAddressAndMask(device, newAddress, newMask);
 
     switch(result)
     {
         case SUCCESS :
-            fprintf(stdout, "Adresse et masque modifiés avec succès!\n");
+            fprintf(stdout, "Adresse et masque encodés avec succès!\n");
+            break;
+        case ERR_STR_LENGTH :
+            fprintf(stdout, "L'adresse saisie est trop longue\n");
+            break;
+        case ERR_INVALID_DECIMAL_ADDRESS :
+            fprintf(stdout, "L'adresse encodée en décimale est incorrecte\n");
+            break;
+        case ERR_INVALID_HEXA_ADDRESS :
+            fprintf(stdout, "L'adresse encodée en hexadécimale est incorrecte\n");
+            break;
+        case ERR_OCTET_SIZE :
+            fprintf(stdout, "Un des 4 octets de l'adresse n'est pas compris entre 0 et 255\n");
             break;
         case ERR_INVALID_MASK :
             fprintf(stdout, "Masque non valide (bits à 1 contigus attendus)\n");
@@ -205,7 +222,7 @@ Return_code handleUpdateAddressAndMask(Device *device)
             fprintf(stdout, "La modification a échouée\n");
     }
 
-    return result;
+    return SUCCESS;
 }
 
 // return_code peu utile mais pour respecter le même style
@@ -237,7 +254,7 @@ void handleDeviceMenu(Park *park)
                 break;
                 
             case 1: 
-                
+                // add Device
                 break;
                 
             case 2: 
@@ -402,5 +419,4 @@ void handleRemoveDevice(Park *park)
         fprintf(stdout, "\nEquipement : %s retiré avec succès!\n", deviceToBeRemoved);
     else
         fprintf(stdout, "\nEquipement non trouvé\n");
-
 }

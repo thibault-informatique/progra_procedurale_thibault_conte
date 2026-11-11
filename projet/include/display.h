@@ -26,6 +26,8 @@ void displayDeviceType();
 
 void displayDeviceStatus();
 
+void displayEndMessage();
+
 /***  AFFICHAGE AUTRE***/
 
 void displaySetHexaIpv4Address();

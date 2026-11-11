@@ -111,6 +111,10 @@ void displayDeviceStatus()
     puts("- UNKNOWN     [5]");
 }
 
+void displayEndMessage()
+{
+    puts("\n*** Fin du programme ***\n");
+}
 /***  AFFICHAGE AUTRE***/
 
 
