@@ -13,12 +13,20 @@ typedef enum: unsigned char
 
 } Crud_display_choice;
 
+/*** AFFICHAGE message Return_code ***/
+
+void displayMessageReturnCode(Return_code code);
+
 /***  AFFICHAGE DES MENUS ***/
 void displayMainPage(void);
 
 void displayDevicesMenu(void);
 
 void displayCrudMenu(Crud_display_choice crud);
+
+void displayCreateDeviceMenu(int milestone);
+
+void displayAddDeviceMenu();
 
 void displayChoosePartOfDeviceToUpdate();
 

@@ -90,6 +90,8 @@ Device_type setType()
     displayDeviceType();
     getUserChoice(1,9, &choice);
 
+    cleanBuffer();
+
     switch(choice)
     {
         case 1 : return ROUTER;
@@ -127,9 +129,48 @@ Device_status setStatus()
     }
 }
 
-/*** HANDLERS UPDATE ***/
+/*** HANDLERS CREATE - UPDATE ***/
 
-Return_code handleUpdateName(Device *device)
+Return_code handleCreateDevice(Device *device)
+{
+    assert (device != NULL);
+
+    int milestone = 1;
+    Return_code result;
+
+     // 1 choix nom
+    displayCreateDeviceMenu(milestone);
+    result = handleCreateOrUpdateName(device);
+
+    // si échoue on quitte la fonction et renvoie le return code à l'appelant
+    if (result != SUCCESS)
+        return result;
+
+    milestone++;
+
+    // choix type appareil
+    displayCreateDeviceMenu(milestone);
+    result = handleCreateOrUpdateType(device);
+
+    if (result != SUCCESS)
+        return result;
+
+    // choix adresse appareil et masque
+    result = handleCreateOrUpdateAddressAndMask(device);
+   
+    if (result != SUCCESS)
+        return result;
+
+    milestone++;
+
+    // choix statut
+    displayCreateDeviceMenu(milestone);
+    result = handleCreateOrUpdateStatus(device);
+
+    return result;
+}
+
+Return_code handleCreateOrUpdateName(Device *device)
 {
     assert(device != NULL);
     
@@ -138,12 +179,13 @@ Return_code handleUpdateName(Device *device)
     if(!getName(newName, DEVICE_NAME_LENGTH))
         return ERR_STR_LENGTH;
 
+
     Return_code result = setDeviceName(device, newName);
 
     switch(result)
     {
         case SUCCESS :
-            fprintf(stdout,"Nom modifié avec succès!\n");
+            fprintf(stdout,"Nom ajouté/modifié avec succès!\n");
             break;
         case ERR_STR_LENGTH :
             fprintf(stdout,"Nom trop long\n");
@@ -156,7 +198,7 @@ Return_code handleUpdateName(Device *device)
 }
 
 // return_code peu utile mais pour respecter le même style
-Return_code handleUpdateType(Device *device)
+Return_code handleCreateOrUpdateType(Device *device)
 {
     assert(device != NULL);
 
@@ -165,7 +207,7 @@ Return_code handleUpdateType(Device *device)
     return SUCCESS;
 }
 
-Return_code handleUpdateAddressAndMask(Device *device)
+Return_code handleCreateOrUpdateAddressAndMask(Device *device)
 {
     assert(device != NULL);
 
@@ -189,44 +231,11 @@ Return_code handleUpdateAddressAndMask(Device *device)
     if(result == SUCCESS)
         result = setDeviceIpAddressAndMask(device, newAddress, newMask);
 
-    switch(result)
-    {
-        case SUCCESS :
-            fprintf(stdout, "Adresse et masque encodés avec succès!\n");
-            break;
-        case ERR_STR_LENGTH :
-            fprintf(stdout, "L'adresse saisie est trop longue\n");
-            break;
-        case ERR_INVALID_DECIMAL_ADDRESS :
-            fprintf(stdout, "L'adresse encodée en décimale est incorrecte\n");
-            break;
-        case ERR_INVALID_HEXA_ADDRESS :
-            fprintf(stdout, "L'adresse encodée en hexadécimale est incorrecte\n");
-            break;
-        case ERR_OCTET_SIZE :
-            fprintf(stdout, "Un des 4 octets de l'adresse n'est pas compris entre 0 et 255\n");
-            break;
-        case ERR_INVALID_MASK :
-            fprintf(stdout, "Masque non valide (bits à 1 contigus attendus)\n");
-            break;
-        case ERR_PUBLIC_IP :
-            fprintf(stdout, "L'adresse doit appartenir à une plage privée\n");
-            break;
-        case ERR_IS_NETWORK_ADDRESS :
-            fprintf(stdout, "Cette adresse est celle du réseau\n");
-            break;
-        case ERR_IS_BROADCAST :
-            fprintf(stdout, "Cette adresse est celle de broadcast\n");
-            break;
-        default :
-            fprintf(stdout, "La modification a échouée\n");
-    }
-
-    return SUCCESS;
+    return result;
 }
 
 // return_code peu utile mais pour respecter le même style
-Return_code handleUpdateStatus(Device *device)
+Return_code handleCreateOrUpdateStatus(Device *device)
 {
     assert(device != NULL);   
 
@@ -254,7 +263,7 @@ void handleDeviceMenu(Park *park)
                 break;
                 
             case 1: 
-                // add Device
+                handleAddDevice(park);
                 break;
                 
             case 2: 
@@ -277,6 +286,34 @@ void handleDeviceMenu(Park *park)
                 fprintf(stderr, "Erreur switchcase handleDeviceMenu()\n");
         }
     }
+}
+
+void handleAddDevice(Park *park)
+{
+    assert (park != NULL);
+
+    Device temp = {0};
+    Return_code result;
+
+    /*** A création de l'appareil ***/
+    result = handleCreateDevice(&temp);
+
+    if (result != SUCCESS)
+    {
+        fprintf(stdout, "\nErreur lors de la création de l'appareil\n");
+        displayMessageReturnCode(result);
+        return;
+    }
+
+#if DEBUG
+    printDevice(&temp);
+#endif
+
+    /*** Ajout au parc ***/
+    if((result = addDevice(park, &temp)) == ERR_PARK_FULL)
+        fprintf(stdout, "\nAjout impossible : parc plein\n");
+    else if(result == SUCCESS)
+        fprintf(stdout, "\nAppareil ajouté avec succès!\n");
 }
 
 void handleReadDevice(Park *park)
@@ -344,6 +381,8 @@ void handleUpdateDevice(Park *park)
         // TODO pointeurs de fonctions pour factoriser les appels répétitifs dans chaque case
         switch(userChoice)
         {
+            Return_code result;
+
             case 0: 
                 runningMenu = false;
                 break;
@@ -352,8 +391,9 @@ void handleUpdateDevice(Park *park)
 
                 do
                 {
-                   if(handleUpdateName(&park->device[indexDevice]) != SUCCESS)
+                   if((result = handleCreateOrUpdateName(&park->device[indexDevice])) != SUCCESS)
                    {
+                        displayMessageReturnCode(result);
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
                         cleanBuffer();
@@ -364,8 +404,9 @@ void handleUpdateDevice(Park *park)
             case 2: 
                 do
                 {
-                   if(handleUpdateType(&park->device[indexDevice]) != SUCCESS)
+                   if((result = handleCreateOrUpdateType(&park->device[indexDevice])) != SUCCESS)
                    {
+                        displayMessageReturnCode(result);
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
                         cleanBuffer();
@@ -376,8 +417,9 @@ void handleUpdateDevice(Park *park)
             case 3: 
                 do
                 {
-                   if(handleUpdateAddressAndMask(&park->device[indexDevice]) != SUCCESS)
+                   if((result = handleCreateOrUpdateAddressAndMask(&park->device[indexDevice])) != SUCCESS)
                    {
+                        displayMessageReturnCode(result);
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
                         cleanBuffer();
@@ -388,8 +430,9 @@ void handleUpdateDevice(Park *park)
             case 4:
                  do
                 {
-                   if(handleUpdateStatus(&park->device[indexDevice]) != SUCCESS)
+                   if((result = handleCreateOrUpdateStatus(&park->device[indexDevice])) != SUCCESS)
                    {
+                        displayMessageReturnCode(result);
                         printTryAgainChoice();
                         getUserChoice(0,1, &retry);
                         cleanBuffer();

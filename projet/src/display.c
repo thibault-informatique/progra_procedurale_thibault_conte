@@ -10,6 +10,46 @@
 #define DIM   "\033[2m"
 #define RESET "\033[0m"
 
+/*** AFFICHAGE message Return_code ***/
+
+void displayMessageReturnCode(Return_code code)
+{
+    switch(code)
+    {
+        case SUCCESS :
+            fprintf(stdout, "Adresse et masque encodés avec succès!\n");
+            break;
+        case ERR_STR_LENGTH :
+            fprintf(stdout, "L'adresse saisie est trop longue\n");
+            break;
+        case ERR_INVALID_DECIMAL_ADDRESS :
+            fprintf(stdout, "L'adresse encodée en décimale est incorrecte\n");
+            break;
+        case ERR_INVALID_HEXA_ADDRESS :
+            fprintf(stdout, "L'adresse encodée en hexadécimale est incorrecte\n");
+            break;
+        case ERR_OCTET_SIZE :
+            fprintf(stdout, "Un des 4 octets de l'adresse n'est pas compris entre 0 et 255\n");
+            break;
+        case ERR_INVALID_MASK :
+            fprintf(stdout, "Masque non valide (bits à 1 contigus attendus)\n");
+            break;
+        case ERR_PUBLIC_IP :
+            fprintf(stdout, "L'adresse doit appartenir à une plage privée\n");
+            break;
+        case ERR_IS_NETWORK_ADDRESS :
+            fprintf(stdout, "Cette adresse est celle du réseau\n");
+            break;
+        case ERR_IS_BROADCAST :
+            fprintf(stdout, "Cette adresse est celle de broadcast\n");
+            break;
+        default :
+            fprintf(stdout, "La modification a échouée\n");
+    }
+
+}
+
+
 /***  AFFICHAGE DES MENUS ***/
 
 
@@ -77,6 +117,34 @@ void displayCrudMenu(Crud_display_choice crud)
      
 }
 
+void displayCreateDeviceMenu(int milestone)
+{
+    if(milestone <= 0 || milestone > 3)
+    {
+        fprintf(stderr, "Erreur milestone doit être compris entre [1-3], fct displayCreateDevice()\n");
+        return;
+    }
+
+    switch(milestone)
+    {
+        case 1:
+            printf("\nNom: ");
+            break;
+        case 2:
+            printf("\nType: ");
+            break;
+        case 3:
+            printf("\nStatut: ");
+            break;
+        default: 
+            fprintf(stderr, "Erreur switchcase displayCreateDevice\n");
+    }
+}
+
+void displayAddDeviceMenu()
+{
+    puts(BOLD CYAN "\n\t\tAjout d'un nouvel appareil au parc"RESET); 
+}
 
 void displayChoosePartOfDeviceToUpdate()
 {

@@ -90,10 +90,7 @@ int main (void)
                 // stats
                 break;
 #if DEBUG
-            case 5:
-           
-                Ipv4 test = {0};
-                
+            case 5:                
                 puts("\nTest isValidMask \n"); 
                 printDecimalIpv4((Ipv4){.address = IPV4(255,255,255,255)});
                 printf("masque de sous réseau: %s\n", isValidMask((Ipv4){.address= IPV4(255,255,255,255)})? "valide": "invalide");

@@ -172,5 +172,3 @@ bool removeDevice(Park *park, const char name[])
     // si pas trouvé
     return false;
 }
-
-
