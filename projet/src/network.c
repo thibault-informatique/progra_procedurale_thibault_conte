@@ -49,20 +49,6 @@ bool isSameSubnet(Ipv4 newIp, Ipv4 mask, Ipv4 networkAddress)
         return false;
 }
 
-// obtenir l'adresse du réseau
-Return_code getNetworkAddress(Ipv4 ip, Ipv4 mask, Ipv4 *networkAddress)
-{
-    assert(networkAddress != NULL);
-
-    if(!isValidMask(mask))
-    {
-        return ERR_INVALID_MASK;
-    }
-
-    networkAddress->address = ip.address & mask.address;
-
-    return SUCCESS;
-}
 
 // seuls les bits de poids le plus fort valent 1 et ce de façon contiguë
 // si un seul bit vaut 1 après le préfixe c'est qu'il y a une erreur de masque
@@ -72,7 +58,7 @@ bool isValidMask(Ipv4 subnet_mask)
     if(subnet_mask.address == 0)
         return false;
 
-    unsigned short prefix = translateMaskInPrefix(subnet_mask);
+    unsigned short prefix = getPrefix(subnet_mask);
 
     if(prefix == 0)
         return false;
@@ -149,22 +135,6 @@ static bool isLimitedBroadcast(Ipv4 address)
 static bool isThisNetworkAddress(Ipv4 address)
 {
     return address.address < IPV4(1,0,0,0);
-}
-
-// compte le nbre de bits de poids fort contigüs à 1
-unsigned short translateMaskInPrefix(Ipv4 mask)
-{
-    unsigned int prefix = 0;
-
-    // si bit à 1 dans l'adresse => on incrémente le préfixe
-    // sinon si bit à 0: on est à la fin du masque
-    for(int i = 31; i >= 0 ; i--)
-        if (mask.address &  (1u << i))
-            prefix++;
-        else
-            break;
-
-    return prefix;
 }
 
 // saisie user 'o' pour oui 'n' pour non
@@ -301,4 +271,64 @@ Return_code setDecimalIpv4Address(Ipv4 *newIp)
         newIp->address = IPV4(octet1, octet2, octet3, octet4);
 
     return SUCCESS;
+}
+
+/***  NETWORK CALCULATION ***/
+// obtenir l'adresse du réseau
+Return_code getNetworkAddress(Ipv4 ip, Ipv4 mask, Ipv4 *networkAddress)
+{
+    assert(networkAddress != NULL);
+
+    if(!isValidMask(mask))
+    {
+        return ERR_INVALID_MASK;
+    }
+
+    networkAddress->address = ip.address & mask.address;
+
+    return SUCCESS;
+}
+
+// tous les bits hôtes sont à 1 
+// IP | l'inverse du masque (met tous les bits à 1)
+Return_code getBroadcast(Ipv4 ip, Ipv4 mask, Ipv4 *broadcastAddress)
+{
+    assert (broadcastAddress != NULL);
+
+    broadcastAddress->address = ip.address | ~mask.address;
+
+    return SUCCESS;
+}
+
+// compte le nbre de bits de poids fort contigüs à 1
+unsigned short getPrefix(Ipv4 mask)
+{
+    unsigned short prefix = 0;
+
+    // si bit à 1 dans l'adresse => on incrémente le préfixe
+    // sinon si bit à 0: on est à la fin du masque
+    for(int i = 31; i >= 0 ; i--)
+        if (mask.address &  (1u << i))
+            prefix++;
+        else
+            break;
+
+    return prefix;
+}
+
+NetworkCalcul calculateNetwork(Ipv4 address, Ipv4 mask)
+{
+    NetworkCalcul temp ;
+    Return_code result;
+
+        result = getNetworkAddress(address, mask, &temp.networkAddress);
+        if (result != SUCCESS)
+        {
+            printAddressError(result);
+            return ;
+        }
+        getBroadcast(address, mask, &temp.broadcastAddress);
+        getPrefix(mask);
+
+    return temp;
 }

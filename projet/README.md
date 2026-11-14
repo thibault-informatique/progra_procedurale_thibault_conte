@@ -1,5 +1,4 @@
-# TODO 05/11/26
-1. Finaliser le CRUD (prochaine étape logique) — addDevice
+# TODO 14/11/26
 
 4. Recherche, filtre, tri (consigne 3.2)
 
@@ -8,12 +7,8 @@ Recherche par nom (déjà fait via findDevice), par IP; filtres par type/état; 
 
 6. Vérifier tous les TODO
 
-0. TODO :
-
-Compléter la saisie utilisateur d'un équipement — c'est le vrai goulot d'étranglement : tu sais valider une IP, mais tu n'as aucun moyen de rentrer un device complet. Il manque :
-
-saisie du masque (décimal ou préfixe /n) ;
-saisie du nom, du type et du statut (menus numériques).
+0. Amélioration:
+const char * pour afficher/print IPv4 en décimal afin de formater la taille?
 
 
 Ensuite seulement : les calculs réseau (§3.3 — adresse réseau, broadcast, /préfixe — les TODO de device.h), puis recherche/tri (§3.2), stats (§3.6), et sauvegarde fichier (§3.5) en tout dernier.

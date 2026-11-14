@@ -24,6 +24,10 @@ void displayDevicesMenu(void);
 
 void displayCrudMenu(Crud_display_choice crud);
 
+void displayNetworkCalculMenu(void);
+
+/***  AFFICHAGE DES SOUS MENUS ***/
+
 void displayCreateDeviceMenu(int milestone);
 
 void displayAddDeviceMenu();
@@ -33,6 +37,8 @@ void displayChoosePartOfDeviceToUpdate();
 void displayDeviceType();
 
 void displayDeviceStatus();
+
+void displayChooseDeviceForNetworkCalcul(void);
 
 void displayEndMessage();
 
@@ -53,8 +59,12 @@ void printHexaIpv4(const Ipv4 ip);
 
 void printDevice(const Device *device);
 
+void printDeviceNameAndAddress(const Device *device);
+
 // NB: le premier device index 0 aura la valeur n°1 pour l'utilisateur
 void displayPark(Park *park);
+
+void displayNameAndAddressFromPark(Park *park);
 
 
 

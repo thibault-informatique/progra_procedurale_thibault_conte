@@ -14,8 +14,10 @@ void cleanBuffer()
 
 /***  Getters ***/
 
-bool getUserChoice(int minValue, int maxValue, int *number)
+void getUserChoice(int minValue, int maxValue, int *number)
 {
+    assert (number != NULL);
+
     bool correctNumber = false;    
 
     while (!correctNumber)
@@ -40,7 +42,6 @@ bool getUserChoice(int minValue, int maxValue, int *number)
             printf("\nLe nombre doit être compris entre [%d-%d].\n", minValue, maxValue);
         }
     }
-    return true;
 }
 
 bool getName(char *name, int nameLength)
@@ -288,6 +289,73 @@ void handleDeviceMenu(Park *park)
     }
 }
 
+void handleNetworkCalculMenu(Park *park)
+{
+    bool deviceChoose = false;
+    bool addressChoose = false;
+
+    char deviceName[DEVICE_NAME_LENGTH];
+
+    int userChoice = -1;
+    int deviceIndexInPark = -2;
+
+    displayNetworkCalculMenu();
+
+    getUserChoice(1,2,&userChoice);
+    cleanBuffer();
+
+    // 1) depuis équipement
+    if(userChoice == 1) 
+    {
+        deviceChoose = true;
+
+        while(deviceChoose)
+        {
+            displayChooseDeviceForNetworkCalcul();
+            getUserChoice(0,2,&userChoice);
+            cleanBuffer();
+
+            switch(userChoice)
+            {
+                case 0: 
+                    deviceChoose = false;
+                    break;
+                case 1: 
+                    // récupérer le nom
+                    if(!getName(deviceName, DEVICE_NAME_LENGTH))
+                    {
+                        deviceChoose = false;
+                        break;
+                    }
+
+                    // trouver le device dans le parc
+                    if((deviceIndexInPark = findDevice(park, deviceName)) < 0)
+                        deviceChoose = false;
+                    else
+                        // handleCalcul (Ipv4 address)
+                        printf("Calcul prévu :-)\n");
+                    break;
+                case 2: 
+                    displayNameAndAddressFromPark(park);
+                    break;
+                default :
+                    fprintf(stderr, "Erreur switchcase ds handleNewtorkCalculMenu()\n");
+                
+            
+
+            }
+        }
+    }
+    // 2) depuis saisie adresse réseau
+    else
+        addressChoose = true;
+
+
+
+
+    
+}
+
 void handleAddDevice(Park *park)
 {
     assert (park != NULL);
@@ -318,16 +386,13 @@ void handleAddDevice(Park *park)
 
 void handleReadDevice(Park *park)
 {
-    char device[DEVICE_NAME_LENGTH];
     int indexDevice;
+    char device[DEVICE_NAME_LENGTH];
 
     displayCrudMenu(DISPLAY_READ);
 
     if(!getName(device, DEVICE_NAME_LENGTH))
-    {
-        fprintf(stderr, "Erreur retour getName appelé par handleReadDevice()\n");
-        return;
-    }
+        return;  
 
     indexDevice = findDevice(park, device);
 

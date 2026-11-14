@@ -63,11 +63,9 @@ int main (void)
        displayMainPage();
 
 #if DEBUG
-        if(!getUserChoice(0,5, &userChoice))
-            fprintf(stderr, "Erreur dans la fct getUserChoice\n");
+        getUserChoice(0,5, &userChoice);           
 #else
-        if(!getUserChoice(0,4, &userChoice))
-            fprintf(stderr, "Erreur dans la fct getUserChoice\n");
+       getUserChoice(0,4, &userChoice);            
 #endif
         cleanBuffer();
 
@@ -84,7 +82,7 @@ int main (void)
                 // recherche d'un élément
                 break;
             case 3 :
-                // calculs réseau
+                handleNetworkCalculMenu(park);
                 break;
             case 4 :
                 // stats

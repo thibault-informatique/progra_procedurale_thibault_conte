@@ -93,6 +93,7 @@
     Return_code initDevice(Device *device, const char name[], Device_type type, Ipv4 ip, Ipv4 mask, Device_status status);
 
 
+
     /****************************
     ******  CRUD  PARK      *****
     *****************************/

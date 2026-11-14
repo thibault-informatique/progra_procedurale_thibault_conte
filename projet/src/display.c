@@ -88,7 +88,7 @@ void displayMainPage(void)
 
 void displayDevicesMenu(void)
 {
-    printf_s(CYAN BOLD "\n\t\t Gestion des appareils réseaux\n\n" RESET);    
+    puts(CYAN BOLD "\n\t\t Gestion des appareils réseaux\n" RESET);    
     puts("   1) Ajouter un équipement    \t 2) Afficher un équipement");
     puts("   3) Modifier un équipement     4) Supprimer un équipement");
     puts("   5) Afficher le parc réseau");
@@ -115,6 +115,14 @@ void displayCrudMenu(Crud_display_choice crud)
             fprintf(stderr, "Erreur switchcase displayCrudMenu\n");
     }
      
+}
+
+void displayNetworkCalculMenu(void)
+{
+    puts(CYAN BOLD "\n\t\t Calculs réseaux\n" RESET);    
+    puts("   1) Depuis un équipement ");   
+    puts("   2) Depuis une adresse\n");
+
 }
 
 void displayCreateDeviceMenu(int milestone)
@@ -157,7 +165,7 @@ void displayChoosePartOfDeviceToUpdate()
 
 void displayDeviceType()
 {
-    printf("Choisissez un type d'appareil :\n");
+    printf(BOLD"Choisissez un type d'appareil :\n"RESET);
     puts("- ROUTER      [1]");
     puts("- SWITCH      [2]");
     puts("- FIREWALL    [3]");
@@ -171,7 +179,7 @@ void displayDeviceType()
 
 void displayDeviceStatus()
 {
-        printf("Choisissez un état/statut pour l'appareil:\n");
+    printf(BOLD"Choisissez un état/statut pour l'appareil:\n"RESET);
     puts("- ONLINE      [1]");
     puts("- OFFLINE     [2]");
     puts("- MAINTENANCE [3]");
@@ -179,6 +187,13 @@ void displayDeviceStatus()
     puts("- UNKNOWN     [5]");
 }
 
+void displayChooseDeviceForNetworkCalcul(void)
+{
+    puts("\n1) Entrer le nom de l'équipement");
+    puts("2) Afficher les équipements du parc (+ adresse)");
+    puts("0) Revenir au menu précédent.\n");
+
+}
 void displayEndMessage()
 {
     puts("\n*** Fin du programme ***\n");
@@ -314,7 +329,7 @@ void printAskConfirmation()
 // & 0xFF (mask) ne garde que les 8 derniers bits (sécurité si il y avait malgré tout des bits de poids forts parasites suppl)
 void printDecimalIpv4(const Ipv4 ip)
 {
-    printf("%u.%u.%u.%u\n", 
+    printf("%u.%u.%u.%u", 
           (ip.address >> 24) & 0xFFu,
           (ip.address >> 16) & 0xFFu,
           (ip.address >> 8)  & 0xFFu,
@@ -323,7 +338,7 @@ void printDecimalIpv4(const Ipv4 ip)
 
 void printHexaIpv4(const Ipv4 ip)
 {
-    printf("%02X.%02X.%02X.%02X\n",
+    printf("%02X.%02X.%02X.%02X",
           (ip.address >> 24) & 0xFFu,
           (ip.address >> 16) & 0xFFu,
           (ip.address >> 8)  & 0xFFu,
@@ -347,11 +362,30 @@ void printDevice(const Device *device)
     putc('\n', stdout);
 }
 
+void printDeviceNameAndAddress(const Device *device)
+{
+    printf("\nNom: %-50s| ", device->name);
+    printf("IP: ");
+    printDecimalIpv4(device->ipAddress);
+    printf(" | Masque:  ");
+    printDecimalIpv4(device->subnet_mask);
+    putc('\n', stdout);
+}
+
 void displayPark(Park *park)
 {
     for (int i = 0; i< park->nbOfDevice; i++)
     {
         printf(BOLD "Equipement n°%d\n" RESET, i + 1);
         printDevice(&park->device[i]);
+    }
+}
+
+void displayNameAndAddressFromPark(Park *park)
+{
+    for (int i = 0; i< park->nbOfDevice; i++)
+    {
+        printf(BOLD "Equipement n°%d\n" RESET, i + 1);
+        printDeviceNameAndAddress(&park->device[i]);
     }
 }

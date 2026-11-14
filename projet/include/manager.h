@@ -9,7 +9,7 @@ void cleanBuffer();
 
 // version simplifiée getUserChoice
 // obtenir un nombre compris entre la borne minimale et maximale
-bool getUserChoice(int minValue, int maxValue, int *number);
+void getUserChoice(int minValue, int maxValue, int *number);
 
 
 bool getName(char *name, int nameLength);
@@ -29,6 +29,8 @@ Return_code handleCreateOrUpdateStatus(Device *device);
 
 /*** MENUS MANAGER ***/
 void handleDeviceMenu(Park *park);
+
+void handleNetworkCalculMenu(Park *park);
 
 //void handleAddDevce(Park *park);
 void handleAddDevice(Park *park);
