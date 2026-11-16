@@ -33,6 +33,9 @@ vendor/
 doc/
 *.dvi
 
+# Fichiers de consigne des exercices
+consignes/
+
 # Fichiers de cache (macOS, Linux, etc.)
 .DS_Store
 Thumbs.db
