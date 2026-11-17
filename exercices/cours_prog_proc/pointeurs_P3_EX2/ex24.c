@@ -57,5 +57,7 @@ int main(void)
 
     }
 
+    free(tabNbPairs);
+
     return EXIT_SUCCESS;
 }
