@@ -72,5 +72,6 @@ int main(void)
 
 
     free(pFinalString);
+    pFinalString = NULL;
     return 0;
 }

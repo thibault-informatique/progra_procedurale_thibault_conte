@@ -49,6 +49,7 @@ Etudiant *creerEtudiant(const char *nom, int nbNotes)
     if((nvNom = dupliquer(nom)) == NULL)
     {
         free(nvEtudiant);
+        nvEtudiant = NULL;
         return NULL;
     }
 

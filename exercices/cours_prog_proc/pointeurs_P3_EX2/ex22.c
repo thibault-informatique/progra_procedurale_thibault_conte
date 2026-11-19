@@ -43,6 +43,7 @@ int main (void)
     putc('\n', stdout);
 
     free(tab2);
+    tab2 = NULL;
     
     return 0;
 }
