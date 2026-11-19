@@ -85,5 +85,6 @@ int main(void)
     putchar('\n');
 
     free(tab);
+    tab = NULL;
     return 0;
 }
