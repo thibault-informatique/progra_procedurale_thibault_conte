@@ -12,6 +12,8 @@
 
 /*** CHAINES DYNAMIQUES***/
 
+// fct qui permet d'allouer dynamiquement un espace sur le tas (pile) pour une string
+// au départ d'une string allouée statiquement sur la pile (stack)
 char *dupliquer(const char *s)
 {
     if (s == NULL)
@@ -32,9 +34,12 @@ char *dupliquer(const char *s)
     return tempString;    
 }
 
-// tab = pointeur du pointeur
-// *tab = pointeur vers un mot
-// **tab = un mot
+// tab = char ** pointeur vers le tableau de pointeurs
+// *tab = char * pointeur vers un mot, adresse du mot (1er caractère de la chaine, terminée par '\0')
+// **tab = premier caractère du 1er mot
+
+// Règle mnémotechnique : chaque * en moins dans le type enlève un niveau d'indirection. 
+// char = un caractère, char * = une chaîne, char ** = un tableau de chaînes.
 char **ajoutMotDansTab(char **tab, const char *mot, int *nbMots)
 {
     // pas d'assert sur tab car il sera nul au premier appel
@@ -45,7 +50,7 @@ char **ajoutMotDansTab(char **tab, const char *mot, int *nbMots)
     if (motTemp == NULL)
         return NULL;
     
-    // pTaTemp = pointeur vers le tableau de mots
+    // pTaTemp = pointeur vers le tableau de pointeurs (qui pointent individuellement vers un mot)
     char **pTabTemp = (char**) realloc(tab, (*nbMots + 1) * sizeof(*pTabTemp));
 
     // si realloc échoue, on libère l'alloc générée par dupliquer()
@@ -89,7 +94,7 @@ int main(void)
     *************/
 
     puts("Saisir un nombre aléatoire de mots séparés par un espace et finir par le mot fin puis taper ENTER");
-    printf("Mot: ");
+    printf("Mots: ");
     
     if (fgets(buffer, sizeof(buffer), stdin) == NULL)
     {
@@ -102,6 +107,7 @@ int main(void)
         if(strcmp(bufferIntermediaire, "fin") == 0)
             break;
        
+        // **nouveau à cause de realloc sert de temp au cas où adresse retournée NULL
         char **nouveau = ajoutMotDansTab(tabString, bufferIntermediaire, &nbMots);
         
         if(nouveau == NULL)   
