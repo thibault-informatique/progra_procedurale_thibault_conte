@@ -3,12 +3,16 @@
 4. Recherche, filtre, tri (consigne 3.2)
 
 Recherche par nom (déjà fait via findDevice), par IP; filtres par type/état; tris (nom, IP, type). C'est là que tu pourras utiliser la transmission de fonctions en argument (critère d'évaluation) — ex. Device* findDeviceBy(Park*, bool (*predicate)(const Device*)).
-5. Plus tard (selon avancement du cours) — park dynamique (double ** mentionné dans ton TODO), persistance fichier, algorithmes récursifs.
+5. Plus tard (selon avancement du cours) — park dynamique (double ** mentionné dans ton TODO), 
+- persistance fichier (2 propositions: charger tout le parc et sauvegarder tout le parc en cours (RAM vers NVRAM))
+- algorithmes récursifs.
 
 6. Vérifier tous les TODO
 
 0. Amélioration:
-const char * pour afficher/print IPv4 en décimal afin de formater la taille?
+- const char * pour afficher/print IPv4 en décimal afin de formater la taille?
+- option réinit le parc
+
 
 
 Ensuite seulement : les calculs réseau (§3.3 — adresse réseau, broadcast, /préfixe — les TODO de device.h), puis recherche/tri (§3.2), stats (§3.6), et sauvegarde fichier (§3.5) en tout dernier.
