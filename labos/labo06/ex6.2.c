@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
         // 3) on lit ligne par ligne
         while (fgets(ligne, sizeof(ligne), f) != NULL)
         {
+            // permet d'éviter un saut de ligne indésirable
+            // on contrôle le saut de ligne souhaité dans le fprintf
             ligne[strcspn(ligne, "\n")] = '\0';
             fprintf(stdout, "%3d | %s\n", numLigne++, ligne);
         }
