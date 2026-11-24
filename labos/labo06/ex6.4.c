@@ -54,6 +54,39 @@ int main(int argc, char *argv[])
         while ((tempChar = getc(src)) != EOF)
             fputc(tempChar, dest);
 
+        /*
+            VERSION IA plus efficace : lecture par buffer de 4096 octets
+
+            char buffer[4096];
+            size_t n;
+            while ((n = fread(buffer, 1, sizeof buffer, src)) > 0)
+            {
+                if (fwrite(buffer, 1, n, dst) != n)
+                {
+                    perror("fwrite");
+                    fclose(src); fclose(dst);
+                    return EXIT_FAILURE;
+                }
+            }
+        */
+
+        /*
+            POINTS D'ATTENTION
+            fread(buffer, 1, 4096, src) renvoie le nombre d'octets lus (avec size = 1, n = octets, 
+            pas nombre de blocs) : 4096, sauf au dernier passage où il renvoie le reste (ex. 80 pour 
+            un fichier de 4096+80 octets) ;
+            au passage suivant, la fin de fichier est atteinte → fread renvoie 0 → la condition > 0 
+            est fausse → la boucle s'arrête.
+            Donc la boucle tourne ceil(taille_fichier / 4096) fois, et s'arrête proprement à EOF. 
+            Pour rapport.txt (~80 octets) : 1ᵉʳ passage n = 80 (tout le fichier, oui), 2ᵉ passage n = 0 → arrêt. 
+            C'est exactement le comportement voulu.
+
+            Piège à éviter : écrire fread(buffer, sizeof buffer, 1, src) (size et nmemb inversés) — 
+            là fread renvoie 0 ou 1 (nombre de blocs), et un dernier bloc partiel serait compté 0 → tronqué. 
+            Avec fread(buffer, 1, sizeof buffer, src) + > 0, aucun octet n'est perdu, 
+            d'où le fwrite(buffer, 1, n, dst) avec n et non sizeof buffer.
+        */
+       
         // 6) on ferme les FILE * ouverts
         fclose(src);
         fclose(dest);
