@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
         
 
         // 1) on récupère le nom du fichier
-        while (argv[1][i] != '\n')
+        while (argv[1][i] != '\0')
         {
             file[i] = argv[1][i];
             i++;
