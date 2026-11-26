@@ -19,7 +19,7 @@ main.o: main.c jeu.h code.h debug.h
 code.o: code.c code.h jeu.h
 	$(CC) $(CFLAGS) -c code.c -o code.o
 
-jeu.o: jeu.c code.h debug.h
+jeu.o: jeu.c jeu.h code.h debug.h
 	$(CC) $(CFLAGS) -c jeu.c -o jeu.o
 
 # PHONY Dit que all/clean/run ne sont pas de vrais fichiers
@@ -28,10 +28,11 @@ jeu.o: jeu.c code.h debug.h
 run: $(NAME)
 	./$(NAME)
 
-# Nettoyage sous Windows
+# Nettoyage 
+ifeq ($(OS),Windows_NT)
 clean:
 	del /f /q *.o $(NAME)
-
-# Nettoyage sous Linux
-#clean:
-#	rm *.o $(NAME)
+else
+clean:
+	rm -f *.o $(NAME)
+endif
